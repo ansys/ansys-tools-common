@@ -1,4 +1,4 @@
-Ansys tools Tool
+Ansys tools
 ============================
 |pyansys| |python| |pypi| |MIT| |GH-CI| |pre-commit|
 
