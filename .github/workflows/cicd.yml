@@ -1,0 +1,51 @@
+name: GitHub CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    tags:
+      - "*"
+    branches:
+      - main
+
+env:
+    PACKAGE_NAME: ansys-tools-common
+    MAIN_PYTHON_VERSION: 3.13
+
+jobs:
+    style:
+        name: Code style
+        runs-on: ubuntu-latest
+        steps:
+          - name: PyAnsys code style checks
+            uses: ansys/actions/code-style@v9
+            with:
+              python-version: ${{ env.MAIN_PYTHON_VERSION }}
+    smoke-tests:
+        name: Build and Smoke tests
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ubuntu-latest, windows-latest, macos-latest]
+                python-version: ['3.10', '3.11', '3.12']
+        steps:
+        - name: Build wheelhouse and perform smoke test
+          uses: ansys/actions/build-wheelhouse@v9
+          with:
+            library-name: ${{ env.PACKAGE_NAME }}
+            operating-system: ${{ matrix.os }}
+            python-version: ${{ matrix.python-version }}
+            whitelist-license-check: "termcolor"  # Has MIT license, but it's not recognized
+
+    package:
+        name: Package library
+        runs-on: ubuntu-latest
+        needs: [smoke-tests]
+        steps:
+            - name: Build library source and wheel artifacts
+              uses: ansys/actions/build-library@v9
+              with:
+                library-name: ${{ env.PACKAGE_NAME }}
+                python-version: ${{ env.MAIN_PYTHON_VERSION }}
