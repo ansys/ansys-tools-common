@@ -3,7 +3,7 @@ requires = ["flit_core >=3.2,<3.11"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "ansys-tools"
+name = "ansys-tools-common"
 version = "0.8.dev0"
 description = "A set of tools for PyAnsys libraries"
 readme = "README.rst"
