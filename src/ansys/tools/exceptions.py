@@ -42,9 +42,9 @@ class AnsysTypeError(AnsysError):
 
     Parameters
     ----------
-    expected_type : str
+    expected_type : str | type
         The expected type of the argument.
-    actual_type : str
+    actual_type : str | type
         The actual type of the argument.
     """
 
