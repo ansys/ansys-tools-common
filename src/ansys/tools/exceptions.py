@@ -50,7 +50,6 @@ class AnsysTypeError(AnsysError):
 
     def __init__(self, expected_type: str | type, actual_type: str | type = None) -> None:
         """Initialize the exception with expected and actual types."""
-
         message = f"Expected type {expected_type}, but got {actual_type}."
         super().__init__(message)
         self.expected_type = expected_type
