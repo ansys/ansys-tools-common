@@ -48,12 +48,10 @@ class AnsysTypeError(AnsysError):
         The actual type of the argument.
     """
 
-    def __init__(self, expected_type: str = None, actual_type: str = None) -> None:
+    def __init__(self, expected_type: str | type, actual_type: str | type = None) -> None:
         """Initialize the exception with expected and actual types."""
-        if expected_type is not None and actual_type is not None:
-            message = f"Expected type {expected_type}, but got {actual_type}."
-        else:
-            message = "Ansys type used is not compatible."
+
+        message = f"Expected type {expected_type}, but got {actual_type}."
         super().__init__(message)
         self.expected_type = expected_type
         self.actual_type = actual_type
