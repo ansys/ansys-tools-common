@@ -40,25 +40,61 @@ class SingletonType(type):
         return cls._instances[cls]
 
 
+class CustomFormatter(logging.Formatter):
+    """Custom formatter to truncate long columns."""
+
+    def set_column_width(self, width: int):
+        """Set the maximum column width for module and function names."""
+        # at least 8
+        if width < 8:
+            raise ValueError("Column width must be at least 8 characters.")
+        self._max_column_width = width
+
+    @property
+    def max_column_width(self):
+        """Get the maximum column length."""
+        if not hasattr(self, "_max_column_width"):
+            self._max_column_width = 15
+        return self._max_column_width
+
+    def format(self, record):
+        """Format the log record, truncating the module and function names if necessary."""
+        if len(record.module) > self.max_column_width:
+            record.module = record.module[: self.max_column_width - 3] + "..."
+        if len(record.funcName) > self.max_column_width:
+            record.funcName = record.funcName[: self.max_column_width - 3] + "..."
+
+        # Fill the module and function names with spaces to align them
+        record.module = record.module.ljust(self.max_column_width)
+        record.funcName = record.funcName.ljust(self.max_column_width)
+
+        return super().format(record)
+
+
 class Logger(object, metaclass=SingletonType):
     """Provides the singleton logger.
 
     Parameters
     ----------
-    to_file : bool, default: False
-        Whether to include the logs in a file.
+    level : int, default: ``logging.ERROR``
+        Output Level of the logger.
+    logger_name : str, default: ``"Logger"``
+        Name of the logger.
+    column_width : int, default: ``15``
+        Maximum width of the module and function names in the log output.
 
     """
 
     _logger = None
 
-    def __init__(self, level: int = logging.ERROR, logger_name: str = "Logger"):
+    def __init__(self, level: int = logging.ERROR, logger_name: str = "Logger", column_width: int = 15):
         """Initialize the logger."""
         self._logger = logging.getLogger(logger_name)
         self._logger.setLevel(level)
-        self._formatter = logging.Formatter(
-            "%(asctime)s \t [%(levelname)s | %(filename)s:%(lineno)s] > %(message)s"
+        self._formatter = CustomFormatter(
+            "%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s"
         )
+        self._formatter.set_column_width(column_width)
 
     def get_logger(self):
         """Get the logger.
@@ -98,21 +134,69 @@ class Logger(object, metaclass=SingletonType):
         stream_handler.setFormatter(self._formatter)
         self._logger.addHandler(stream_handler)
 
-    def add_file_handler(self, logs_dir: str = "./.log"):
+    def add_file_handler(self, logs_dir: str | Path = ".log"):
         """Save logs to a file in addition to printing them to the standard output.
 
         Parameters
         ----------
-        logs_dir : str, default: ``"./.log"``
-            Directory of the logs.
-
+        logs_dir : str or Path, default: ``".log"``
+            Directory where the log file will be saved. If it does not exist, it will be created.
         """
         now = datetime.datetime.now()
-        if not Path.isdir(logs_dir):
-            Path.mkdir(logs_dir)
-        file_handler = logging.FileHandler(logs_dir + "/log_" + now.strftime("%Y-%m-%d") + ".log")
+        logs_dir = Path(logs_dir) if isinstance(logs_dir, str) else logs_dir
+        if not logs_dir.is_dir():
+            logs_dir.mkdir(parents=True)
+        file_handler = logging.FileHandler(logs_dir / f"log_{now.strftime('%Y%m%d_%H%M%S')}.log")
         file_handler.setFormatter(self._formatter)
         self._logger.addHandler(file_handler)
 
+        header = (
+            "-" * (70 + self._formatter.max_column_width)
+            + "\n"
+            + f"Timestamp               [Level    | Module{' ' * (self._formatter.max_column_width - 6)} | Function{' ' * (self._formatter.max_column_width - 8)}:Line] > Message\n"  # noqa: E501
+            + "-" * (70 + self._formatter.max_column_width)
+            + "\n"
+        )
 
-logger = Logger().get_logger()
+        # Log the header to the file
+        file_handler.stream.write(header)
+
+    def debug(self, *args, **kwargs):
+        """Log a message with level DEBUG."""
+        return self._logger.debug(*args, **kwargs, stacklevel=2)
+
+    def info(self, *args, **kwargs):
+        """Log a message with level INFO."""
+        return self._logger.info(*args, **kwargs, stacklevel=2)
+
+    def warning(self, *args, **kwargs):
+        """Log a message with level WARNING."""
+        return self._logger.warning(*args, **kwargs, stacklevel=2)
+
+    def warn(self, *args, **kwargs):
+        """Log a message with level WARNING."""
+        return self._logger.warning(*args, **kwargs, stacklevel=2)
+
+    def error(self, *args, **kwargs):
+        """Log a message with level ERROR."""
+        return self._logger.error(*args, **kwargs, stacklevel=2)
+
+    def critical(self, *args, **kwargs):
+        """Log a message with level CRITICAL."""
+        return self._logger.critical(*args, **kwargs, stacklevel=2)
+
+    def fatal(self, *args, **kwargs):
+        """Log a message with level FATAL."""
+        return self._logger.fatal(*args, **kwargs, stacklevel=2)
+
+    def log(self, level, msg, *args, **kwargs):
+        """Log a message with a specified level."""
+        return self._logger.log(level, msg, *args, **kwargs, stacklevel=2)
+
+
+LOGGER = Logger()
+"""Global logger instance.
+
+This is a global instance of the Logger class that can be used throughout the application.
+It is initialized with default settings and can be configured as needed.
+"""
