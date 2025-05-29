@@ -25,7 +25,7 @@ repos:
     - id: add-license-headers
       files: '(src|examples|tests|docker)/.*\.(py)|\.(proto)'
       args:
-      - --start_year=2024
+      - --start_year=2025
 
 # this validates our github workflow files
 - repo: https://github.com/python-jsonschema/check-jsonschema
