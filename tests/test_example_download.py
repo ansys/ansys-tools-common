@@ -35,3 +35,7 @@ def test_download_manager():
     local_path = download_manager.download_file(filename, *directory)
 
     assert Path.is_file(local_path)
+
+    download_manager.clear_download_cache()
+
+    assert not Path.is_file(local_path)

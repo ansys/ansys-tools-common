@@ -30,6 +30,8 @@ import urllib.request
 
 __all__ = ["DownloadManager"]
 
+BASE_URL = "https://github.com/ansys/example-data/raw/main"
+
 
 class DownloadManagerMeta(type):
     """Provides a thread-safe implementation of ``Singleton``.
@@ -53,32 +55,18 @@ class DownloadManager(metaclass=DownloadManagerMeta):
     """Manages downloads of example files.
 
     Manages the download of example from the example-data
-    repository.
+    repository https://github.com/ansys/example-data.
     """
 
     def __init__(self):
         """Initialize the download manager."""
-        self.downloads_list = []
-
-    def add_file(self, file_path: str):
-        """Add the path for a downloaded example file to a list.
-
-        This list keeps track of where example files are
-        downloaded so that a global cleanup of these files can be
-        performed when the client is closed.
-
-        Parameters
-        ----------
-        file_path : str
-            Local path of the downloaded example file.
-        """
-        self.downloads_list.append(file_path)
+        self._downloads_list = []
 
     def clear_download_cache(self):
         """Remove downloaded example files from the local path."""
-        for file in self.downloads_list:
+        for file in self._downloads_list:
             Path(file).unlink()
-        self.downloads_list.clear()
+        self._downloads_list.clear()
 
     def download_file(
         self, filename: str, *directory: str, destination: Optional[str] = None, force: bool = False
@@ -122,38 +110,89 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         local_path = self._retrieve_data(url, filename, dest=destination, force=force)
 
         # add path to downloaded files
-        self.add_file(local_path)
+        self._add_file(local_path)
         return local_path
 
-    def _joinurl(self, base, *paths):
+    def _add_file(self, file_path: str):
+        """Add the path for a downloaded example file to a list.
+
+        This list keeps track of where example files are
+        downloaded so that a global cleanup of these files can be
+        performed when the client is closed.
+
+        Parameters
+        ----------
+        file_path : str
+            Local path of the downloaded example file.
+        """
+        self._downloads_list.append(file_path)
+
+    def _joinurl(self, base: str, *paths: str) -> str:
+        """Join multiple paths to a base URL.
+
+        Parameters
+        ----------
+        base :
+            Base URL to which the paths will be appended.
+
+        Returns
+        -------
+        str
+            The joined URL with the base and paths.
+        """
         for path in paths:
             if base[-1] != "/":
                 base += "/"
             base = urljoin(base, path)
         return base
 
-    def _get_default_server_and_joiner(self):
-        return "https://github.com/ansys/example-data/raw/main", self._joinurl
+    def _get_filepath_on_default_server(self, filename: str, *directory: str) -> str:
+        """Get the full URL of the file on the default server.
 
-    def _get_filepath_on_default_server(self, filename: str, *directory: str):
-        server, joiner = self._get_default_server_and_joiner()
+        Parameters
+        ----------
+        filename : str
+            Name of the file to download.
+        directory : tuple[str]
+            Path under the example-data repository.
+
+        Returns
+        -------
+        str
+            Full URL of the file on the default server.
+        """
         if directory:
-            return joiner(server, *directory, filename)
+            return self._joinurl(BASE_URL, *directory, filename)
         else:
-            return joiner(server, filename)
+            return self._joinurl(BASE_URL, filename)
 
-    def _retrieve_url(self, url, dest):
-        saved_file, _ = urllib.request.urlretrieve(url, filename=dest)
-        return saved_file
+    def _retrieve_data(self, url: str, filename: str, dest: str = None, force: bool = False) -> str:
+        """Retrieve data from a URL and save it to a local file.
 
-    def _retrieve_data(self, url: str, filename: str, dest: str = None, force: bool = False):
+        Parameters
+        ----------
+        url : str
+            The URL to download the file from.
+        filename : str
+            The name of the file to save the downloaded content as.
+        dest : str, optional
+            Destination path of the file, by default None
+        force : bool, optional
+            Force download to avoid cached examples, by default False
+
+        Returns
+        -------
+        str
+            The local path where the file was saved.
+        """
         if dest is None:
             dest = tempfile.gettempdir()  # Use system temp directory if no destination is provided
             local_path = Path(dest) / Path(filename).name
         if not force and Path.is_file(local_path):
             return local_path
-        local_path = self._retrieve_url(url, local_path)
+        local_path, _ = urllib.request.urlretrieve(url, filename=local_path)
         return local_path
 
 
+# Create a singleton instance of DownloadManager
 download_manager = DownloadManager()
