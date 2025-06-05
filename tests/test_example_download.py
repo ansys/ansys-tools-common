@@ -34,4 +34,4 @@ def test_download_manager():
     # Download the file
     local_path = download_manager.download_file(filename, *directory)
 
-    assert Path.isfile(local_path)
+    assert Path.is_file(local_path)
