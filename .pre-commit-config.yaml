@@ -25,7 +25,7 @@ repos:
     - id: add-license-headers
       files: '(src|examples|tests|docker)/.*\.(py)|\.(proto)'
       args:
-      - --start_year=2024
+      - --start_year=2025
 
 # this validates our github workflow files
 - repo: https://github.com/python-jsonschema/check-jsonschema
@@ -34,7 +34,7 @@ repos:
     - id: check-github-workflows
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.11.7
+  rev: v0.11.11
   hooks:
-    - id: ruff
-      args: [--fix]
+    - id: ruff-check
+    - id: ruff-format

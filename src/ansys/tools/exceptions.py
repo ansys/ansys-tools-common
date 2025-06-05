@@ -1,4 +1,4 @@
-# Copyright (C) 2024 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -51,11 +51,12 @@ class AnsysTypeError(AnsysError):
     def __init__(self, expected_type: str | type, actual_type: str | type = None) -> None:
         """Initialize the exception with expected and actual types."""
         expected_type = expected_type if isinstance(expected_type, str) else expected_type.__name__
-        actual_type= actual_type if isinstance(actual_type, str) else actual_type.__name__
+        actual_type = actual_type if isinstance(actual_type, str) else actual_type.__name__
         message = f"Expected type {expected_type}, but got {actual_type}."
         super().__init__(message)
         self.expected_type = expected_type
         self.actual_type = actual_type
+
 
 class AnsysLogicError(AnsysError):
     """Exception raised when an unexpected logical condition occurs.
