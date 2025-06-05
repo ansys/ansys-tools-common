@@ -1,4 +1,4 @@
-# Copyright (C) 2024 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """Tests for example downloads."""
+
 from pathlib import Path
 
 from ansys.tools.example_download import download_manager
@@ -27,8 +28,8 @@ from ansys.tools.example_download import download_manager
 
 def test_download_manager():
     """Test downloading a file from the example repository."""
-    filename = '11_blades_mode_1_ND_0.csv'
-    directory = ('pymapdl', 'cfx_mapping')
+    filename = "11_blades_mode_1_ND_0.csv"
+    directory = ("pymapdl", "cfx_mapping")
 
     # Download the file
     local_path = download_manager.download_file(filename, *directory)

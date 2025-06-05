@@ -1,4 +1,4 @@
-# Copyright (C) 2024 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -28,7 +28,7 @@ from typing import Optional
 from urllib.parse import urljoin
 import urllib.request
 
-__all__ = ['DownloadManager']
+__all__ = ["DownloadManager"]
 
 
 class DownloadManagerMeta(type):
@@ -36,6 +36,7 @@ class DownloadManagerMeta(type):
 
     https://refactoring.guru/design-patterns/singleton/python/example#example-1.
     """
+
     _instances = {}
     _lock: Lock = Lock()
 
@@ -115,7 +116,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         # Check if it was able to create the dir
         if destination_path is not None and not destination_path.is_dir():
-            raise ValueError('Destination directory provided does not exist')
+            raise ValueError("Destination directory provided does not exist")
 
         url = self._get_filepath_on_default_server(filename, *directory)
         local_path = self._retrieve_data(url, filename, dest=destination, force=force)
@@ -126,13 +127,13 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
     def _joinurl(self, base, *paths):
         for path in paths:
-            if base[-1] != '/':
-                base += '/'
+            if base[-1] != "/":
+                base += "/"
             base = urljoin(base, path)
         return base
 
     def _get_default_server_and_joiner(self):
-        return 'https://github.com/ansys/example-data/raw/main', self._joinurl
+        return "https://github.com/ansys/example-data/raw/main", self._joinurl
 
     def _get_filepath_on_default_server(self, filename: str, *directory: str):
         server, joiner = self._get_default_server_and_joiner()
@@ -153,5 +154,6 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             return local_path
         local_path = self._retrieve_url(url, local_path)
         return local_path
+
 
 download_manager = DownloadManager()
