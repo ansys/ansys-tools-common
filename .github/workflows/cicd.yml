@@ -43,7 +43,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Run tests
-          uses: ansys/actions/run-tests@v9
+          uses: ansys/actions/tests-pytest@v9
           with:
             library-name: ${{ env.PACKAGE_NAME }}
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
