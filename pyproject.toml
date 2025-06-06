@@ -22,12 +22,22 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = []
+dependencies = [
+    "platformdirs>=3.6.0",
+    "click>=8.1.3",        # for CLI interface
+]
 
 [project.optional-dependencies]
 
-tests = []
+tests = [
+    "pytest==8.4.0",
+    "pytest-cov==6.1.1",
+    "pyfakefs==5.8.0"
+]
 doc = []
+
+[project.scripts]
+save-ansys-path = "ansys.tools.path.save:cli"
 
 [project.urls]
 Source = "https://github.com/ansys/ansys-tools"

@@ -39,6 +39,40 @@ jobs:
             python-version: ${{ matrix.python-version }}
             whitelist-license-check: "termcolor"  # Has MIT license, but it's not recognized
 
+    build-tests:
+      name: Build and Testing
+      runs-on: ubuntu-22.04
+      needs: [smoke-tests]
+      container:
+        image: ghcr.io/ansys/pymapdl/mapdl:v22.2-ubuntu
+        options: "-u=0:0 --entrypoint /bin/bash"
+        credentials:
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        ANSYS_LOCAL: true
+        ON_UBUNTU: true
+
+      steps:
+        - uses: actions/checkout@v4
+        - name: Setup Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+        - name: Install library, with test extra
+          run: python -m pip install .[tests]
+
+        - name: Unit testing
+          run: |
+            python -m pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
+
+        - name: Upload coverage reports to Codecov
+          uses: codecov/codecov-action@v5
+          with:
+            files: .cov/coverage.xml
+
+
     package:
         name: Package library
         runs-on: ubuntu-latest
