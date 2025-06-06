@@ -69,7 +69,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         self._downloads_list.clear()
 
     def download_file(
-        self, filename: str, *directory: str, destination: Optional[str] = None, force: bool = False
+        self, filename: str, directory: str, destination: Optional[str] = None, force: bool = False
     ) -> str:
         """Download an example file from the example data.
 
@@ -85,7 +85,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Whether to always download the example file. The default is
             ``False``, in which case if the example file is cached, it
             is reused.
-        directory : tuple[str]
+        directory : str
             Path under the PyAnsys Github examples repository.
 
         Returns
@@ -106,7 +106,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         if destination_path is not None and not destination_path.is_dir():
             raise ValueError("Destination directory provided does not exist")
 
-        url = self._get_filepath_on_default_server(filename, *directory)
+        url = self._get_filepath_on_default_server(filename, directory)
         local_path = self._retrieve_data(url, filename, dest=destination, force=force)
 
         # add path to downloaded files
@@ -127,7 +127,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         """
         self._downloads_list.append(file_path)
 
-    def _joinurl(self, base: str, *paths: str) -> str:
+    def _joinurl(self, base: str, directory: str) -> str:
         """Join multiple paths to a base URL.
 
         Parameters
@@ -140,20 +140,19 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         str
             The joined URL with the base and paths.
         """
-        for path in paths:
-            if base[-1] != "/":
-                base += "/"
-            base = urljoin(base, path)
+        if base[-1] != "/":
+            base += "/"
+        base = urljoin(base, directory)
         return base
 
-    def _get_filepath_on_default_server(self, filename: str, *directory: str) -> str:
+    def _get_filepath_on_default_server(self, filename: str, directory: str = None) -> str:
         """Get the full URL of the file on the default server.
 
         Parameters
         ----------
         filename : str
             Name of the file to download.
-        directory : tuple[str]
+        directory : str, optional
             Path under the example-data repository.
 
         Returns
@@ -162,7 +161,9 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Full URL of the file on the default server.
         """
         if directory:
-            return self._joinurl(BASE_URL, *directory, filename)
+            if directory[-1] != "/":
+                directory += "/"
+            return self._joinurl(BASE_URL, directory + filename)
         else:
             return self._joinurl(BASE_URL, filename)
 

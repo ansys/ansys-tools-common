@@ -29,10 +29,10 @@ from ansys.tools.example_download import download_manager
 def test_download_manager():
     """Test downloading a file from the example repository."""
     filename = "11_blades_mode_1_ND_0.csv"
-    directory = ("pymapdl", "cfx_mapping")
+    directory = "pymapdl/cfx_mapping"
 
     # Download the file
-    local_path = download_manager.download_file(filename, *directory)
+    local_path = download_manager.download_file(filename, directory)
 
     assert Path.is_file(local_path)
 
