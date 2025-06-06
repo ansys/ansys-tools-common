@@ -26,11 +26,6 @@ Tools to find/cache installed Ansys products.
 WARNING: This is not concurrent-safe (multiple python processes might race on this data.)
 """
 
-import importlib.metadata as importlib_metadata
-
-__version__ = importlib_metadata.version(__name__.replace(".", "-"))
-
-
 from ansys.tools.path.path import (
     LOG,
     SETTINGS_DIR,

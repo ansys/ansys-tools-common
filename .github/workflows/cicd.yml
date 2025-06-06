@@ -48,7 +48,7 @@ jobs:
         options: "-u=0:0 --entrypoint /bin/bash"
         credentials:
           username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GH_TOKEN }}
       env:
         ANSYS_LOCAL: true
         ON_UBUNTU: true

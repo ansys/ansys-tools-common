@@ -23,7 +23,7 @@
 
 import os
 
-from ansys.tools.path import __version__
+from ansys.tools import __version__
 
 
 def test_pkg_version():
@@ -32,7 +32,7 @@ def test_pkg_version():
 
     # Read from the pyproject.toml
     # major, minor, patch
-    read_version = importlib_metadata.version("ansys-tools-path")
+    read_version = importlib_metadata.version("ansys-tools-common")
 
     assert __version__ == read_version
 
