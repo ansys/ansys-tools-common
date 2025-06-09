@@ -22,7 +22,6 @@
 """Module for integration tests."""
 
 import json
-import os
 from pathlib import Path
 
 import pytest
@@ -35,13 +34,8 @@ from ansys.tools.path import (
 )
 from ansys.tools.path.path import CONFIG_FILE
 
-skip_if_not_ansys_local = pytest.mark.skipif(
-    os.environ.get("ANSYS_LOCAL", "").upper() != "TRUE", reason="Skipping on CI"
-)
-
 
 @pytest.mark.requires_mapdl
-@skip_if_not_ansys_local
 def test_find_mapdl():
     """Test that the function finds the MAPDL executable and returns its path and version."""
     bin_file, ver = find_mapdl()
@@ -50,14 +44,12 @@ def test_find_mapdl():
 
 
 @pytest.mark.requires_mapdl
-@skip_if_not_ansys_local
 def test_get_available_ansys_installation():
     """Test that the function returns a list of available Ansys installations."""
     assert get_available_ansys_installations()
 
 
 @pytest.mark.requires_mapdl
-@skip_if_not_ansys_local
 @pytest.mark.linux
 def test_save_mapdl_path():
     """Test saving the MAPDL path to the configuration file."""
