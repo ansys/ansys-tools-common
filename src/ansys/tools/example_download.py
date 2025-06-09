@@ -132,7 +132,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         Parameters
         ----------
-        base :
+        base : str
             Base URL to which the paths will be appended.
 
         Returns
@@ -145,7 +145,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         return urljoin(base, directory)
 
     def _get_filepath_on_default_server(self, filename: str, directory: str = None) -> str:
-        """Get the full URL of the file on the default server.
+        """Get the full URL of the file on the default repository.
 
         Parameters
         ----------
@@ -157,7 +157,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         Returns
         -------
         str
-            Full URL of the file on the default server.
+            Full URL of the file on the default repository.
         """
         if directory:
             if directory[-1] != "/":
@@ -190,7 +190,10 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             local_path = Path(dest) / Path(filename).name
         if not force and Path.is_file(local_path):
             return local_path
-        local_path, _ = urllib.request.urlretrieve(url, filename=local_path)
+        try:
+            local_path, _ = urllib.request.urlretrieve(url, filename=local_path)
+        except urllib.error.HTTPError:
+            raise FileExistsError(f"Failed to download {filename} from {url}, file does not exist.")
         return local_path
 
 

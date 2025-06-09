@@ -26,7 +26,7 @@ from pathlib import Path
 from ansys.tools.example_download import download_manager
 
 
-def test_download_manager():
+def test_download():
     """Test downloading a file from the example repository."""
     filename = "11_blades_mode_1_ND_0.csv"
     directory = "pymapdl/cfx_mapping"
@@ -39,3 +39,14 @@ def test_download_manager():
     download_manager.clear_download_cache()
 
     assert not Path.is_file(local_path)
+
+
+def test_non_existent_file():
+    """Test downloading a non-existent file."""
+    filename = "non_existent_file.txt"
+    directory = "pymapdl/cfx_mapping"
+
+    # Attempt to download the non-existent file
+    local_path = download_manager.download_file(filename, directory)
+
+    assert local_path is None
