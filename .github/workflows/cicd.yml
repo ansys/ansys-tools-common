@@ -73,7 +73,7 @@ jobs:
 
         - name: Unit testing
           run: |
-            python -m pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html -m "not requires_mapdl"
+            python -m pytest -m "not requires_mapdl" -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
 
         - name: Upload coverage reports to Codecov
           uses: codecov/codecov-action@v5
