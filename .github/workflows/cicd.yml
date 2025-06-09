@@ -38,15 +38,6 @@ jobs:
             operating-system: ${{ matrix.os }}
             python-version: ${{ matrix.python-version }}
             whitelist-license-check: "termcolor"  # Has MIT license, but it's not recognized
-    tests:
-      name: Run tests
-      runs-on: ubuntu-latest
-      steps:
-        - name: Run tests
-          uses: ansys/actions/tests-pytest@v9
-          with:
-            library-name: ${{ env.PACKAGE_NAME }}
-            python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
     build-tests:
       name: Build and Testing
@@ -59,6 +50,7 @@ jobs:
           username: ${{ secrets.GH_USERNAME }}
           password: ${{ secrets.GH_TOKEN }}
       env:
+        ANSYS_LOCAL: true
         ON_UBUNTU: true
 
       steps:
@@ -73,7 +65,7 @@ jobs:
 
         - name: Unit testing
           run: |
-            python -m pytest -m "not requires_mapdl" -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
+            python -m pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
 
         - name: Upload coverage reports to Codecov
           uses: codecov/codecov-action@v5

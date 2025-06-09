@@ -373,7 +373,6 @@ def test_find_mechanical_without_student(mock_filesystem_without_student_version
 
 
 @pytest.mark.win32
-@pytest.mark.requires_mapdl
 def test_get_available_ansys_installation_windows(mock_filesystem, mock_awp_environment_variable):
     """Test get available Ansys installations on Windows."""
     available_ansys_installations = get_available_ansys_installations()
