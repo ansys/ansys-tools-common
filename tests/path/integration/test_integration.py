@@ -40,6 +40,7 @@ skip_if_not_ansys_local = pytest.mark.skipif(
 )
 
 
+@pytest.mark.requires_mapdl
 @skip_if_not_ansys_local
 def test_find_mapdl():
     """Test that the function finds the MAPDL executable and returns its path and version."""
@@ -48,12 +49,14 @@ def test_find_mapdl():
     assert ver != ""
 
 
+@pytest.mark.requires_mapdl
 @skip_if_not_ansys_local
 def test_get_available_ansys_installation():
     """Test that the function returns a list of available Ansys installations."""
     assert get_available_ansys_installations()
 
 
+@pytest.mark.requires_mapdl
 @skip_if_not_ansys_local
 @pytest.mark.linux
 def test_save_mapdl_path():
