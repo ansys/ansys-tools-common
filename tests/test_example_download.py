@@ -23,6 +23,8 @@
 
 from pathlib import Path
 
+import pytest
+
 from ansys.tools.example_download import download_manager
 
 
@@ -47,6 +49,5 @@ def test_non_existent_file():
     directory = "pymapdl/cfx_mapping"
 
     # Attempt to download the non-existent file
-    local_path = download_manager.download_file(filename, directory)
-
-    assert local_path is None
+    with pytest.raises(FileNotFoundError):
+        download_manager.download_file(filename, directory)

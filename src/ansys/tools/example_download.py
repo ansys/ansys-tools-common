@@ -193,7 +193,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         try:
             local_path, _ = urllib.request.urlretrieve(url, filename=local_path)
         except urllib.error.HTTPError:
-            raise FileExistsError(f"Failed to download {filename} from {url}, file does not exist.")
+            raise FileNotFoundError(f"Failed to download {filename} from {url}, file does not exist.")
         return local_path
 
 
