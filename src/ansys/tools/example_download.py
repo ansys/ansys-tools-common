@@ -142,8 +142,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         """
         if base[-1] != "/":
             base += "/"
-        base = urljoin(base, directory)
-        return base
+        return urljoin(base, directory)
 
     def _get_filepath_on_default_server(self, filename: str, directory: str = None) -> str:
         """Get the full URL of the file on the default server.
