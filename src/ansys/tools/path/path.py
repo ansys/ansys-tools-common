@@ -33,7 +33,6 @@ import warnings
 import platformdirs
 
 from ansys.tools.path.applications import ApplicationPlugin, dyna, mapdl, mechanical
-from ansys.tools.path.misc import is_float, is_linux, is_windows
 
 PLUGINS: Dict[str, ApplicationPlugin] = {"mechanical": mechanical, "dyna": dyna, "mapdl": mapdl}
 
@@ -81,7 +80,7 @@ PRODUCT_EXE_INFO = {
     },
 }
 
-if is_windows():  # pragma: no cover
+if os.name == "nt":  # pragma: no cover
     PRODUCT_EXE_INFO["mechanical"]["patternpath"] = "vXXX/aisol/bin/winx64/AnsysWBU.exe"
     PRODUCT_EXE_INFO["mechanical"]["pattern"] = "AnsysWBU.exe"
     PRODUCT_EXE_INFO["dyna"]["patternpath"] = "vXXX/ansys/bin/winx64/LSDYNAXXX.exe"
@@ -188,6 +187,26 @@ def _get_default_windows_base_path() -> Optional[str]:  # pragma: no cover
     return str(base_path)
 
 
+def _is_float(input_string: str) -> bool:
+    r"""Return true when a string can be converted to a float.
+
+    Parameters
+    ----------
+    input_string : str
+        The string to check.
+
+    Returns
+    -------
+    bool
+        ``True`` if the string can be converted to a float, ``False`` otherwise.
+    """
+    try:
+        float(input_string)
+        return True
+    except ValueError:
+        return False
+
+
 def _expand_base_path(base_path: Optional[str]) -> Dict[int, str]:
     """Expand the base path to all possible ansys Unified installations contained within.
 
@@ -211,7 +230,7 @@ def _expand_base_path(base_path: Optional[str]) -> Dict[int, str]:
     # Search for versions like /base_path/vXXX
     for path in base.glob("v*"):
         ver_str = path.name[-3:]
-        if is_float(ver_str):
+        if _is_float(ver_str):
             ansys_paths[int(ver_str)] = str(path)
 
     # Search for ANSYS STUDENT versions like /base_path/ANSYS*/vXXX
@@ -225,7 +244,7 @@ def _expand_base_path(base_path: Optional[str]) -> Dict[int, str]:
 
     for path in student_paths:
         ver_str = path.name[-3:]
-        if is_float(ver_str):
+        if _is_float(ver_str):
             ansys_paths[-int(ver_str)] = str(path)
 
     return ansys_paths
@@ -253,13 +272,13 @@ def _get_available_base_unified(
     >>> {251: "/usr/ansys_inc/v251"}
     """
     base_path = None
-    if is_windows():  # pragma: no cover
+    if os.name == "nt":  # pragma: no cover
         installed_versions = _get_installed_windows_versions(supported_versions)
         if installed_versions:
             return installed_versions
         else:  # pragma: no cover
             base_path = _get_default_windows_base_path()
-    elif is_linux():
+    elif os.name == "posix":
         base_path = _get_default_linux_base_path()
     else:  # pragma: no cover
         raise OSError(f"Unsupported OS {os.name}")
@@ -365,7 +384,7 @@ def find_mechanical(
         return "", ""
 
     ans_path = Path(ans_path)
-    if is_windows():  # pragma: no cover
+    if os.name == "nt":  # pragma: no cover
         mechanical_bin = ans_path / "aisol" / "bin" / "winx64" / "AnsysWBU.exe"
     else:
         mechanical_bin = ans_path / "aisol" / ".workbench"
@@ -419,7 +438,7 @@ def find_mapdl(
         return "", ""
 
     ansys_bin_path = Path(ans_path) / "ansys" / "bin"
-    if is_windows():
+    if os.name == "nt":
         ansys_bin = ansys_bin_path / "winx64" / f"ansys{version}.exe"
     else:
         ansys_bin = ansys_bin_path / f"ansys{version}"
@@ -473,7 +492,7 @@ def find_dyna(
         return "", ""
 
     ansys_bin_path = Path(ans_path) / "ansys" / "bin"
-    if is_windows():
+    if os.name == "nt":
         ansys_bin = ansys_bin_path / "winx64" / f"LSDYNA{version}.exe"
     else:
         ansys_bin = ansys_bin_path / f"lsdyna{version}"
@@ -595,7 +614,7 @@ def _is_common_executable_path(product: PRODUCT_TYPE, exe_loc: str) -> bool:
     elif product == "mechanical":
         is_valid_path = is_valid_executable_path("mechanical", exe_str)
 
-        if is_windows():  # pragma: no cover
+        if os.name == "nt":  # pragma: no cover
             parts = [part.lower() for part in exe_path.parts]
             return (
                 is_valid_path

@@ -22,10 +22,9 @@
 
 """Mechanical-specific logic for ansys-tools-path."""
 
+import os
 from pathlib import Path
 import re
-
-from ansys.tools.path.misc import is_windows
 
 
 def is_valid_executable_path(exe_loc: str) -> bool:
@@ -42,6 +41,6 @@ def is_valid_executable_path(exe_loc: str) -> bool:
         ``True`` if the path is valid for Ansys Mechanical, ``False`` otherwise.
     """
     path = Path(exe_loc)
-    if is_windows():  # pragma: no cover
+    if os.name == "nt":  # pragma: no cover
         return path.is_file() and re.search("AnsysWBU.exe", path.name, re.IGNORECASE) is not None
     return path.is_file() and re.search(r"\.workbench$", path.name) is not None

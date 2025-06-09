@@ -20,20 +20,3 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """Module for testing misc functions."""
-
-import pytest
-
-from ansys.tools.path.misc import is_float
-
-values = [
-    (11, True),
-    (11.1, True),
-    ("asdf", False),
-    ("1234asdf", False),
-]
-
-
-@pytest.mark.parametrize("values", values)
-def test_is_float(values):
-    """Test the is_float function."""
-    assert is_float(values[0]) == values[1]

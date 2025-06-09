@@ -55,6 +55,7 @@ from ansys.tools.path import (
     save_mechanical_path,
     version_from_path,
 )
+from ansys.tools.path.path import _is_float
 
 LOG.setLevel(logging.DEBUG)
 
@@ -606,3 +607,17 @@ def test_clear_config_file(mock_filesystem_with_config):
     assert config_file.exists()
     content = json.loads(config_file.read_text())
     assert content == {}
+
+
+values = [
+    (11, True),
+    (11.1, True),
+    ("asdf", False),
+    ("1234asdf", False),
+]
+
+
+@pytest.mark.parametrize("values", values)
+def test_is_float(values):
+    """Test the is_float function."""
+    assert _is_float(values[0]) == values[1]
