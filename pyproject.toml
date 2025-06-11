@@ -33,10 +33,10 @@ doc = []
 
 [project.urls]
 Source = "https://github.com/ansys/ansys-tools"
-Issues = "https://github.com/ansys/ansys-tools/issues"
-Discussions = "https://github.com/ansys/ansys-tools/discussions"
+Issues = "https://github.com/ansys/ansys-tools-common/issues"
+Discussions = "https://github.com/ansys/ansys-tools-common/discussions"
 Documentation = "https://ansys.tools.docs.pyansys.com/"
-Releases = "https://github.com/ansys/ansys-tools/releases/"
+Releases = "https://github.com/ansys/ansys-tools-common/releases/"
 
 [tool.flit.module]
 name = "ansys.tools"
@@ -80,8 +80,8 @@ filename = "CHANGELOG.md"
 start_string = "<!-- towncrier release notes start -->\n"
 underlines = ["", "", ""]
 template = "doc/changelog.d/changelog_template.jinja"
-title_format = "## [{version}](https://github.com/ansys/ansys-tools/releases/tag/v{version}) - {project_date}"
-issue_format = "[#{issue}](https://github.com/ansys/ansys-tools/pull/{issue})"
+title_format = "## [{version}](https://github.com/ansys/ansys-tools-common/releases/tag/v{version}) - {project_date}"
+issue_format = "[#{issue}](https://github.com/ansys/ansys-tools-common/pull/{issue})"
 
 [[tool.towncrier.type]]
 directory = "added"

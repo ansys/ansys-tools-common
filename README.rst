@@ -7,7 +7,7 @@ Ansys tools
    :alt: PyAnsys
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/ansys-tools?logo=pypi
-   :target: https://pypi.org/project/ansys-tools/
+   :target: https://pypi.org/project/ansys-tools-common/
    :alt: Python
 
 .. |pypi| image:: https://img.shields.io/pypi/v/ansys-tools.svg?logo=python&logoColor=white
@@ -18,12 +18,12 @@ Ansys tools
    :target: https://opensource.org/licenses/MIT
    :alt: MIT
 
-.. |GH-CI| image:: https://github.com/ansys/ansys-tools/actions/workflows/ci_cd.yml/badge.svg
-   :target: https://github.com/ansys/ansys-tools/actions/workflows/ci_cd.yml
+.. |GH-CI| image:: https://github.com/ansys/ansys-tools-common/actions/workflows/ci_cd.yml/badge.svg
+   :target: https://github.com/ansys/ansys-tools-common/actions/workflows/ci_cd.yml
    :alt: GH-CI
 
-.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/ansys/ansys-tools/main.svg
-   :target: https://results.pre-commit.ci/latest/github/ansys/ansys-tools/main
+.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/ansys/ansys-tools-common/main.svg
+   :target: https://results.pre-commit.ci/latest/github/ansys/ansys-tools-common/main
    :alt: pre-commit.ci status
 
 .. contents::
@@ -58,7 +58,7 @@ for switching from viewing the documentation for the latest stable release
 to viewing the documentation for the development version or previously
 released versions.
 
-On the `Ansys tools Issues <https://github.com/ansys/ansys-tools/issues>`_
+On the `Ansys tools Issues <https://github.com/ansys/ansys-tools-common/issues>`_
 page, you can create issues to report bugs and request new features. On the
 `Discussions <https://discuss.ansys.com/>`_ page on the Ansys Developer portal,
 you can post questions, share ideas, and get community feedback.
@@ -71,6 +71,6 @@ question in an issue as described in the previous paragraph.
 License
 -------
 
-The Ansys tools is licensed under the `MIT License <https://github.com/ansys/ansys-tools/blob/main/LICENSE>`_.
+The Ansys tools is licensed under the `MIT License <https://github.com/ansys/ansys-tools-common/blob/main/LICENSE>`_.
 
 The Ansys tools makes no commercial claim over Ansys whatsoever.
