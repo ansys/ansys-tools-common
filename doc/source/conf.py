@@ -6,7 +6,6 @@ from ansys_sphinx_theme import (
     ansys_logo_white,
     ansys_logo_white_cropped,
     get_version_match,
-    latex,
     watermark,
 )
 
@@ -111,4 +110,3 @@ source_suffix = {
 typehints_defaults = "comma"
 # additional logos for the latex coverpage
 latex_additional_files = [watermark, ansys_logo_white, ansys_logo_white_cropped]
-

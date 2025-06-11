@@ -22,47 +22,29 @@ The Ansys tools project is a collection of tools for the PyAnsys ecosystem.
 
         Understand key concepts for using the tools into your workflow.
 
-    .. jinja:: main_toctree
 
-        {% if build_api %}
-        .. grid-item-card:: API reference :material-regular:`bookmark`
-            :padding: 2 2 2 2
-            :link: api/index
-            :link-type: doc
+    .. grid-item-card:: API reference :material-regular:`bookmark`
+        :padding: 2 2 2 2
+        :link: api/index
+        :link-type: doc
 
-            Understand how to use Python to interact programmatically with
-            the Ansys tools collection.
-        {% endif %}
+        Understand how to use Python to interact programmatically with
+        the Ansys tools collection.
 
-        {% if build_examples %}
-        .. grid-item-card:: Examples :material-regular:`play_arrow`
-            :padding: 2 2 2 2
-            :link: examples/index
-            :link-type: doc
+    .. grid-item-card:: Contribute :material-regular:`group`
+        :padding: 2 2 2 2
+        :link: contributing
+        :link-type: doc
 
-            Explore examples that show how to use the different tools.
-        {% endif %}
-
-        .. grid-item-card:: Contribute :material-regular:`group`
-            :padding: 2 2 2 2
-            :link: contributing
-            :link-type: doc
-
-            Learn how to contribute to the Ansys tools codebase or documentation.
+        Learn how to contribute to the Ansys tools codebase or documentation.
 
 
-.. jinja:: main_toctree
 
-    .. toctree::
-       :hidden:
-       :maxdepth: 3
+.. toctree::
+    :hidden:
+    :maxdepth: 3
 
-       getting_started/index
-       user_guide/index
-       {% if build_api %}
-       api/index
-       {% endif %}
-       {% if build_examples %}
-       examples/index
-       {% endif %}
-       contributing
+    getting_started/index
+    user_guide/index
+    api/index
+    contributing

@@ -12,21 +12,29 @@ your own code.
 
     .. grid-item-card:: Ansys tools path
         :padding: 2 2 2 2
-        :link: user_guide/ansys_tools_path
+        :link: ansys_tools_path
         :link-type: doc
 
         Learn use Ansys path tool.
 
     .. grid-item-card:: Ansys example downloader
         :padding: 2 2 2 2
-        :link: user_guide/ansys_downloader
+        :link: ansys_downloader
         :link-type: doc
 
         Learn how to use the Ansys example downloader tool.
 
     .. grid-item-card:: Ansys exceptions
         :padding: 2 2 2 2
-        :link: user_guide/ansys_exceptions
+        :link: ansys_exceptions
         :link-type: doc
 
         Learn how to use the Ansys exceptions tool.
+
+.. toctree::
+    :hidden:
+    :maxdepth: 3
+
+    ansys_tools_path
+    ansys_downloader
+    ansys_exceptions

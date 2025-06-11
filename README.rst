@@ -6,12 +6,12 @@ Ansys tools
    :target: https://docs.pyansys.com/
    :alt: PyAnsys
 
-.. |python| image:: https://img.shields.io/pypi/pyversions/ansys-tools?logo=pypi
+.. |python| image:: https://img.shields.io/pypi/pyversions/ansys-tools-common?logo=pypi
    :target: https://pypi.org/project/ansys-tools-common/
    :alt: Python
 
-.. |pypi| image:: https://img.shields.io/pypi/v/ansys-tools.svg?logo=python&logoColor=white
-   :target: https://pypi.org/project/ansys-tools
+.. |pypi| image:: https://img.shields.io/pypi/v/ansys-tools-common.svg?logo=python&logoColor=white
+   :target: https://pypi.org/project/ansys-tools-common
    :alt: PyPI
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
@@ -71,6 +71,6 @@ question in an issue as described in the previous paragraph.
 License
 -------
 
-The Ansys tools is licensed under the `MIT License <https://github.com/ansys/ansys-tools-common/blob/main/LICENSE>`_.
+Ansys tools is licensed under the `MIT License <https://github.com/ansys/ansys-tools-common/blob/main/LICENSE>`_.
 
-The Ansys tools makes no commercial claim over Ansys whatsoever.
+Ansys tools makes no commercial claim over Ansys whatsoever.
