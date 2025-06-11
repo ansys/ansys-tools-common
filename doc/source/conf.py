@@ -1,3 +1,5 @@
+"""Configuration file for the Sphinx documentation builder."""
+
 from datetime import datetime
 import os
 
@@ -59,6 +61,7 @@ html_theme_options = {
     ],
     "ansys_sphinx_theme_autoapi": {
         "project": project,
+        "package_depth": 2,
     },
     "static_search": {
         "threshold": 0.5,
