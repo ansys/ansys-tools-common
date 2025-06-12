@@ -55,6 +55,7 @@ jobs:
           uses: ansys/actions/doc-build@v10
           with:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
+            check-links: false # Delete after first release
 
     package:
         name: Package library
