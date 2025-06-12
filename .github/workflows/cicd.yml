@@ -12,7 +12,7 @@ on:
 env:
     PACKAGE_NAME: ansys-tools-common
     MAIN_PYTHON_VERSION: 3.13
-    DOCUMENTATION_CNAME: https://bookish-adventure-16g5prl.pages.github.io/
+    DOCUMENTATION_CNAME: bookish-adventure-16g5prl.pages.github.io
 
 jobs:
     style:

@@ -15,21 +15,21 @@ your own code.
         :link: ansys_tools_path
         :link-type: doc
 
-        Learn use Ansys path tool.
+        Learn how to use Ansys path tool.
 
     .. grid-item-card:: Ansys example downloader
         :padding: 2 2 2 2
         :link: ansys_downloader
         :link-type: doc
 
-        Learn how to use the Ansys example downloader tool.
+        Learn how to use the example downloader tool.
 
     .. grid-item-card:: Ansys exceptions
         :padding: 2 2 2 2
         :link: ansys_exceptions
         :link-type: doc
 
-        Learn how to use the Ansys exceptions tool.
+        Learn how to use the common exceptions.
 
 .. toctree::
     :hidden:
