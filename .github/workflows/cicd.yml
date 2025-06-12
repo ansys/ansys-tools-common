@@ -19,7 +19,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
           - name: PyAnsys code style checks
-            uses: ansys/actions/code-style@v9
+            uses: ansys/actions/code-style@v10
             with:
               python-version: ${{ env.MAIN_PYTHON_VERSION }}
     smoke-tests:
@@ -32,7 +32,7 @@ jobs:
                 python-version: ['3.10', '3.11', '3.12']
         steps:
         - name: Build wheelhouse and perform smoke test
-          uses: ansys/actions/build-wheelhouse@v9
+          uses: ansys/actions/build-wheelhouse@v10
           with:
             library-name: ${{ env.PACKAGE_NAME }}
             operating-system: ${{ matrix.os }}
@@ -43,9 +43,17 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Run tests
-          uses: ansys/actions/tests-pytest@v9
+          uses: ansys/actions/tests-pytest@v10
           with:
-            library-name: ${{ env.PACKAGE_NAME }}
+            python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+    doc-build:
+      name: Build documentation
+      runs-on: ubuntu-latest
+      steps:
+        - name: Build documentation
+          uses: ansys/actions/doc-build@v10
+          with:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
     package:
@@ -54,7 +62,7 @@ jobs:
         needs: [smoke-tests]
         steps:
             - name: Build library source and wheel artifacts
-              uses: ansys/actions/build-library@v9
+              uses: ansys/actions/build-library@v10
               with:
                 library-name: ${{ env.PACKAGE_NAME }}
                 python-version: ${{ env.MAIN_PYTHON_VERSION }}
