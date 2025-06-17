@@ -28,6 +28,18 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+all = [
+    "ansys-tools-visualization-tool>=0.9.2",
+    "ansys-tools-filetransfer>=0.1.1",
+]
+
+graphics = [
+    "ansys-tools-visualization-tool>=0.9.2",
+]
+
+filetransfer = [
+    "ansys-tools-filetransfer>=0.1.1",
+]
 
 tests = [
     "pytest==8.4.0",
