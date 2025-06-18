@@ -72,7 +72,7 @@ class AnsysLogicError(AnsysError):
         super().__init__(message)
 
 
-class VersionSyntaxError(Exception):
+class VersionSyntaxError(AnsysError):
     """An exception to be raised when an invalid version syntax is found."""
 
     def __init__(self, msg):
@@ -87,7 +87,7 @@ class VersionSyntaxError(Exception):
         super().__init__(msg)
 
 
-class VersionError(Exception):
+class VersionError(AnsysError):
     """An exception to be raised when a version is not valid."""
 
     def __init__(self, msg):
