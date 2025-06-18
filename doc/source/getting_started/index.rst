@@ -1,7 +1,7 @@
 .. _ref_getting_started:
 
 Getting started
-###############
+===============
 
 This section describes how to install theAnsys tools common in user mode and
 quickly begin using it. If you are interested in contributing to theAnsys tools common,

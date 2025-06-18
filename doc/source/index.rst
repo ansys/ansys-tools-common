@@ -1,5 +1,5 @@
 Ansys tools common |version|
-============================
+############################
 
 The Ansys tools project is a collection of tools for the PyAnsys ecosystem.
 

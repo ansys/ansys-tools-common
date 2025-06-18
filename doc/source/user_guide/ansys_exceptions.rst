@@ -1,8 +1,7 @@
-.. ref_ansys_exceptions:
+.. _ref_ansys_exceptions:
 
-=======================================================
-``ansys-exceptions``: A tool to handle Ansys exceptions
-=======================================================
+Ansys exceptions
+================
 
 The Ansys exceptions tool provides a way to handle exceptions that may occur when using Ansys tools.
 It allows you to catch specific exceptions and handle them gracefully, providing a better user experience.

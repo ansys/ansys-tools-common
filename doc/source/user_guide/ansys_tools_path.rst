@@ -1,9 +1,9 @@
 .. _ref_ansys_tools_path:
 
-=====================================================
-``ansys-tools-path``: A tool to locate Ansys products
-=====================================================
+Ansys pathing tool
+==================
 
+The Ansys pathing tool provides a way to identify the path of the local Ansys installation.
 
 How to use
 ----------

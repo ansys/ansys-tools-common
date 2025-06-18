@@ -1,8 +1,7 @@
 .. ref_ansys_downloader:
 
-=======================================================
-``ansys-downloader``: A tool to download Ansys examples
-=======================================================
+Ansys example downloader
+========================
 
 You can use any of the functions available in the
 to identify the path of the local Ansys installation.
