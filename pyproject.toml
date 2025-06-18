@@ -22,7 +22,9 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = []
+dependencies = [
+    "grpcio >=1.73.0, <2.0.0",
+]
 
 [project.optional-dependencies]
 all = [
