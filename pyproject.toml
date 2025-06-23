@@ -42,15 +42,24 @@ filetransfer = [
 
 tests = [
     "pytest==8.4.0",
+    "hypothesis==6.135.10"
 ]
-doc = []
+doc = [
+    "ansys-sphinx-theme==1.5.2",
+    "sphinx==8.2.3",
+    "sphinx-autoapi==3.6.0",
+    "sphinx-copybutton==0.5.2",
+    "sphinx_design==0.6.1",
+    "sphinx-gallery==0.19.0",
+    "sphinx-jinja==2.0.2",
+]
 
 [project.urls]
-Source = "https://github.com/ansys/ansys-tools"
-Issues = "https://github.com/ansys/ansys-tools/issues"
-Discussions = "https://github.com/ansys/ansys-tools/discussions"
+Source = "https://github.com/ansys/ansys-tools-common"
+Issues = "https://github.com/ansys/ansys-tools-common/issues"
+Discussions = "https://github.com/ansys/ansys-tools-common/discussions"
 Documentation = "https://ansys.tools.docs.pyansys.com/"
-Releases = "https://github.com/ansys/ansys-tools/releases/"
+Releases = "https://github.com/ansys/ansys-tools-common/releases/"
 
 [tool.flit.module]
 name = "ansys.tools"
@@ -94,8 +103,8 @@ filename = "CHANGELOG.md"
 start_string = "<!-- towncrier release notes start -->\n"
 underlines = ["", "", ""]
 template = "doc/changelog.d/changelog_template.jinja"
-title_format = "## [{version}](https://github.com/ansys/ansys-tools/releases/tag/v{version}) - {project_date}"
-issue_format = "[#{issue}](https://github.com/ansys/ansys-tools/pull/{issue})"
+title_format = "## [{version}](https://github.com/ansys/ansys-tools-common/releases/tag/v{version}) - {project_date}"
+issue_format = "[#{issue}](https://github.com/ansys/ansys-tools-common/pull/{issue})"
 
 [[tool.towncrier.type]]
 directory = "added"

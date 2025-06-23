@@ -22,7 +22,7 @@
 
 """Module for exception testing."""
 
-from ansys.tools.exceptions import AnsysError, AnsysLogicError, AnsysTypeError
+from ansys.tools.exceptions import AnsysError, AnsysLogicError, AnsysTypeError, VersionError, VersionSyntaxError
 
 
 def test_ansys_error():
@@ -58,3 +58,21 @@ def test_ansys_logic_error():
     except AnsysLogicError as e:
         assert str(e) == "This is a logic error."
         assert e.message == "This is a logic error."
+
+
+def test_version_error():
+    """Test the VersionError exception."""
+    try:
+        raise VersionError("This is a version error.")
+    except VersionError as e:
+        assert str(e) == "This is a version error."
+        assert e.message == "This is a version error."
+
+
+def test_version_syntax_error():
+    """Test the VersionSyntaxError exception."""
+    try:
+        raise VersionSyntaxError("This is a version syntax error.")
+    except VersionSyntaxError as e:
+        assert str(e) == "This is a version syntax error."
+        assert e.message == "This is a version syntax error."

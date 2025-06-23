@@ -70,3 +70,33 @@ class AnsysLogicError(AnsysError):
     def __init__(self, message: str) -> None:
         """Initialize the exception with a message."""
         super().__init__(message)
+
+
+class VersionSyntaxError(AnsysError):
+    """An exception to be raised when an invalid version syntax is found."""
+
+    def __init__(self, msg):
+        """Initialize the exception.
+
+        Parameters
+        ----------
+        msg : str
+            The message to be raised for the exception.
+
+        """
+        super().__init__(msg)
+
+
+class VersionError(AnsysError):
+    """An exception to be raised when a version is not valid."""
+
+    def __init__(self, msg):
+        """Initialize the exception.
+
+        Parameters
+        ----------
+        msg : str
+            The message to be raised for the exception.
+
+        """
+        super().__init__(msg)
