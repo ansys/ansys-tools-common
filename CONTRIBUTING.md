@@ -15,7 +15,7 @@ To clone and install the latest *Ansys Tools* release in development mode, run
 these commands:
 
 ```bash
-git clone https://github.com/ansys/ansys-tools/
+git clone https://github.com/ansys/ansys-tools-common/
 cd ansys-tools
 python -m pip install --upgrade pip
 pip install -e .

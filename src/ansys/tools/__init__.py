@@ -20,3 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """Main module."""
+
+import importlib.metadata as importlib_metadata
+
+__version__ = importlib_metadata.version("ansys-tools-common")
