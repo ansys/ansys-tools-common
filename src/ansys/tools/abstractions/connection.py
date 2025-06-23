@@ -23,7 +23,12 @@
 
 from abc import ABC, abstractmethod
 
-import grpc
+try:
+    import grpc
+except ImportError:
+    raise Warning(
+        "grpc module is not available - reach out to the library maintainers to include it into their dependencies"
+    )
 
 
 class AbstractGRPCConnection(ABC):
