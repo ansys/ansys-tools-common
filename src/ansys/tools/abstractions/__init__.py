@@ -21,5 +21,5 @@
 # SOFTWARE.
 """Init module for abstractions."""
 
-from .connection import AbstractConnection  # noqa F401
+from .connection import AbstractGRPCConnection  # noqa F401
 from .launcher import AbstractServiceLauncher  # noqa F401
