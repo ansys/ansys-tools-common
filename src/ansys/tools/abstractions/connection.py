@@ -26,7 +26,9 @@ from abc import ABC, abstractmethod
 try:
     import grpc
 except ImportError:
-    raise Warning(
+    import warnings
+
+    warnings.warn(
         "grpc module is not available - reach out to the library maintainers to include it into their dependencies"
     )
 
