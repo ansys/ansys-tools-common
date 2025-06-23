@@ -18,8 +18,8 @@ Ansys tools
    :target: https://opensource.org/licenses/MIT
    :alt: MIT
 
-.. |GH-CI| image:: https://github.com/ansys/ansys-tools-common/actions/workflows/ci_cd.yml/badge.svg
-   :target: https://github.com/ansys/ansys-tools-common/actions/workflows/ci_cd.yml
+.. |GH-CI| image:: https://github.com/ansys/ansys-tools-common/actions/workflows/cicd.yml/badge.svg
+   :target: https://github.com/ansys/ansys-tools-common/actions/workflows/cicd.yml
    :alt: GH-CI
 
 .. |pre-commit| image:: https://results.pre-commit.ci/badge/github/ansys/ansys-tools-common/main.svg
