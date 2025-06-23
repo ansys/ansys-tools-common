@@ -40,8 +40,10 @@ filetransfer = [
 
 tests = [
     "pytest==8.4.0",
-    "hypothesis==6.135.10"
+    "hypothesis==6.135.10",
+    "grpcio==1.73.0",
 ]
+
 doc = [
     "ansys-sphinx-theme==1.5.2",
     "sphinx==8.2.3",

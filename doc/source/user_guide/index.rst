@@ -38,3 +38,4 @@ your own code.
     ansys_tools_path
     ansys_downloader
     ansys_exceptions
+    versioning
