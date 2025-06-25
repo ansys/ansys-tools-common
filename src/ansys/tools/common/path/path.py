@@ -32,7 +32,7 @@ import warnings
 
 import platformdirs
 
-from ansys.tools.path.applications import ApplicationPlugin, dyna, mapdl, mechanical
+from ansys.tools.common.path.applications import ApplicationPlugin, dyna, mapdl, mechanical
 
 PLUGINS: Dict[str, ApplicationPlugin] = {"mechanical": mechanical, "dyna": dyna, "mapdl": mapdl}
 
@@ -305,7 +305,7 @@ def get_available_ansys_installations(
 
     Examples
     --------
-    >>> from ansys.tools.path import get_available_ansys_installations
+    >>> from ansys.tools.common.path import get_available_ansys_installations
     >>> get_available_ansys_installations()
     {251: 'C:\\Program Files\\ANSYS Inc\\v251',
      242: 'C:\\Program Files\\ANSYS Inc\\v242',
@@ -371,7 +371,7 @@ def find_mechanical(
     --------
     On Windows:
 
-    >>> from ansys.tools.path import find_mechanical
+    >>> from ansys.tools.common.path import find_mechanical
     >>> find_mechanical()
     ('C:/Program Files/ANSYS Inc/v251/aisol/bin/winx64/AnsysWBU.exe', 25.1)
 
@@ -425,7 +425,7 @@ def find_mapdl(
     --------
     Within Windows
 
-    >>> from ansys.tools.path import find_mapdl
+    >>> from ansys.tools.common.path import find_mapdl
     >>> find_mapdl()
     'C:/Program Files/ANSYS Inc/v251/ANSYS/bin/winx64/ansys251.exe', 25.1
 
@@ -479,7 +479,7 @@ def find_dyna(
     --------
     Within Windows
 
-    >>> from ansys.tools.path import find_dyna
+    >>> from ansys.tools.common.path import find_dyna
     >>> find_dyna()
     'C:/Program Files/ANSYS Inc/v251/ANSYS/bin/winx64/LSDYNA251.exe', 25.1
 
@@ -659,7 +659,7 @@ def change_default_mapdl_path(exe_loc: str) -> None:
     --------
     Change default Ansys MAPDL location on Linux
 
-    >>> from ansys.tools.path import change_default_mapdl_path, get_mapdl_path
+    >>> from ansys.tools.common.path import change_default_mapdl_path, get_mapdl_path
     >>> change_default_mapdl_path("/ansys_inc/v251/ansys/bin/ansys251")
     >>> get_mapdl_path()
     '/ansys_inc/v251/ansys/bin/ansys251'
@@ -686,7 +686,7 @@ def change_default_dyna_path(exe_loc: str) -> None:
     --------
     Change default Ansys LS-Dyna location on Linux
 
-    >>> from ansys.tools.path import change_default_dyna_path, get_dyna_path
+    >>> from ansys.tools.common.path import change_default_dyna_path, get_dyna_path
     >>> change_default_dyna_path("/ansys_inc/v251/ansys/bin/lsdyna251")
     >>> get_dyna_path()
     '/ansys_inc/v251/ansys/bin/lsdyna251'
@@ -712,14 +712,14 @@ def change_default_mechanical_path(exe_loc: str) -> None:
     --------
     On Windows:
 
-    >>> from ansys.tools.path import change_default_mechanical_path, get_mechanical_path
+    >>> from ansys.tools.common.path import change_default_mechanical_path, get_mechanical_path
     >>> change_default_mechanical_path("C:/Program Files/ANSYS Inc/v251/aisol/bin/win64/AnsysWBU.exe")
     >>> get_mechanical_path()
     'C:/Program Files/ANSYS Inc/v251/aisol/bin/win64/AnsysWBU.exe'
 
     On Linux:
 
-    >>> from ansys.tools.path import change_default_mechanical_path, get_mechanical_path
+    >>> from ansys.tools.common.path import change_default_mechanical_path, get_mechanical_path
     >>> change_default_mechanical_path("/ansys_inc/v251/aisol/.workbench")
     >>> get_mechanical_path()
     '/ansys_inc/v251/aisol/.workbench'
@@ -779,11 +779,11 @@ def save_mechanical_path(exe_loc: Optional[str] = None, allow_prompt: bool = Tru
     Notes
     -----
     The location of the configuration file ``config.txt`` can be found in
-    ``ansys.tools.path.SETTINGS_DIR``. For example:
+    ``ansys.tools.common.path.SETTINGS_DIR``. For example:
 
     .. code:: pycon
 
-        >>> from ansys.tools.path import SETTINGS_DIR
+        >>> from ansys.tools.common.path import SETTINGS_DIR
         >>> import os
         >>> print(os.path.join(SETTINGS_DIR, "config.txt"))
         C:/Users/[username]]/AppData/Local/Ansys/ansys_tools_path/config.txt
@@ -793,7 +793,7 @@ def save_mechanical_path(exe_loc: Optional[str] = None, allow_prompt: bool = Tru
 
     .. code:: pycon
 
-       >>> from ansys.tools.path import save_mechanical_path
+       >>> from ansys.tools.common.path import save_mechanical_path
        >>> save_mechanical_path("/new/path/to/executable")
 
     """
@@ -826,11 +826,11 @@ def save_dyna_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> 
     Notes
     -----
     The location of the configuration file ``config.txt`` can be found in
-    ``ansys.tools.path.SETTINGS_DIR``. For example:
+    ``ansys.tools.common.path.SETTINGS_DIR``. For example:
 
     .. code:: pycon
 
-        >>> from ansys.tools.path import SETTINGS_DIR
+        >>> from ansys.tools.common.path import SETTINGS_DIR
         >>> import os
         >>> print(os.path.join(SETTINGS_DIR, "config.txt"))
         C:/Users/[username]/AppData/Local/Ansys/ansys_tools_path/config.txt
@@ -840,7 +840,7 @@ def save_dyna_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> 
     You can change the default ``exe_loc`` either by modifying the mentioned
     ``config.txt`` file or by executing:
 
-    >>> from ansys.tools.path import save_dyna_path
+    >>> from ansys.tools.common.path import save_dyna_path
     >>> save_dyna_path("/new/path/to/executable")
 
     """
@@ -873,11 +873,11 @@ def save_mapdl_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) ->
     Notes
     -----
     The location of the configuration file ``config.txt`` can be found in
-    ``ansys.tools.path.SETTINGS_DIR``. For example:
+    ``ansys.tools.common.path.SETTINGS_DIR``. For example:
 
     .. code:: pycon
 
-        >>> from ansys.tools.path import SETTINGS_DIR
+        >>> from ansys.tools.common.path import SETTINGS_DIR
         >>> import os
         >>> print(os.path.join(SETTINGS_DIR, "config.txt"))
         C:/Users/[username]/AppData/Local/Ansys/ansys_tools_path/config.txt
@@ -887,7 +887,7 @@ def save_mapdl_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) ->
     You can change the default ``exe_loc`` either by modifying the mentioned
     ``config.txt`` file or by executing:
 
-    >>> from ansys.tools.path import save_mapdl_path
+    >>> from ansys.tools.common.path import save_mapdl_path
     >>> save_mapdl_path("/new/path/to/executable")
 
     """
@@ -951,7 +951,7 @@ def _prompt_path(product: PRODUCT_TYPE) -> str:  # pragma: no cover
     print(
         "\nIf you experience problems with the input path you can overwrite the configuration\n"
         "file by typing:\n"
-        f">>> from ansys.tools.path import save_{product}_path\n"
+        f">>> from ansys.tools.common.path import save_{product}_path\n"
         f">>> save_{product}_path('/new/path/to/executable/')\n"
     )
     while True:

@@ -24,7 +24,7 @@
 
 import click
 
-from ansys.tools.path.path import _save_path
+from ansys.tools.common.path.path import _save_path
 
 
 @click.command()

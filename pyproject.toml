@@ -60,7 +60,7 @@ doc = [
 ]
 
 [project.scripts]
-save-ansys-path = "ansys.tools.path.save:cli"
+save-ansys-path = "ansys.tools.common.path.save:cli"
 
 [project.urls]
 Source = "https://github.com/ansys/ansys-tools-common"
