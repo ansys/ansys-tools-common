@@ -11,7 +11,7 @@ from ansys_sphinx_theme import (
     watermark,
 )
 
-from ansys.tools import __version__
+from ansys.tools.common import __version__
 
 # Project information
 project = "ansys-tools-common"
