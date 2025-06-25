@@ -23,7 +23,7 @@
 
 import os
 
-from ansys.tools import __version__
+from ansys.tools.common import __version__
 
 
 def test_pkg_version():

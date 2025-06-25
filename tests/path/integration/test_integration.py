@@ -27,13 +27,13 @@ from pathlib import Path
 
 import pytest
 
-from ansys.tools.path import (
+from ansys.tools.common.path import (
     clear_configuration,
     find_mapdl,
     get_available_ansys_installations,
     save_mapdl_path,
 )
-from ansys.tools.path.path import CONFIG_FILE
+from ansys.tools.common.path.path import CONFIG_FILE
 
 skip_if_not_ansys_local = pytest.mark.skipif(
     os.environ.get("ANSYS_LOCAL", "").upper() != "TRUE", reason="Skipping on CI"

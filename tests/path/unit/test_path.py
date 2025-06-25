@@ -32,7 +32,7 @@ import platformdirs
 import pyfakefs  # noqa
 import pytest
 
-from ansys.tools.path import (
+from ansys.tools.common.path import (
     LOG,
     SETTINGS_DIR,
     change_default_ansys_path,
