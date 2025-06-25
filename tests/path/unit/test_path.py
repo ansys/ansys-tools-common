@@ -55,7 +55,7 @@ from ansys.tools.common.path import (
     save_mechanical_path,
     version_from_path,
 )
-from ansys.tools.path.path import _is_float
+from ansys.tools.common.path.path import _is_float
 
 LOG.setLevel(logging.DEBUG)
 
