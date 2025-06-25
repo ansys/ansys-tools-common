@@ -19,35 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Tests for example downloads."""
+"""Init module for abstractions."""
 
-from pathlib import Path
-
-import pytest
-
-from ansys.tools.common.example_download import download_manager
-
-
-def test_download():
-    """Test downloading a file from the example repository."""
-    filename = "11_blades_mode_1_ND_0.csv"
-    directory = "pymapdl/cfx_mapping"
-
-    # Download the file
-    local_path = download_manager.download_file(filename, directory)
-
-    assert Path.is_file(local_path)
-
-    download_manager.clear_download_cache()
-
-    assert not Path.is_file(local_path)
-
-
-def test_non_existent_file():
-    """Test downloading a non-existent file."""
-    filename = "non_existent_file.txt"
-    directory = "pymapdl/cfx_mapping"
-
-    # Attempt to download the non-existent file
-    with pytest.raises(FileNotFoundError):
-        download_manager.download_file(filename, directory)
+from .connection import AbstractGRPCConnection  # noqa F401
+from .launcher import AbstractServiceLauncher  # noqa F401

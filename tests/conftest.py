@@ -19,13 +19,66 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Pytest configuration."""
+"""Conftest file."""
 
+from copy import deepcopy
 import sys
 
 import pytest
 
+from ansys.tools.common.versioning import requires_version
+
+version_map = {
+    (0, 2, 1): "20XYRZ",
+}
+"""A dictionary relating server version and their unified install versions."""
+
+
 ALL = set("darwin linux win32".split())
+
+
+class MockupServer:
+    """A testing class for modelling servers."""
+
+    def __init__(self, server_version):
+        """Initialize a server instance being known its version."""
+        self._server_version = server_version
+
+    @requires_version("0.2.1", version_map)
+    def foo(self):
+        """Call ``foo`` method in the server side."""
+        pass
+
+    @requires_version((0, 1, 0))
+    def bar(self):
+        """Call ``bar`` method in the server side."""
+        pass
+
+
+@pytest.fixture
+def server_with_all_methods_available():
+    """Mockup server with all methods available."""
+    return MockupServer(server_version="1.0.0")
+
+
+@pytest.fixture
+def server_without_server_version_attribute(server_with_all_methods_available):
+    """Mockup server without the `_server_version` attribute."""
+    broken_server = deepcopy(server_with_all_methods_available)
+    delattr(broken_server, "_server_version")
+    return broken_server
+
+
+@pytest.fixture
+def server_with_outdated_foo_method():
+    """Mockup server with an outdated `foo` method."""
+    return MockupServer(server_version="0.2.0")
+
+
+@pytest.fixture
+def server_with_outdated_methods():
+    """Mockup server with outdated methods."""
+    return MockupServer(server_version=(0, 0, 1))
 
 
 def pytest_runtest_setup(item):

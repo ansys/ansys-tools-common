@@ -19,35 +19,40 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Tests for example downloads."""
+"""Module for abstract launcher."""
 
-from pathlib import Path
-
-import pytest
-
-from ansys.tools.common.example_download import download_manager
+from abc import ABC, abstractmethod
 
 
-def test_download():
-    """Test downloading a file from the example repository."""
-    filename = "11_blades_mode_1_ND_0.csv"
-    directory = "pymapdl/cfx_mapping"
+class AbstractServiceLauncher(ABC):
+    """Abstract class for launching services.
 
-    # Download the file
-    local_path = download_manager.download_file(filename, directory)
+    Parameters
+    ----------
+    host : str
+        The host where the service will be launched.
+    port : str
+        The port where the service will be launched.
+    """
 
-    assert Path.is_file(local_path)
+    @abstractmethod
+    def __init__(self, host: str, port: str) -> None:
+        """Initialize the service launcher with host and port."""
+        self._host = host
+        self._port = port
 
-    download_manager.clear_download_cache()
+    @abstractmethod
+    def launch(self, use_docker: bool = False) -> None:
+        """Launch the service.
 
-    assert not Path.is_file(local_path)
+        Parameters
+        ----------
+        use_docker : bool
+            Whether to launch the service using Docker.
+        """
+        pass
 
-
-def test_non_existent_file():
-    """Test downloading a non-existent file."""
-    filename = "non_existent_file.txt"
-    directory = "pymapdl/cfx_mapping"
-
-    # Attempt to download the non-existent file
-    with pytest.raises(FileNotFoundError):
-        download_manager.download_file(filename, directory)
+    @abstractmethod
+    def stop(self) -> None:
+        """Stop the service."""
+        pass
