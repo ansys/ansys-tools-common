@@ -24,7 +24,7 @@
 
 from typing import Iterable, Optional, Union
 
-from ansys.tools.exceptions import VersionError, VersionSyntaxError
+from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
 
 
 def sanitize_version_string(version_string):

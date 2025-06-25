@@ -25,8 +25,8 @@ from hypothesis import given
 import hypothesis.strategies as st
 import pytest
 
-from ansys.tools.exceptions import VersionError, VersionSyntaxError
-from ansys.tools.versioning import (
+from ansys.tools.common.exceptions import VersionError, VersionSyntaxError
+from ansys.tools.common.versioning import (
     SemanticVersion,
     VersionNumber,
     sanitize_version_string,
