@@ -61,7 +61,7 @@ html_theme_options = {
     ],
     "ansys_sphinx_theme_autoapi": {
         "project": project,
-        "package_depth": 2,
+        "package_depth": 3,
     },
     "static_search": {
         "threshold": 0.5,
