@@ -62,7 +62,7 @@ Documentation = "https://ansys.tools.docs.pyansys.com/"
 Releases = "https://github.com/ansys/ansys-tools-common/releases/"
 
 [tool.flit.module]
-name = "ansys.tools"
+name = "ansys.tools.common"
 
 [tool.ruff]
 line-length = 120
@@ -97,7 +97,7 @@ known-first-party = ["ansys"]
 convention = "numpy"
 
 [tool.towncrier]
-package = "ansys.tools"
+package = "ansys.tools.common"
 directory = "doc/changelog.d"
 filename = "CHANGELOG.md"
 start_string = "<!-- towncrier release notes start -->\n"

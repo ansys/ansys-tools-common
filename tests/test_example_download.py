@@ -25,7 +25,7 @@ from pathlib import Path
 
 import pytest
 
-from ansys.tools.example_download import download_manager
+from ansys.tools.common.example_download import download_manager
 
 
 def test_download():

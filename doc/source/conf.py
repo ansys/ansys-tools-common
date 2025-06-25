@@ -11,7 +11,7 @@ from ansys_sphinx_theme import (
     watermark,
 )
 
-from ansys.tools import __version__
+from ansys.tools.common import __version__
 
 # Project information
 project = "ansys-tools-common"
@@ -61,7 +61,7 @@ html_theme_options = {
     ],
     "ansys_sphinx_theme_autoapi": {
         "project": project,
-        "package_depth": 2,
+        "package_depth": 3,
     },
     "static_search": {
         "threshold": 0.5,

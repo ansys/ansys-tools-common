@@ -22,7 +22,7 @@
 
 """Module for exception testing."""
 
-from ansys.tools.exceptions import AnsysError, AnsysLogicError, AnsysTypeError, VersionError, VersionSyntaxError
+from ansys.tools.common.exceptions import AnsysError, AnsysLogicError, AnsysTypeError, VersionError, VersionSyntaxError
 
 
 def test_ansys_error():
