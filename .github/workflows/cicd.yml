@@ -42,7 +42,7 @@ jobs:
 
     build-tests:
       name: Build and Testing
-      runs-on: ubuntu-22.04
+      runs-on: ubuntu-latest
       needs: [smoke-tests]
       env:
         ANSYS_LOCAL: false

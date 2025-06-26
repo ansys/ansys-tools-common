@@ -1,4 +1,4 @@
-name: MAPDL dependent tests
+name: MAPDL dependent tests for paths tool
 
 on:
   pull_request:
