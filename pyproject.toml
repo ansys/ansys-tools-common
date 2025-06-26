@@ -25,6 +25,7 @@ classifiers = [
 dependencies = [
     "platformdirs>=3.6.0",
     "click>=8.1.3",        # for CLI interface
+    "scooby>=0.5.12",
 ]
 
 [project.optional-dependencies]

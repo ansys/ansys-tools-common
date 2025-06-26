@@ -34,7 +34,7 @@ class ApplicationPlugin:
     """Class for application plugins."""
 
     def is_valid_executable_path(self, exe_loc: str) -> bool:
-        r"""Check if the executable path is valid for the application.
+        """Check if the executable path is valid for the application.
 
         Parameters
         ----------
