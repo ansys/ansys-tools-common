@@ -39,9 +39,15 @@ jobs:
             operating-system: ${{ matrix.os }}
             python-version: ${{ matrix.python-version }}
             whitelist-license-check: "termcolor"  # Has MIT license, but it's not recognized
-    tests:
-      name: Run tests
+
+    build-tests:
+      name: Build and Testing
       runs-on: ubuntu-latest
+      needs: [smoke-tests]
+      env:
+        ANSYS_LOCAL: false
+        ON_UBUNTU: true
+
       steps:
         - name: Run tests
           uses: ansys/actions/tests-pytest@v10

@@ -22,6 +22,7 @@
 """Conftest file."""
 
 from copy import deepcopy
+import sys
 
 import pytest
 
@@ -31,6 +32,9 @@ version_map = {
     (0, 2, 1): "20XYRZ",
 }
 """A dictionary relating server version and their unified install versions."""
+
+
+ALL = set("darwin linux win32".split())
 
 
 class MockupServer:
@@ -75,3 +79,11 @@ def server_with_outdated_foo_method():
 def server_with_outdated_methods():
     """Mockup server with outdated methods."""
     return MockupServer(server_version=(0, 0, 1))
+
+
+def pytest_runtest_setup(item):
+    """Add platform-specific test skipping."""
+    supported_platforms = ALL.intersection(mark.name for mark in item.iter_markers())
+    plat = sys.platform
+    if supported_platforms and plat not in supported_platforms:
+        pytest.skip("cannot run on platform {}".format(plat))

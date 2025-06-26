@@ -6,7 +6,7 @@ Ansys example downloader
 You can use any of the functions available in the
 to identify the path of the local Ansys installation.
 
-For example you can use :func:`find_ansys <ansys.tools.path.find_ansys>`
+For example you can use :func:`find_ansys <ansys.tools.common.path.find_ansys>`
 to locate the path of the latest Ansys installation available:
 
 .. code:: pycon
