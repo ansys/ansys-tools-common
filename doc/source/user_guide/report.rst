@@ -1,4 +1,4 @@
-.. _ref_user_guide:
+.. _ref_report:
 
 User guide
 ============
@@ -20,7 +20,7 @@ In order to import the package, please run:
 The ``pyansys-tools-report`` contains a main class called ``Report``. This class is basically an extension of the
 ``scooby.Report``, but customized for showing Ansys libraries and variables in a common format.
 
-The possible arguments that the ``Report`` class accepts can be found in the :ref:`ref_index_api`. PLease, have a look
+The possible arguments that the ``Report`` class accepts can be found in the `API reference <../api/index.html>`_. Please, have a look
 at it to understand the arguments you may use. A simple example of Ansys variables and libraries is shown below.
 
 .. code:: python
