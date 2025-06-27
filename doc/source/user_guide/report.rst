@@ -1,7 +1,7 @@
 .. _ref_report:
 
 User guide
-============
+==========
 
 This section explains how to use ``pyansys-tools-report`` and its features.
 
@@ -141,7 +141,7 @@ the following list:
 * ``google.protobuf``
 
 If you want the ``Report`` class to look for some extra environment variables by default, please
-`raise an issue <https://github.com/ansys/pyansys-tools-report/issues>`_.
+`raise an issue <https://github.com/ansys/ansys-tools-common/issues>`_.
 
 Enjoy its use. If you have any doubts, please raise a question/issue in the
-`PyAnsys Tools Report Issues <https://github.com/ansys/pyansys-tools-report/issues>`_ site.
+`PyAnsys Tools Report Issues <https://github.com/ansys/ansys-tools-common/issues>`_ site.
