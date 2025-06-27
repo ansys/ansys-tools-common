@@ -1,7 +1,7 @@
 .. ref_versioning:
 
 User guide
-##########
+==========
 
 The fundamental object provided by ``ansys.tools.versioning`` is a decorator
 named :meth:`ansys.tools.versioning.requires_version` which accepts:
@@ -14,7 +14,7 @@ named :meth:`ansys.tools.versioning.requires_version` which accepts:
 
 
 How to use
-==========
+----------
 The ``requires_version`` decorator is expected to be used in all the desired
 methods of a class containing a ``_server_version`` attribute. If the class in
 which it is used does not contain this attribute, an ``AttributeError`` is

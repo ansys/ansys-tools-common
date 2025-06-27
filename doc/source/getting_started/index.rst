@@ -8,7 +8,7 @@ quickly begin using it. If you are interested in contributing to theAnsys tools 
 see :ref:`contribute` for information on installing in developer mode.
 
 Installation
-============
+------------
 
 To use `pip <https://pypi.org/project/pip/>`_ to install the Ansys tools common project,
 run this command:

@@ -189,7 +189,7 @@ def _get_default_windows_base_path() -> Optional[str]:  # pragma: no cover
 
 
 def _is_float(input_string: str) -> bool:
-    r"""Return true when a string can be converted to a float.
+    """Return true when a string can be converted to a float.
 
     Parameters
     ----------
