@@ -36,6 +36,7 @@ def test_create_ansys_report_empty():
     # Assert some of its information
     #
     # CPU Count
+    os.environ.pop("ANSYS_LOCAL", None)  # Remove the ANSYS_LOCAL env var if it exists
     assert rep.cpu_count == multiprocessing.cpu_count()
     # Architecture
     assert rep.architecture == platform.architecture()[0]
@@ -70,6 +71,7 @@ def test_create_ansys_report_with_libs():
     when imaginary Ansys libraries are provided.
     """
     # Let us imagine some ansys libraries
+    os.environ.pop("ANSYS_LOCAL", None)  # Remove the ANSYS_LOCAL env var if it exists
     my_ansys_libs = {
         "MyLib1": "v1.2",
         "MyLib2": "v1.3",
