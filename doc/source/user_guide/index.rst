@@ -31,6 +31,20 @@ your own code.
 
         Learn how to use the common exceptions.
 
+    .. grid-item-card:: Ansys versioning tool
+        :padding: 2 2 2 2
+        :link: versioning
+        :link-type: doc
+
+        Learn how to use the versioning tool.
+
+    .. grid-item-card:: Ansys report tool
+        :padding: 2 2 2 2
+        :link: report
+        :link-type: doc
+
+        Learn how to use the report tool.
+
 .. toctree::
     :hidden:
     :maxdepth: 3
@@ -39,3 +53,4 @@ your own code.
     ansys_downloader
     ansys_exceptions
     versioning
+    report
