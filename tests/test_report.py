@@ -107,6 +107,7 @@ def test_create_ansys_report_with_vars():
     when imaginary Ansys variables are provided.
     """
     # Let us imagine some ansys variables
+    os.environ.pop("ANSYS_LOCAL", None)  # Remove the ANSYS_LOCAL env var if it exists
     os.environ["MYVAR_1"] = "VAL_1"
     os.environ["MYVAR_2"] = "VAL_2"
     my_ansys_vars = ["MYVAR_1", "MYVAR_2"]
@@ -147,6 +148,7 @@ def test_create_ansys_report_with_libs_and_vars():
     }
 
     # Let us imagine some ansys variables
+    os.environ.pop("ANSYS_LOCAL", None)  # Remove the ANSYS_LOCAL env var if it exists
     os.environ["MYVAR_1"] = "VAL_1"
     os.environ["MYVAR_2"] = "VAL_2"
     my_ansys_vars = ["MYVAR_1", "MYVAR_2"]
@@ -205,6 +207,7 @@ def test_create_ansys_report_with_def_vars():
     Also, gpu set to False is tested, for coverage reasons.
     """
     # Let us imagine some ansys variables
+    os.environ.pop("ANSYS_LOCAL", None)  # Remove the ANSYS_LOCAL env var if it exists
     os.environ["MYVAR_1"] = "VAL_1"
     os.environ["MYVAR_2"] = "VAL_2"
     os.environ["FLUENT_VAR1"] = "FL_VAL_1"
@@ -244,6 +247,7 @@ def test_create_ansys_report_with_no_vars():
     default vars are expected, even though none are provided.
     """
     # Let us imagine  "default" ansys variables
+    os.environ.pop("ANSYS_LOCAL", None)  # Remove the ANSYS_LOCAL env var if it exists
     os.environ["FLUENT_VAR1"] = "FL_VAL_1"
     os.environ["FLUENT_VAR2"] = "FL_VAL_2"
     os.environ["FLUENT_ANS_VAR1"] = "FL_VAL_1"
