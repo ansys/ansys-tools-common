@@ -36,7 +36,10 @@ def test_create_ansys_report_empty():
     # Assert some of its information
     #
     # CPU Count
-    os.environ.pop("ANSYS_LOCAL", None)  # Remove the ANSYS_LOCAL env var if it exists
+    ans_local = os.environ.pop("ANSYS_LOCAL", None)  # Remove the ANSYS_LOCAL env var if it exists
+    if ans_local is not None:
+        os.environ.pop("ANSYS_VERSION")
+        os.environ.pop("AWP_ROOT222")
     assert rep.cpu_count == multiprocessing.cpu_count()
     # Architecture
     assert rep.architecture == platform.architecture()[0]
