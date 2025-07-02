@@ -62,6 +62,7 @@ doc = [
 
 [project.scripts]
 save-ansys-path = "ansys.tools.common.path.save:cli"
+ansys-launcher = "ansys.tools.local_product_launcher._cli:cli"
 
 [project.urls]
 Source = "https://github.com/ansys/ansys-tools-common"
