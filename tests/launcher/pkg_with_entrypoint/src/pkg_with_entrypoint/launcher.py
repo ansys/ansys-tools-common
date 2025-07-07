@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Module for package."""
 
 from dataclasses import dataclass
 
@@ -27,8 +28,12 @@ from ansys.tools.common.launcher import interface
 
 @dataclass
 class LauncherConfig:
+    """Launcher configuration for the package with an entry point."""
+
     pass
 
 
 class Launcher(interface.LauncherProtocol[LauncherConfig]):
+    """Launcher for the package with an entry point."""
+
     CONFIG_MODEL = LauncherConfig

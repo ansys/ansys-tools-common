@@ -37,28 +37,40 @@ TEST_LAUNCH_MODE_B1 = "LAUNCHER_B1"
 
 @dataclass
 class MockConfigA1:
+    """Config mock."""
+
     pass
 
 
 class MockLauncherA1(interface.LauncherProtocol[MockConfigA1]):
+    """Launcher mock."""
+
     CONFIG_MODEL = MockConfigA1
 
 
 @dataclass
 class MockConfigA2:
+    """Config mock."""
+
     pass
 
 
 class MockLauncherA2(interface.LauncherProtocol[MockConfigA2]):
+    """Launcher mock."""
+
     CONFIG_MODEL = MockConfigA2
 
 
 @dataclass
 class MockConfigB1:
+    """Config mock."""
+
     pass
 
 
 class MockLauncherB1(interface.LauncherProtocol[MockConfigB1]):
+    """Launcher mock."""
+
     CONFIG_MODEL = MockConfigB1
 
 
@@ -73,10 +85,12 @@ PLUGINS = {
 
 @pytest.fixture
 def monkeypatch_entrypoints(monkeypatch_entrypoints_from_plugins):
+    """Mock the entry points for the launcher plugins."""
     monkeypatch_entrypoints_from_plugins(PLUGINS)
 
 
 def test_get_all_plugins(monkeypatch_entrypoints):
+    """Test getting all plugins."""
     assert _plugins.get_all_plugins() == PLUGINS
 
 
@@ -89,6 +103,7 @@ def test_get_all_plugins(monkeypatch_entrypoints):
     ],
 )
 def test_get_config_model(monkeypatch_entrypoints, product_name, launch_mode, expected_config_model):
+    """Test getting a config model returns expected class for the given product and launch mode."""
     assert _plugins.get_config_model(product_name=product_name, launch_mode=launch_mode) == expected_config_model
 
 
@@ -101,10 +116,12 @@ def test_get_config_model(monkeypatch_entrypoints, product_name, launch_mode, ex
     ],
 )
 def test_get_launcher(monkeypatch_entrypoints, product_name, launch_mode, expected_launcher):
+    """Test that getting a launcher returns the expected class for the given product and launch mode."""
     assert _plugins.get_launcher(product_name=product_name, launch_mode=launch_mode) == expected_launcher
 
 
 def test_get_launcher_inexistent():
+    """Test that getting a launcher for a non-existent product or launch mode raises error."""
     with pytest.raises(KeyError) as exc:
         _plugins.get_launcher(product_name="does_not_exist", launch_mode="does_not_exist")
     assert "No plugin found" in str(exc.value)

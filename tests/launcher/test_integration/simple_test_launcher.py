@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Simple launcher for testing module."""
 
 import dataclasses
 import pathlib
@@ -41,6 +42,8 @@ SERVER_KEY = "main"
 
 @dataclasses.dataclass
 class SimpleLauncherConfig:
+    """Configuration for the SimpleLauncher."""
+
     script_path: str = dataclasses.field(
         default=str(SCRIPT_PATH),
         metadata={METADATA_KEY_DOC: "Location of the server Python script."},
@@ -48,15 +51,19 @@ class SimpleLauncherConfig:
 
 
 class SimpleLauncher(LauncherProtocol[SimpleLauncherConfig]):
+    """Simple launcher for testing."""
+
     CONFIG_MODEL = SimpleLauncherConfig
     SERVER_SPEC = {SERVER_KEY: ServerType.GRPC}
 
     def __init__(self, *, config: SimpleLauncherConfig):
+        """Initialize the SimpleLauncher with the given configuration."""
         self._script_path = config.script_path
         self._process: subprocess.Popen[str]
         self._url: str
 
     def start(self):
+        """Start the service."""
         port = find_free_ports()[0]
         self._url = f"localhost:{port}"
         self._process = subprocess.Popen(
@@ -71,6 +78,7 @@ class SimpleLauncher(LauncherProtocol[SimpleLauncherConfig]):
         )
 
     def stop(self, *, timeout=None):
+        """Stop the service."""
         self._process.terminate()
         try:
             self._process.wait(timeout=timeout)
@@ -79,9 +87,11 @@ class SimpleLauncher(LauncherProtocol[SimpleLauncherConfig]):
             self._process.wait()
 
     def check(self, *, timeout: float | None = None) -> bool:
+        """Check if the server is responding to requests."""
         channel = grpc.insecure_channel(self.urls[SERVER_KEY])
         return check_grpc_health(channel, timeout=timeout)
 
     @property
     def urls(self):
+        """Return the URLs of the server."""
         return {SERVER_KEY: self._url}

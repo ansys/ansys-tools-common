@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Conftest module."""
 
 from functools import partial
 import importlib.metadata
@@ -39,6 +40,7 @@ def reset_config():
 def get_mock_entrypoints_from_plugins(
     target_plugins: dict[str, dict[str, LauncherProtocol[LAUNCHER_CONFIG_T]]],
 ):
+    """Get mock entrypoints from plugins."""
     res = []
     for product_name, launchers in target_plugins.items():
         for launch_mode, launcher_kls in launchers.items():
@@ -51,6 +53,8 @@ def get_mock_entrypoints_from_plugins(
 
 @pytest.fixture
 def monkeypatch_entrypoints_from_plugins(monkeypatch):
+    """Mock entrypoints."""
+
     def inner(target_plugins):
         monkeypatch.setattr(
             _plugins,

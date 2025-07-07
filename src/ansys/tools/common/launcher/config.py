@@ -216,7 +216,7 @@ def save_config() -> None:
         # Convert to JSON before saving; in this way, errors during
         # JSON encoding will not clobber the config file.
         config_json = json.dumps(dataclasses.asdict(_CONFIG)["__root__"], indent=2)
-        with open(file_path, "w") as out_f:
+        with file_path.open("w") as out_f:
             out_f.write(config_json)
 
 
@@ -231,7 +231,7 @@ def _load_config() -> _LauncherConfiguration:
     config_path = _get_config_path()
     if not config_path.exists():
         return _LauncherConfiguration(__root__={})
-    with open(config_path) as in_f:
+    with config_path.open() as in_f:
         return _LauncherConfiguration(__root__={key: _ProductConfig(**val) for key, val in json.load(in_f).items()})
 
 

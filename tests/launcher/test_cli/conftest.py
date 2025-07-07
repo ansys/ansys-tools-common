@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Conftest module."""
 
 import pytest
 
@@ -29,6 +30,7 @@ pytest.register_assert_rewrite("test_cli.common")
 
 @pytest.fixture
 def temp_config_file(monkeypatch, tmp_path):
+    """Fixture to create a temporary configuration file for testing."""
     output_path = tmp_path / "config.json"
 
     def get_config_path_patched():

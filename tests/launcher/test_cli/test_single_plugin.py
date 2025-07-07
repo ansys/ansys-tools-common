@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Module for testing plugins."""
 
 from dataclasses import dataclass, field
 
@@ -32,6 +33,8 @@ from .common import check_result_config
 
 @dataclass
 class MockConfig:
+    """Mock configuration for testing CLI."""
+
     int_field: int
     str_field: str
     json_field: dict[str, str]
@@ -40,6 +43,8 @@ class MockConfig:
 
 
 class MockLauncher(interface.LauncherProtocol[MockConfig]):
+    """Mock launcher for testing CLI configuration."""
+
     CONFIG_MODEL = MockConfig
 
 
@@ -64,10 +69,12 @@ EXPECTED_CONFIG = {
 
 @pytest.fixture
 def mock_plugins():
+    """Mock plugin for testing CLI."""
     return {TEST_PRODUCT: {TEST_LAUNCH_MODE: MockLauncher}}
 
 
 def test_cli_no_plugins():
+    """Test that the CLI is built correctly with no plugins."""
     command = _cli.build_cli(dict())
     runner = CliRunner()
     result = runner.invoke(command, ["configure"])
@@ -76,6 +83,7 @@ def test_cli_no_plugins():
 
 
 def test_cli_mock_plugin(mock_plugins):
+    """Test that the CLI is built correctly with a mock plugin."""
     command = _cli.build_cli(mock_plugins)
     assert "configure" in command.commands
     configure_group = command.commands["configure"]
@@ -135,6 +143,7 @@ def test_cli_mock_plugin(mock_plugins):
     ],
 )
 def test_run_cli(temp_config_file, mock_plugins, commands, prompts):
+    """Test running the CLI."""
     cli_command = _cli.build_cli(mock_plugins)
     runner = CliRunner()
     result = runner.invoke(
@@ -148,6 +157,7 @@ def test_run_cli(temp_config_file, mock_plugins, commands, prompts):
 
 
 def test_run_cli_throws_on_incorrect_type(temp_config_file, mock_plugins):
+    """Test that the CLI throws an error when a field is given an incorrect type."""
     cli_command = _cli.build_cli(mock_plugins)
     runner = CliRunner()
     result = runner.invoke(

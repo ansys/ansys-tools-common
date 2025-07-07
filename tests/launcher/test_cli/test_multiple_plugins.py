@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Module for multiple plugins test."""
 
 from dataclasses import dataclass
 
@@ -38,28 +39,40 @@ TEST_LAUNCH_MODE_B1 = "LAUNCHER_B1"
 
 @dataclass
 class MockConfigA1:
+    """Mock config."""
+
     field_a1: int
 
 
 class MockLauncherA1(interface.LauncherProtocol[MockConfigA1]):
+    """Mock launcher."""
+
     CONFIG_MODEL = MockConfigA1
 
 
 @dataclass
 class MockConfigA2:
+    """Mock config."""
+
     field_a2: int
 
 
 class MockLauncherA2(interface.LauncherProtocol[MockConfigA2]):
+    """Mock launcher."""
+
     CONFIG_MODEL = MockConfigA2
 
 
 @dataclass
 class MockConfigB1:
+    """Mock config."""
+
     field_b1: int
 
 
 class MockLauncherB1(interface.LauncherProtocol[MockConfigB1]):
+    """Mock launcher for testing CLI configuration for product B."""
+
     CONFIG_MODEL = MockConfigB1
 
 
@@ -74,10 +87,12 @@ PLUGINS = {
 
 @pytest.fixture(autouse=True)
 def monkeypatch_entrypoints(monkeypatch_entrypoints_from_plugins):
+    """Mock entrypoints for the plugins."""
     monkeypatch_entrypoints_from_plugins(PLUGINS)
 
 
 def test_cli_structure():
+    """Test CLI structure."""
     command = _cli.build_cli(_plugins.get_all_plugins())
     assert "configure" in command.commands
     configure_group = command.commands["configure"]
@@ -93,6 +108,7 @@ def test_cli_structure():
 
 
 def test_configure_single_product_launcher(temp_config_file):
+    """Test configuring a single product with a single launcher."""
     cli_command = _cli.build_cli(_plugins.get_all_plugins())
     runner = CliRunner()
     result = runner.invoke(
@@ -113,6 +129,7 @@ def test_configure_single_product_launcher(temp_config_file):
 
 
 def test_configure_two_product_launchers(temp_config_file):
+    """Test configuring two different products with different launch modes."""
     cli_command = _cli.build_cli(_plugins.get_all_plugins())
     runner = CliRunner()
     result = runner.invoke(
@@ -141,6 +158,7 @@ def test_configure_two_product_launchers(temp_config_file):
 
 
 def test_configure_two_product_launchers_overwrite(temp_config_file):
+    """Test configuring two products with overwriting configurations."""
     cli_command = _cli.build_cli(_plugins.get_all_plugins())
     runner = CliRunner()
     result = runner.invoke(
@@ -169,6 +187,7 @@ def test_configure_two_product_launchers_overwrite(temp_config_file):
 
 
 def test_configure_two_products(temp_config_file):
+    """Test configuring two products."""
     cli_command = _cli.build_cli(_plugins.get_all_plugins())
     runner = CliRunner()
     result = runner.invoke(

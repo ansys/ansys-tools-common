@@ -19,6 +19,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Module for entry point testing."""
+
 import pkg_with_entrypoint
 
 from ansys.tools.common.launcher._plugins import (
@@ -30,17 +32,20 @@ from ansys.tools.common.launcher.config import get_config_for, get_launch_mode_f
 
 
 def test_plugin_found():
+    """Test that the plugin is found in the plugin dictionary."""
     plugin_dict = get_all_plugins()
     assert "pkg_with_entrypoint" in plugin_dict
     assert "test_entry_point" in plugin_dict["pkg_with_entrypoint"]
 
 
 def test_get_launcher():
+    """Test that the launcher can be retrieved for a specific product and launch mode."""
     launcher = get_launcher(product_name="pkg_with_entrypoint", launch_mode="test_entry_point")
     assert launcher.__name__ == "Launcher"
 
 
 def test_fallback():
+    """Test fallback."""
     assert get_launch_mode_for(product_name="pkg_with_entrypoint") == "__fallback__"
     assert (
         get_config_for(product_name="pkg_with_entrypoint", launch_mode="__fallback__")
@@ -50,6 +55,7 @@ def test_fallback():
 
 
 def test_get_config_model():
+    """Test that get_config_model returns the correct configuration model."""
     config_model = get_config_model(product_name="pkg_with_entrypoint", launch_mode="test_entry_point")
     assert config_model.__name__ == "LauncherConfig"
 

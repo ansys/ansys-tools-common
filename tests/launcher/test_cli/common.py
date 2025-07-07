@@ -19,11 +19,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Module for common testing functionalities."""
 
 import json
+from pathlib import Path
 
 
 def check_result_config(path, expected):
-    with open(path) as f:
+    """Check result from configuration."""
+    with Path(path).open() as f:
         config = json.load(f)
     assert config == expected
