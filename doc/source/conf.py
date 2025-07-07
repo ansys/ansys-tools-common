@@ -114,4 +114,4 @@ source_suffix = {
 typehints_defaults = "comma"
 # additional logos for the latex coverpage
 latex_additional_files = [watermark, ansys_logo_white, ansys_logo_white_cropped]
-suppress_warnings = ["autoapi.python_import_resolution"]
+suppress_warnings = ["autoapi.python_import_resolution", "ref.python"]
