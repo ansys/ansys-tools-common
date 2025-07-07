@@ -61,3 +61,4 @@ your own code.
     ansys_exceptions
     versioning
     report
+    launcher/index

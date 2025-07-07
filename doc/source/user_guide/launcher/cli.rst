@@ -1,4 +1,4 @@
-.. _cli:
+.. _ref_cli:
 
 Command-line interface
 ======================
