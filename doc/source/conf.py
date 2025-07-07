@@ -76,6 +76,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_design",
     "ansys_sphinx_theme.extension.autoapi",
+    "sphinx_click",  # Required by local-product-launcher
 ]
 
 # numpydoc configuration
