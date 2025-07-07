@@ -53,6 +53,7 @@ tests = [
 
 doc = [
     "ansys-sphinx-theme==1.5.2",
+    "grpcio==1.73.0",
     "sphinx==8.2.3",
     "sphinx-autoapi==3.6.0",
     "sphinx-click==4.4.0",
