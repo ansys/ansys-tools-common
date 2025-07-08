@@ -23,9 +23,6 @@
 
 from functools import partial
 import importlib.metadata
-import pathlib
-import subprocess
-import sys
 from unittest.mock import Mock
 import warnings
 
@@ -45,11 +42,6 @@ def pytest_configure(config):
             "WARNING: 'pkg_with_entrypoint' is not installed in the environment.\n"
             "Please run: pip install -e tests/launcher/pkg_with_entrypoint",
             stacklevel=1,
-        )
-        pkg_path = pathlib.Path(__file__).parent / "launcher" / "pkg_with_entrypoint"
-        subprocess.run(
-            [sys.executable, "-m", "pip", "install", "-e", str(pkg_path.resolve())],
-            check=True,
         )
 
 
