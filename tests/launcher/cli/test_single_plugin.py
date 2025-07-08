@@ -118,7 +118,7 @@ def test_cli_mock_plugin(mock_plugins):
                 "--str_field=value",
                 '--json_field={"a": "b"}',
             ],
-            [],
+            [""],
         ),
         (["configure", "my_product", "my_launcher", "--str_field=value"], ["1", '{"a": "b"}', ""]),
         (["configure", "my_product", "my_launcher", "--int_field=1"], ["value", '{"a": "b"}', ""]),
