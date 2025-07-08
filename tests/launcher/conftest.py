@@ -23,12 +23,34 @@
 
 from functools import partial
 import importlib.metadata
+import pathlib
+import subprocess
+import sys
 from unittest.mock import Mock
+import warnings
 
 import pytest
 
 from ansys.tools.common.launcher import _plugins, config
 from ansys.tools.common.launcher.interface import LAUNCHER_CONFIG_T, LauncherProtocol
+
+
+def pytest_configure(config):
+    """Prepare the environment for testing plugins."""
+    try:
+        # Check if the package is installed (based on its name in pyproject.toml)
+        importlib.metadata.version("pkg_with_entrypoint")
+    except importlib.metadata.PackageNotFoundError:
+        warnings.warn(
+            "WARNING: 'pkg_with_entrypoint' is not installed in the environment.\n"
+            "Please run: pip install -e tests/launcher/pkg_with_entrypoint",
+            stacklevel=1,
+        )
+        pkg_path = pathlib.Path(__file__).parent / "launcher" / "pkg_with_entrypoint"
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-e", str(pkg_path.resolve())],
+            check=True,
+        )
 
 
 @pytest.fixture(autouse=True)
