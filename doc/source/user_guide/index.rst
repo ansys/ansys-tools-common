@@ -45,6 +45,13 @@ your own code.
 
         Learn how to use the report tool.
 
+    .. grid-item-card:: Ansys local launcher tool
+        :padding: 2 2 2 2
+        :link: launcher/index
+        :link-type: doc
+
+        Learn how to use the launcher tool.
+
 .. toctree::
     :hidden:
     :maxdepth: 3
@@ -54,3 +61,4 @@ your own code.
     ansys_exceptions
     versioning
     report
+    launcher/index

@@ -76,6 +76,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_design",
     "ansys_sphinx_theme.extension.autoapi",
+    "sphinx_click",  # Required by local-product-launcher
 ]
 
 # numpydoc configuration
@@ -113,3 +114,4 @@ source_suffix = {
 typehints_defaults = "comma"
 # additional logos for the latex coverpage
 latex_additional_files = [watermark, ansys_logo_white, ansys_logo_white_cropped]
+suppress_warnings = ["autoapi.python_import_resolution", "ref.python"]
