@@ -112,10 +112,6 @@ def version_string_as_tuple(version_string):
         # Check version string numbers are numeric by converting to integers
         version_tuple = tuple(map(VersionNumber, version_string.split(".")))
 
-        # Check version numbers are positive integers
-        if not all(num >= VersionNumber(0) for num in version_tuple):
-            raise ValueError
-
     except ValueError:
         raise VersionSyntaxError(
             "Version string can only contain positive integers following <MAJOR>.<MINOR>.<PATCH> versioning."
