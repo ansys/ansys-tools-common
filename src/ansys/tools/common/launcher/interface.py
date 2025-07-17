@@ -136,7 +136,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
     """
 
     def __init__(self, *, config: LAUNCHER_CONFIG_T):
-        pass
+        pass  # pragma: no cover
 
     def start(self) -> None:
         """Start the product instance."""

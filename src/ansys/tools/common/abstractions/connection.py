@@ -25,7 +25,7 @@ from abc import ABC, abstractmethod
 
 try:
     import grpc
-except ImportError:
+except ImportError:  # pragma: no cover
     import warnings
 
     warnings.warn(
