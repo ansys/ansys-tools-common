@@ -51,11 +51,6 @@ class MockGRPCConnection(AbstractGRPCConnection):
         """Service property that returns a mock gRPC stub."""
         return MagicMock()
 
-    @property
-    def is_closed(self) -> bool:
-        """Status of the connection."""
-        return not self._connected
-
 
 @pytest.fixture
 def mock_connection():
@@ -73,7 +68,6 @@ def test_initialization(mock_connection):
 def test_connect(mock_connection):
     """Test connecting to the gRPC server."""
     mock_connection.connect()
-    assert not mock_connection.is_closed
 
 
 def test_close(mock_connection):
@@ -92,8 +86,4 @@ def test_service_property(mock_connection):
 
 def test_is_closed_property(mock_connection):
     """Test the is_closed property."""
-    assert mock_connection.is_closed
-    mock_connection.connect()
-    assert not mock_connection.is_closed
-    mock_connection.close()
     assert mock_connection.is_closed

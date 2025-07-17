@@ -47,25 +47,23 @@ class AbstractGRPCConnection(ABC):
     @abstractmethod
     def __init__(self, host: str, port: str) -> None:
         """Initialize the gRPC connection with host and port."""
-        self.__host = host
-        self.__port = port
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def connect(self) -> None:
         """Establish a connection to the gRPC server."""
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def close(self) -> None:
         """Disconnect from the gRPC server."""
-        pass
+        pass  # pragma: no cover
 
     @property
     @abstractmethod
     def service(self):
         """Return the gRPC stub for making requests."""
-        pass
+        pass  # pragma: no cover
 
     @property
     def _host(self) -> str:
