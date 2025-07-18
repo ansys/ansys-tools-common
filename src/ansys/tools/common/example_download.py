@@ -99,12 +99,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         destination_path = Path(destination) if destination is not None else None
 
         # If destination is not a dir, create it
-        if destination_path is not None and not destination_path.is_dir():
+        if destination_path is not None and not destination_path.exists():
             destination_path.mkdir(parents=True, exist_ok=True)
 
-        # Check if it was able to create the dir
+        # Check if it was able to create the dir, very rare case
         if destination_path is not None and not destination_path.is_dir():
-            raise ValueError("Destination directory provided does not exist")
+            raise ValueError("Destination directory provided does not exist")  # pragma: no cover
 
         url = self._get_filepath_on_default_server(filename, directory)
         local_path = self._retrieve_data(url, filename, dest=destination, force=force)
@@ -125,7 +125,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         file_path : str
             Local path of the downloaded example file.
         """
-        self._downloads_list.append(file_path)
+        if file_path not in self._downloads_list:
+            self._downloads_list.append(file_path)
 
     def _joinurl(self, base: str, directory: str) -> str:
         """Join multiple paths to a base URL.
@@ -185,10 +186,11 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         str
             The local path where the file was saved.
         """
+        local_path = ""
         if dest is None:
             dest = tempfile.gettempdir()  # Use system temp directory if no destination is provided
             local_path = Path(dest) / Path(filename).name
-        if not force and Path.is_file(local_path):
+        if not force and Path.is_file(Path(local_path)):
             return local_path
         try:
             local_path, _ = urllib.request.urlretrieve(url, filename=local_path)

@@ -38,6 +38,11 @@ def test_download():
 
     assert Path.is_file(local_path)
 
+    # Check that file is cached
+    local_path2 = download_manager.download_file(filename, directory)
+
+    assert local_path2 == local_path
+
     download_manager.clear_download_cache()
 
     assert not Path.is_file(local_path)
@@ -68,11 +73,16 @@ def test_get_filepath():
 
     assert filepath == "https://github.com/ansys/example-data/raw/main/pymapdl/cfx_mapping/11_blades_mode_1_ND_0.csv"
 
+    filepath = download_manager._get_filepath_on_default_server(filename)
+
+    assert filepath == "https://github.com/ansys/example-data/raw/main/11_blades_mode_1_ND_0.csv"
+
 
 def test_destination_directory():
     """Test getting the destination directory for a downloaded file."""
     filename = "11_blades_mode_1_ND_0.csv"
     directory = "pymapdl/cfx_mapping"
 
-    # Get the destination directory
+    # Test directory gets created
     result = download_manager.download_file(filename, directory, destination="not_a_dir")
+    assert result is not None
