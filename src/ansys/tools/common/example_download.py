@@ -190,7 +190,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         if dest is None:
             dest = tempfile.gettempdir()  # Use system temp directory if no destination is provided
             local_path = Path(dest) / Path(filename).name
-        if not force and Path.is_file(Path(local_path)):
+        if not force and Path(local_path).is_file():
             return local_path
         try:
             local_path, _ = urllib.request.urlretrieve(url, filename=local_path)
