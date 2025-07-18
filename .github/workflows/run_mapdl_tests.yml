@@ -33,16 +33,23 @@ jobs:
           uses: actions/setup-python@v5
           with:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
-        - name: Install library, with test extra
+        - name: Install uv and create venv
           run: |
-            python -m pip install uv
-            uv pip install .[tests]
-            python -m uv pip install tests/launcher/pkg_with_entrypoint
+            python -m pip install --upgrade pip
+            pip install uv
+            uv venv
+            source .venv/bin/activate
 
+        - name: Install project dependencies
+          run: |
+            source .venv/bin/activate
+            uv pip install -e .[tests]
+            uv pip install tests/launcher/pkg_with_entrypoint
 
         - name: Unit testing
           run: |
-            python -m uv pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
+            source .venv/bin/activate
+            uv run python -m uv pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
 
         - name: Upload coverage reports to Codecov
           uses: codecov/codecov-action@v5
