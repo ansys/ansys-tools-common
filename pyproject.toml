@@ -80,6 +80,10 @@ Releases = "https://github.com/ansys/ansys-tools-common/releases/"
 [tool.flit.module]
 name = "ansys.tools.common"
 
+[tool.pytest.ini_options]
+addopts = "-ra --cov=ansys.tools.common --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term --capture=sys -vv"
+
+
 [tool.ruff]
 line-length = 120
 fix = true

@@ -176,3 +176,5 @@ cython_debug/
 ._build
 
 doc/source/api
+.cov
+not_a_dir

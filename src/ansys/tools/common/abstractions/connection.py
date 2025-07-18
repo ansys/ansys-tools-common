@@ -25,7 +25,7 @@ from abc import ABC, abstractmethod
 
 try:
     import grpc
-except ImportError:
+except ImportError:  # pragma: no cover
     import warnings
 
     warnings.warn(
@@ -47,33 +47,43 @@ class AbstractGRPCConnection(ABC):
     @abstractmethod
     def __init__(self, host: str, port: str) -> None:
         """Initialize the gRPC connection with host and port."""
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def connect(self) -> None:
         """Establish a connection to the gRPC server."""
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def close(self) -> None:
         """Disconnect from the gRPC server."""
-        pass
+        pass  # pragma: no cover
 
-    @abstractmethod
     @property
+    @abstractmethod
     def service(self):
         """Return the gRPC stub for making requests."""
-        pass
+        pass  # pragma: no cover
 
     @property
     def _host(self) -> str:
         """Return the host for the gRPC connection."""
-        return self._host
+        return self.__host
+
+    @_host.setter
+    def _host(self, value: str) -> None:
+        """Set the host for the gRPC connection."""
+        self.__host = value
 
     @property
     def _port(self) -> str:
         """Return the port for the gRPC connection."""
-        return self._port
+        return self.__port
+
+    @_port.setter
+    def _port(self, value: str) -> None:
+        """Set the port for the gRPC connection."""
+        self.__port = value
 
     @property
     def _channel(self, options: list = None) -> grpc.Channel:

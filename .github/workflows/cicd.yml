@@ -67,6 +67,11 @@ jobs:
           run: |
             pytest
 
+        # - uses: codecov/codecov-action@v5
+        #   name: 'Upload coverage to CodeCov'
+        #   with:
+        #     token: ${{ secrets.CODECOV_TOKEN }}
+
     doc-build:
       name: Build documentation
       runs-on: ubuntu-latest
