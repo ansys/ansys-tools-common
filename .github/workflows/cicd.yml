@@ -60,6 +60,7 @@ jobs:
         - name: Install dependencies
           run: |
             python -m pip install --upgrade pip
+            pip install uv
             uv pip install -e .[tests]
             uv pip install tests/launcher/pkg_with_entrypoint
 
