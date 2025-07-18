@@ -1,13 +1,13 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "ansys-tools-common"
 version = "0.1.dev0"
 description = "A set of tools for PyAnsys libraries"
 readme = "README.rst"
-requires-python = ">=3.10,<4"
+requires-python = ">=3.11,<4"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
@@ -32,12 +32,12 @@ dependencies = [
 
 [project.optional-dependencies]
 all = [
-    "ansys-tools-visualization-tool>=0.9.2",
+    "ansys-tools-visualization-interface>=0.9.2",
     "ansys-tools-filetransfer>=0.1.1",
 ]
 
 graphics = [
-    "ansys-tools-visualization-tool>=0.9.2",
+    "ansys-tools-visualization-interface>=0.9.2",
 ]
 
 filetransfer = [
@@ -50,13 +50,13 @@ tests = [
     "pyfakefs==5.8.0",
     "hypothesis==6.135.10",
     "grpcio==1.73.0",
-    "grpcio-health-checking==1.73.0",
+    "grpcio-health-checking==1.68.0",
 ]
 
 doc = [
     "ansys-sphinx-theme==1.5.2",
     "grpcio==1.73.0",
-    "grpcio-health-checking==1.73.0",
+    "grpcio-health-checking==1.68.0",
     "sphinx==8.2.3",
     "sphinx-autoapi==3.6.0",
     "sphinx-click==4.4.0",
@@ -77,8 +77,13 @@ Discussions = "https://github.com/ansys/ansys-tools-common/discussions"
 Documentation = "https://ansys.tools.docs.pyansys.com/"
 Releases = "https://github.com/ansys/ansys-tools-common/releases/"
 
-[tool.flit.module]
-name = "ansys.tools.common"
+[tool.uv]
+default-groups = ["dev", "tests"]
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ansys"]
+
 
 [tool.pytest.ini_options]
 addopts = "-ra --cov=ansys.tools.common --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term --capture=sys -vv"
