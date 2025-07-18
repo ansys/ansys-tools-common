@@ -73,7 +73,7 @@ jobs:
         - name: Run tests
           run: |
             source .venv/bin/activate
-            uv pytest
+            uv run pytest
 
         # - uses: codecov/codecov-action@v5
         #   name: 'Upload coverage to CodeCov'
