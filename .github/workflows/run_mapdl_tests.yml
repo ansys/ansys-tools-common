@@ -15,46 +15,40 @@ env:
 
 jobs:
   build-tests:
-    name: Build and Testing
     runs-on: ubuntu-22.04
     container:
-        image: ghcr.io/ansys/pymapdl/mapdl:v22.2-ubuntu
-        options: "-u=0:0 --entrypoint /bin/bash"
-        credentials:
-            username: ${{ secrets.GH_USERNAME }}
-            password: ${{ secrets.GH_TOKEN }}
+      image: ghcr.io/ansys/pymapdl/mapdl:v22.2-ubuntu
+      options: "-u=0:0 --entrypoint /bin/bash"
+      credentials:
+        username: ${{ secrets.GH_USERNAME }}
+        password: ${{ secrets.GH_TOKEN }}
     env:
-        ANSYS_LOCAL: true
-        ON_UBUNTU: true
+      ANSYS_LOCAL: true
+      ON_UBUNTU: true
 
     steps:
-        - uses: actions/checkout@v4
-        - name: Setup Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: ${{ env.MAIN_PYTHON_VERSION }}
-        - name: Install uv and create venv
-          shell: bash
-          run: |
-            python -m pip install --upgrade pip
-            pip install uv
-            uv venv .mapdl_venv
-            source .mapdl_venv/bin/activate
+      - uses: actions/checkout@v4
 
-        - name: Install project dependencies
-          shell: bash
-          run: |
-            source .mapdl_venv/bin/activate
-            uv pip install -e .[tests]
-            uv pip install tests/launcher/pkg_with_entrypoint
+      - name: Check python version inside container
+        run: |
+          python3 --version
+          which python3
 
-        - name: Unit testing
-          shell: bash
-          run: |
-            source .mapdl_venv/bin/activate
-            uv run python -m uv pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
+      - name: Install uv and create venv
+        shell: bash
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install uv
+          uv venv .mapdl_venv
+          uv pip install -e .[tests]
+          uv pip install tests/launcher/pkg_with_entrypoint
 
-        - name: Upload coverage reports to Codecov
-          uses: codecov/codecov-action@v5
-          with:
-            files: .cov/coverage.xml
+      - name: Run unit tests
+        shell: bash
+        run: |
+          uv run pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: .cov/coverage.xml
