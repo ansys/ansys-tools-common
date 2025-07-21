@@ -40,15 +40,14 @@ jobs:
           python3 -m pip install --upgrade pip
           pip3 install uv
 
-          uv venv .mapdl_venv          # Create venv first
 
-          uv pip install -e .[tests]   # Now install your packages
-          uv pip install tests/launcher/pkg_with_entrypoint
+          uv pip install  --system .[tests]
+          uv pip install  --system tests/launcher/pkg_with_entrypoint
 
       - name: Run unit tests
         shell: bash
         run: |
-          uv run pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
+          uv run --system pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
