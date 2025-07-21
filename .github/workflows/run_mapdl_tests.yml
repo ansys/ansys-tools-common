@@ -39,8 +39,10 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install uv
-          uv venv .mapdl_venv
-          uv pip install -e .[tests]
+
+          uv venv .mapdl_venv          # Create venv first
+
+          uv pip install -e .[tests]   # Now install your packages
           uv pip install tests/launcher/pkg_with_entrypoint
 
       - name: Run unit tests
