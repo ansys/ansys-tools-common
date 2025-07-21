@@ -27,29 +27,25 @@ jobs:
       ON_UBUNTU: true
 
     steps:
-      - uses: actions/checkout@v4
+    - name: Install uv and create venv
+      run: |
+        python -m pip install --upgrade pip
+        pip install uv
+        uv venv
+        source .venv/bin/activate
 
-      - name: Check python version inside container
-        run: |
-          python3 --version
-          which python3
+    - name: Install project dependencies
+      run: |
+        source .venv/bin/activate
+        uv pip install -e .[tests]
+        uv pip install tests/launcher/pkg_with_entrypoint
 
-      - name: Install uv and create venv
-        shell: bash
-        run: |
-          python3 -m pip install --upgrade pip
-          pip3 install uv
+    - name: Run tests
+      run: |
+        source .venv/bin/activate
+        uv run pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
 
-
-          uv pip install  --system .[tests]
-          uv pip install  --system tests/launcher/pkg_with_entrypoint
-
-      - name: Run unit tests
-        shell: bash
-        run: |
-          uv run --system pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          files: .cov/coverage.xml
+    # - uses: codecov/codecov-action@v5
+    #   name: 'Upload coverage to CodeCov'
+    #   with:
+    #     token: ${{ secrets.CODECOV_TOKEN }}
