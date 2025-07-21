@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    = -j auto -W --color
-SPHINXBUILD   = sphinx-build
+SPHINXBUILD   = uv run sphinx-build
 APIDIR        = api
 EXAMPLESDIR        = examples
 SOURCEDIR     = source
