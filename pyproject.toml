@@ -89,7 +89,6 @@ Documentation = "https://ansys.tools.docs.pyansys.com/"
 Releases = "https://github.com/ansys/ansys-tools-common/releases/"
 
 [tool.uv]
-default-groups = ["dev", "tests"]
 package = true
 
 [tool.hatch.build.targets.wheel]
