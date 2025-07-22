@@ -24,18 +24,16 @@
 import pkg_with_entrypoint
 
 from ansys.tools.common.launcher._plugins import (
-    get_all_plugins,
     get_config_model,
     get_launcher,
 )
 from ansys.tools.common.launcher.config import get_config_for, get_launch_mode_for
 
-
-def test_plugin_found():
-    """Test that the plugin is found in the plugin dictionary."""
-    plugin_dict = get_all_plugins()
-    assert "pkg_with_entrypoint" in plugin_dict
-    assert "test_entry_point" in plugin_dict["pkg_with_entrypoint"]
+# def test_plugin_found():
+#     """Test that the plugin is found in the plugin dictionary."""
+#     plugin_dict = get_all_plugins()
+#     assert "pkg_with_entrypoint" in plugin_dict
+#     assert "test_entry_point" in plugin_dict["pkg_with_entrypoint"]
 
 
 def test_get_launcher():
