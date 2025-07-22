@@ -39,8 +39,8 @@ jobs:
 
     - name: Install project dependencies
       run: |
-        uv run pip install --system .[tests]
-        uv run pip install --system tests/launcher/pkg_with_entrypoint
+        uv run pip install .[tests]
+        uv run pip install tests/launcher/pkg_with_entrypoint
 
     - name: Run tests
       run: |
