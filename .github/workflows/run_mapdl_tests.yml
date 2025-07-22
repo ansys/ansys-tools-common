@@ -34,14 +34,12 @@ jobs:
         python-version: ${{ env.MAIN_PYTHON_VERSION }}
     - name: Install uv and create venv
       run: |
-        pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install uv
-
     - name: Install project dependencies
       run: |
-        uv run pip install .[tests]
-        uv run pip install tests/launcher/pkg_with_entrypoint
-
+        uv pip install --system .[tests]
+        uv pip install --system tests/launcher/pkg_with_entrypoint
     - name: Run tests
       run: |
         uv run pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
