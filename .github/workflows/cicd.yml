@@ -62,17 +62,14 @@ jobs:
             python -m pip install --upgrade pip
             pip install uv
             uv venv
-            source .venv/bin/activate
 
         - name: Install project dependencies
           run: |
-            source .venv/bin/activate
             uv pip install -e .[tests]
             uv pip install tests/launcher/pkg_with_entrypoint
 
         - name: Run tests
           run: |
-            source .venv/bin/activate
             uv run pytest
 
         # - uses: codecov/codecov-action@v5
