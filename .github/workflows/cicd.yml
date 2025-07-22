@@ -83,7 +83,6 @@ jobs:
           with:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
             check-links: false # Delete after first release
-            use-uv: true
 
     package:
         name: Package library
