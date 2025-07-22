@@ -67,7 +67,7 @@ jobs:
             uv pip install --system tests/launcher/pkg_with_entrypoint
         - name: Run tests
           run: |
-            python -m pytest
+            uv run pytest
 
         # - uses: codecov/codecov-action@v5
         #   name: 'Upload coverage to CodeCov'
