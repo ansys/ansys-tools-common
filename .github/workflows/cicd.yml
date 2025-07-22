@@ -70,7 +70,7 @@ jobs:
 
         - name: Run tests
           run: |
-            uv run pytest
+            python -m pytest
 
         # - uses: codecov/codecov-action@v5
         #   name: 'Upload coverage to CodeCov'
