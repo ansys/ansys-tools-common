@@ -7,7 +7,7 @@ name = "ansys-tools-common"
 version = "0.1.dev0"
 description = "A set of tools for PyAnsys libraries"
 readme = "README.rst"
-requires-python = ">=3.11,<4"
+requires-python = ">=3.10,<4"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
@@ -49,13 +49,13 @@ tests = [
     "pytest-cov==6.1.1",
     "pyfakefs==5.8.0",
     "hypothesis==6.135.10",
-    "grpcio==1.73.0",
+    "grpcio==1.68.0",
     "grpcio-health-checking==1.68.0",
 ]
 
 doc = [
     "ansys-sphinx-theme==1.5.2",
-    "grpcio==1.73.0",
+    "grpcio==1.68.0",
     "grpcio-health-checking==1.68.0",
     "sphinx==8.2.3",
     "sphinx-autoapi==3.6.0",
@@ -72,7 +72,7 @@ dev = [
     "pytest-cov==6.1.1",
     "pyfakefs==5.8.0",
     "hypothesis==6.135.10",
-    "grpcio==1.73.0",
+    "grpcio==1.68.0",
     "grpcio-health-checking==1.68.0",
     "pre-commit"
 ]
