@@ -61,13 +61,10 @@ jobs:
           run: |
             python -m pip install --upgrade pip
             pip install uv
-            uv venv
-
         - name: Install project dependencies
           run: |
-            uv pip install -e .[tests]
-            uv pip install tests/launcher/pkg_with_entrypoint
-
+            uv pip install --system .[tests]
+            uv pip install --system tests/launcher/pkg_with_entrypoint
         - name: Run tests
           run: |
             python -m pytest
