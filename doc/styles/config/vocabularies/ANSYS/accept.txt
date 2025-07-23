@@ -1,4 +1,8 @@
 (?i)Ansys
-pytest
 ANS
 astroid
+downloader
+mypy
+pytest
+pathing
+subprocess
