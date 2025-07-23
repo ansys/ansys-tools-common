@@ -57,15 +57,18 @@ jobs:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
             cache: 'pip'
 
-        - name: Install dependencies
+        - name: Install uv and create venv
           run: |
             python -m pip install --upgrade pip
-            pip install -e .[tests]
-            pip install tests/launcher/pkg_with_entrypoint
-
+            pip install uv
+        - name: Install project dependencies
+          run: |
+            uv sync --extra tests
         - name: Run tests
           run: |
-            pytest
+            uv sync --extra tests --no-dev
+            uv pip install tests/launcher/pkg_with_entrypoint
+            uv run pytest
 
         # - uses: codecov/codecov-action@v5
         #   name: 'Upload coverage to CodeCov'

@@ -1,3 +1,4 @@
 (?i)Ansys
 pytest
 ANS
+astroid
