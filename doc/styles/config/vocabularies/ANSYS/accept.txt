@@ -6,3 +6,9 @@ mypy
 pytest
 pathing
 subprocess
+
+
+s.P
+e.M
+terminate
+kill
