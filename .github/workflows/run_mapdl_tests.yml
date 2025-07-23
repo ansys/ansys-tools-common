@@ -38,10 +38,11 @@ jobs:
         pip install uv
     - name: Install project dependencies
       run: |
-        uv pip install --system .[tests]
-        uv pip install --system tests/launcher/pkg_with_entrypoint
+        uv sync --extra tests
     - name: Run tests
       run: |
+        uv sync --extra tests --no-dev
+        uv pip install tests/launcher/pkg_with_entrypoint
         uv run pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
 
       # - uses: codecov/codecov-action@v5
