@@ -49,14 +49,14 @@ tests = [
     "pytest-cov==6.1.1",
     "pyfakefs==5.8.0",
     "hypothesis==6.135.10",
-    "grpcio==1.73.1",
-    "grpcio-health-checking==1.73.1",
+    "grpcio==1.71.2",
+    "grpcio-health-checking==1.71.2",
 ]
 
 doc = [
     "ansys-sphinx-theme==1.5.2",
-    "grpcio==1.73.1",
-    "grpcio-health-checking==1.73.1",
+    "grpcio==1.71.2",
+    "grpcio-health-checking==1.71.2",
     "sphinx==8.2.3",
     "sphinx-autoapi==3.6.0",
     "sphinx-click==4.4.0",
@@ -72,8 +72,8 @@ dev = [
     "pytest-cov==6.1.1",
     "pyfakefs==5.8.0",
     "hypothesis==6.135.10",
-    "grpcio==1.73.1",
-    "grpcio-health-checking==1.73.1",
+    "grpcio==1.71.2",
+    "grpcio-health-checking==1.71.2",
     "pre-commit"
 ]
 
