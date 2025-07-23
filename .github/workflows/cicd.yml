@@ -75,8 +75,8 @@ jobs:
             python-version: ${{ matrix.python-version }}
             whitelist-license-check: "termcolor"  # Has MIT license, but it's not recognized
 
-    build-tests:
-      name: Build and Testing
+    tests:
+      name: Testing
       runs-on: ubuntu-latest
       needs: [smoke-tests]
       env:
@@ -110,8 +110,18 @@ jobs:
         #   with:
         #     token: ${{ secrets.CODECOV_TOKEN }}
 
+    docs-style:
+      name: Documentation Style Check
+      runs-on: ubuntu-latest
+      steps:
+        - name: PyAnsys documentation style checks
+          uses: ansys/actions/doc-style@v10
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+
     doc-build:
       name: Build documentation
+      needs: [docs-style]
       runs-on: ubuntu-latest
       steps:
         - name: Build documentation
@@ -123,7 +133,7 @@ jobs:
     package:
         name: Package library
         runs-on: ubuntu-latest
-        needs: [smoke-tests]
+        needs: [tests, doc-build]
         steps:
             - name: Build library source and wheel artifacts
               uses: ansys/actions/build-library@v10
