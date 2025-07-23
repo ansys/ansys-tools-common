@@ -67,6 +67,7 @@ jobs:
             uv pip install --system tests/launcher/pkg_with_entrypoint
         - name: Run tests
           run: |
+            uv sync --extra tests --no-dev
             uv run pytest
 
         # - uses: codecov/codecov-action@v5
