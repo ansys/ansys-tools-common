@@ -48,4 +48,3 @@ The Ansys tools project is a collection of tools for the PyAnsys ecosystem.
     user_guide/index
     api/index
     contributing
-    changelog
