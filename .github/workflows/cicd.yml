@@ -30,26 +30,17 @@ jobs:
             bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
             bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
-    vulnerabilities:
-      name: Vulnerabilities
+    check-vulnerabilities:
+      name: "Check library vulnerabilities"
       runs-on: ubuntu-latest
       steps:
-        - name: PyAnsys Vulnerability check (on main)
-          if: github.ref == 'refs/heads/main'
-          uses: ansys/actions/check-vulnerabilities@v10
+        - uses: ansys/actions/check-vulnerabilities@v10.0
           with:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
-            python-package-name: ${{ env.PACKAGE_NAME }}
             token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+            python-package-name: ${{ env.PACKAGE_NAME }}
+            dev-mode: ${{ github.ref != "refs/heads/main" }}
 
-        - name: PyAnsys Vulnerability check (on dev mode)
-          if: github.ref != 'refs/heads/main'
-          uses: ansys/actions/check-vulnerabilities@v10
-          with:
-            python-version: ${{ env.MAIN_PYTHON_VERSION }}
-            python-package-name: ${{ env.PACKAGE_NAME }}
-            token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-            dev-mode: true
     style:
         name: Code style
         runs-on: ubuntu-latest
@@ -157,13 +148,20 @@ jobs:
             name: ${{ env.PACKAGE_NAME }}-artifacts
             path: ${{ env.PACKAGE_NAME }}-artifacts
 
-        - name: "Upload artifacts to PyPI using trusted publisher"
-          uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
+        # - name: "Upload artifacts to PyPI using trusted publisher"
+        #   uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
+        #   with:
+        #     repository-url: "https://upload.pypi.org/legacy/"
+        #     print-hash: true
+        #     packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
+        #     skip-existing: false
+
+        - name: "Release to the private PyPI repository"
+          uses: ansys/actions/release-pypi-private@v9
           with:
-            repository-url: "https://upload.pypi.org/legacy/"
-            print-hash: true
-            packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
-            skip-existing: false
+            library-name: "ansys-api-meshing-maestro"
+            twine-username: "__token__"
+            twine-token: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
 
         - name: Release to GitHub
           uses: ansys/actions/release-github@v10
