@@ -25,8 +25,9 @@ from pathlib import Path
 import tempfile
 from threading import Lock
 from typing import Optional
-from urllib.parse import urljoin
-import urllib.request
+from urllib.parse import urljoin, urlparse
+
+import requests
 
 __all__ = ["DownloadManager"]
 
@@ -186,17 +187,23 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         str
             The local path where the file was saved.
         """
-        local_path = ""
         if dest is None:
-            dest = tempfile.gettempdir()  # Use system temp directory if no destination is provided
-            local_path = Path(dest) / Path(filename).name
-        if not force and Path(local_path).is_file():
-            return local_path
-        try:
-            local_path, _ = urllib.request.urlretrieve(url, filename=local_path)
-        except urllib.error.HTTPError:
-            raise FileNotFoundError(f"Failed to download {filename} from {url}, file does not exist.")
-        return local_path
+            dest = tempfile.gettempdir()
+        local_path = Path(dest) / Path(filename).name
+
+        if not force and local_path.is_file():
+            return str(local_path)
+
+        parsed_url = urlparse(url)
+        if parsed_url.scheme not in ("http", "https"):
+            raise ValueError(f"Unsafe URL scheme: {parsed_url.scheme}")
+
+        response = requests.get(url, timeout=60)
+        response.raise_for_status()
+
+        Path(local_path).write_bytes(response.content)
+
+        return str(local_path)
 
 
 # Create a singleton instance of DownloadManager
