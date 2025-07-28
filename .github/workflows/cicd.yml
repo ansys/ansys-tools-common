@@ -161,7 +161,7 @@ jobs:
         - name: "Release to the private PyPI repository"
           uses: ansys/actions/release-pypi-private@v9
           with:
-            library-name: "ansys-api-meshing-maestro"
+            library-name: "ansys-tools-common"
             twine-username: "__token__"
             twine-token: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
 
