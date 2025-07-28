@@ -28,6 +28,7 @@ dependencies = [
     "scooby>=0.5.12",
     "appdirs>=1.4.4",
     "typing-extensions>=4.5.0",
+    "requests>=2.32.4",
 ]
 
 [project.optional-dependencies]

@@ -24,6 +24,7 @@
 from pathlib import Path
 
 import pytest
+import requests
 
 from ansys.tools.common.example_download import download_manager
 
@@ -34,14 +35,14 @@ def test_download():
     directory = "pymapdl/cfx_mapping"
 
     # Download the file
-    local_path = download_manager.download_file(filename, directory)
-
-    assert Path.is_file(local_path)
+    local_path_str = download_manager.download_file(filename, directory)
+    local_path = Path(local_path_str)
+    assert local_path.is_file()
 
     # Check that file is cached
     local_path2 = download_manager.download_file(filename, directory)
 
-    assert local_path2 == local_path
+    assert local_path2 == local_path_str
 
     download_manager.clear_download_cache()
 
@@ -54,7 +55,7 @@ def test_non_existent_file():
     directory = "pymapdl/cfx_mapping"
 
     # Attempt to download the non-existent file
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(requests.exceptions.HTTPError):
         download_manager.download_file(filename, directory)
 
 

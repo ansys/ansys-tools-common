@@ -17,7 +17,7 @@ jobs:
   build-tests:
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/ansys/pymapdl/mapdl:v22.2-ubuntu
+      image: ghcr.io/ansys/mapdl:v22.2-ubuntu
       options: "-u=0:0 --entrypoint /bin/bash"
       credentials:
         username: ${{ secrets.GH_USERNAME }}

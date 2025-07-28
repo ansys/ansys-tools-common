@@ -70,6 +70,11 @@ html_theme_options = {
     },
 }
 
+linkcheck_ignore = []
+
+if switcher_version != "dev":
+    linkcheck_ignore.append(f"https://github.com/ansys-internal/ansys-tools-common/releases/tag/v{__version__}")
+
 # Sphinx extensions
 extensions = [
     "sphinx.ext.intersphinx",
