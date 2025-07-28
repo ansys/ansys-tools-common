@@ -30,7 +30,7 @@ jobs:
             bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
             bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
-    # TODO uncomment after the first release
+    # TODO uncomment after the first public release
     # check-vulnerabilities:
     #   name: "Check library vulnerabilities"
     #   runs-on: ubuntu-latest
@@ -149,6 +149,7 @@ jobs:
             name: ${{ env.PACKAGE_NAME }}-artifacts
             path: ${{ env.PACKAGE_NAME }}-artifacts
 
+        # TODO uncomment after the first public release
         # - name: "Upload artifacts to PyPI using trusted publisher"
         #   uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
         #   with:
