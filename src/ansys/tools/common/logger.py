@@ -71,6 +71,20 @@ class CustomFormatter(logging.Formatter):
         return super().format(record)
 
 
+
+DEFAULT_FORMATTER = CustomFormatter("%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s")
+DEFAULT_FORMATTER.set_column_width(15)
+"""Default formatter for the logger."""
+
+DEFAULT_HEADER = (
+            "-" * (70 + DEFAULT_FORMATTER.max_column_width)
+            + "\n"
+            + f"Timestamp               [Level    | Module{' ' * (DEFAULT_FORMATTER.max_column_width - 6)} | Function{' ' * (DEFAULT_FORMATTER.max_column_width - 8)}:Line] > Message\n"  # noqa: E501
+            + "-" * (70 + DEFAULT_FORMATTER.max_column_width)
+            + "\n"
+        )
+"""Default header for the log file."""
+
 class Logger(object, metaclass=SingletonType):
     """Provides the singleton logger.
 
@@ -91,9 +105,7 @@ class Logger(object, metaclass=SingletonType):
         """Initialize the logger."""
         self._logger = logging.getLogger(logger_name)
         self._logger.setLevel(level)
-        self._formatter = CustomFormatter(
-            "%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s"
-        )
+        self._formatter = DEFAULT_FORMATTER
         self._formatter.set_column_width(column_width)
 
     def get_logger(self):
@@ -200,6 +212,3 @@ LOGGER = Logger()
 This is a global instance of the Logger class that can be used throughout the application.
 It is initialized with default settings and can be configured as needed.
 """
-
-DEFAULT_LOGGER = CustomFormatter("%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s")
-DEFAULT_LOGGER.set_column_width(15)
