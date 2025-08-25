@@ -25,7 +25,7 @@
 import logging
 
 
-class CustomFormatter(logging.Formatter):
+class PyAnsysBaseFormatter(logging.Formatter):
     """Custom formatter to truncate long columns."""
 
     def set_column_width(self, width: int):
@@ -56,7 +56,7 @@ class CustomFormatter(logging.Formatter):
         return super().format(record)
 
 
-DEFAULT_FORMATTER = CustomFormatter(
+DEFAULT_FORMATTER = PyAnsysBaseFormatter(
     "%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s"
 )
 DEFAULT_FORMATTER.set_column_width(15)

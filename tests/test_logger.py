@@ -26,7 +26,7 @@ import logging
 import pytest
 
 from ansys.tools.common.logger import LOGGER, Logger
-from ansys.tools.common.logger_formatter import CustomFormatter
+from ansys.tools.common.logger_formatter import PyAnsysBaseFormatter
 
 
 def test_logger_singleton():
@@ -69,8 +69,8 @@ def test_logger_file_handler(tmp_path):
 
 
 def test_custom_formatter_truncation():
-    """Test truncation of module and function names in CustomFormatter."""
-    formatter = CustomFormatter("%(module)s | %(funcName)s")
+    """Test truncation of module and function names in PyAnsysBaseFormatter."""
+    formatter = PyAnsysBaseFormatter("%(module)s | %(funcName)s")
     assert formatter.max_column_width == 15  # Default width
     formatter.set_column_width(10)
     record = logging.LogRecord(
@@ -90,8 +90,8 @@ def test_custom_formatter_truncation():
 
 
 def test_custom_formatter_column_width():
-    """Test setting and getting column width in CustomFormatter."""
-    formatter = CustomFormatter("%(module)s | %(funcName)s")
+    """Test setting and getting column width in PyAnsysBaseFormatter."""
+    formatter = PyAnsysBaseFormatter("%(module)s | %(funcName)s")
     formatter.set_column_width(12)
     assert formatter.max_column_width == 12
 
