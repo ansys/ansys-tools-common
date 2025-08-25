@@ -200,3 +200,6 @@ LOGGER = Logger()
 This is a global instance of the Logger class that can be used throughout the application.
 It is initialized with default settings and can be configured as needed.
 """
+
+DEFAULT_LOGGER = CustomFormatter("%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s")
+DEFAULT_LOGGER.set_column_width(15)
