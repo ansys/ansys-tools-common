@@ -71,19 +71,21 @@ class CustomFormatter(logging.Formatter):
         return super().format(record)
 
 
-
-DEFAULT_FORMATTER = CustomFormatter("%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s")
+DEFAULT_FORMATTER = CustomFormatter(
+    "%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s"
+)
 DEFAULT_FORMATTER.set_column_width(15)
 """Default formatter for the logger."""
 
 DEFAULT_HEADER = (
-            "-" * (70 + DEFAULT_FORMATTER.max_column_width)
-            + "\n"
-            + f"Timestamp               [Level    | Module{' ' * (DEFAULT_FORMATTER.max_column_width - 6)} | Function{' ' * (DEFAULT_FORMATTER.max_column_width - 8)}:Line] > Message\n"  # noqa: E501
-            + "-" * (70 + DEFAULT_FORMATTER.max_column_width)
-            + "\n"
-        )
+    "-" * (70 + DEFAULT_FORMATTER.max_column_width)
+    + "\n"
+    + f"Timestamp               [Level    | Module{' ' * (DEFAULT_FORMATTER.max_column_width - 6)} | Function{' ' * (DEFAULT_FORMATTER.max_column_width - 8)}:Line] > Message\n"  # noqa: E501
+    + "-" * (70 + DEFAULT_FORMATTER.max_column_width)
+    + "\n"
+)
 """Default header for the log file."""
+
 
 class Logger(object, metaclass=SingletonType):
     """Provides the singleton logger.
