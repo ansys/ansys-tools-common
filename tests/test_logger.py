@@ -25,7 +25,8 @@ import logging
 
 import pytest
 
-from ansys.tools.common.logger import LOGGER, CustomFormatter, Logger
+from ansys.tools.common.logger import LOGGER, Logger
+from ansys.tools.common.logger_formatter import CustomFormatter
 
 
 def test_logger_singleton():

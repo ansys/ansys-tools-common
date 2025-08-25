@@ -27,7 +27,7 @@ import datetime
 import logging
 from pathlib import Path
 
-from src.ansys.tools.common.logger_formatter import DEFAULT_FORMATTER
+from ansys.tools.common.logger_formatter import DEFAULT_FORMATTER
 
 
 class SingletonType(type):
