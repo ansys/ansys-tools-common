@@ -44,16 +44,17 @@ class PyAnsysBaseFormatter(logging.Formatter):
 
     def format(self, record):
         """Format the log record, truncating the module and function names if necessary."""
-        if len(record.module) > self.max_column_width:
-            record.module = record.module[: self.max_column_width - 3] + "..."
-        if len(record.funcName) > self.max_column_width:
-            record.funcName = record.funcName[: self.max_column_width - 3] + "..."
+        record_copy = record.__dict__.copy()
+        if len(record_copy.module) > self.max_column_width:
+            record_copy.module = record_copy.module[: self.max_column_width - 3] + "..."
+        if len(record_copy.funcName) > self.max_column_width:
+            record_copy.funcName = record_copy.funcName[: self.max_column_width - 3] + "..."
 
         # Fill the module and function names with spaces to align them
-        record.module = record.module.ljust(self.max_column_width)
-        record.funcName = record.funcName.ljust(self.max_column_width)
+        record_copy.module = record_copy.module.ljust(self.max_column_width)
+        record_copy.funcName = record_copy.funcName.ljust(self.max_column_width)
 
-        return super().format(record)
+        return self._style.format(record_copy)
 
 
 DEFAULT_FORMATTER = PyAnsysBaseFormatter(
