@@ -45,7 +45,7 @@ class PyAnsysBaseFormatter(logging.Formatter):
 
 
 DEFAULT_FORMATTER: Final = PyAnsysBaseFormatter(
-    "%(asctime)s [%(levelname)-8s | %(module)-10s | %(funcName)s:%(lineno)-4d] > %(message)s"
+    "%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s"
 )
 """Default formatter for the logger."""
 
