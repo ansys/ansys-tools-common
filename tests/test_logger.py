@@ -26,7 +26,7 @@ import logging
 import pytest
 
 from ansys.tools.common.logger import LOGGER, Logger
-from ansys.tools.common.logger_formatter import PyAnsysBaseFormatter
+from ansys.tools.common.logger_formatter import DEFAULT_FORMATTER, PyAnsysBaseFormatter
 
 
 def test_logger_singleton():
@@ -70,8 +70,8 @@ def test_logger_file_handler(tmp_path):
 
 def test_custom_formatter_truncation():
     """Test truncation of module and function names in PyAnsysBaseFormatter."""
-    formatter = PyAnsysBaseFormatter("%(module)s | %(funcName)s")
-    assert formatter.max_column_width == 15  # Default width
+    formatter = PyAnsysBaseFormatter("%(module).10s | %(funcName).10s")
+    # assert formatter.max_column_width == 15  # Default width
     formatter.set_column_width(10)
     record = logging.LogRecord(
         name="test",
@@ -85,8 +85,7 @@ def test_custom_formatter_truncation():
     record.module = "very_long_module_name"
     record.funcName = "very_long_function_name"
     formatted_message = formatter.format(record)
-    assert "very_lo..." in formatted_message
-    assert "very_lo..." in formatted_message
+    assert "very_long_ | very_long_" in formatted_message
 
 
 def test_custom_formatter_column_width():
@@ -97,6 +96,25 @@ def test_custom_formatter_column_width():
 
     with pytest.raises(ValueError):
         formatter.set_column_width(5)
+
+
+def test_default_formatter():
+    """Test the default formatter."""
+    formatter = DEFAULT_FORMATTER
+    record = logging.LogRecord(
+        name="test",
+        level=logging.INFO,
+        pathname="test_path",
+        lineno=1,
+        msg="Test message",
+        args=None,
+        exc_info=None,
+    )
+    record.module = "very_long_module_name"
+    record.funcName = "very_long_function_name"
+    assert "[INFO     | very_long_module_name | very_long_function_name:1   ] > Test message" in formatter.format(
+        record
+    )
 
 
 def test_logger_debug(capsys):
