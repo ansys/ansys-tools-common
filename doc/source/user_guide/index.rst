@@ -4,13 +4,12 @@
 User guide
 ==========
 
-This section explains key concepts for implementing the Ansys tools common in your workflow.
-You can use the Ansys tools common in your examples as well as integrate this library into
-your own code.
+This section explains key concepts for implementing its set of tools in your
+PyAnsys workflows. You can use these tools in your examples as well as integrate Ansys Common Tools into your own code.
 
 .. grid:: 1 2 2 2
 
-    .. grid-item-card:: Ansys tools path
+    .. grid-item-card:: Ansys path tool
         :padding: 2 2 2 2
         :link: ansys_tools_path
         :link-type: doc
@@ -50,7 +49,7 @@ your own code.
         :link: launcher/index
         :link-type: doc
 
-        Learn how to use the launcher tool.
+        Learn how to use the local launcher tool.
 
 .. toctree::
     :hidden:

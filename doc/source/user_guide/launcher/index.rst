@@ -1,13 +1,13 @@
-User guide
-----------
+Local product launcher
+----------------------
 
-This section provides an overview of the Local Product Launcher and how to use it.
+Use the local product launcher rather than launch functions implemented by various PyAnsys libraries. These pages provide an overview and describes how to use it.
 
-- The :ref:`rationale` page provides a high-level overview of the problem that the
-  Local Product Launcher solves.
-- The :ref:`ref_cli` page describes the command-line interface.
-- The :ref:`plugin_creation` page describes how to create a launcher plugin to extend
-  the Local Product Launcher for use with another Ansys product.
+- :ref:`rationale`: Provides a high-level overview of the problem that the
+  local product launcher solves.
+- :ref:`ref_cli`: Describes the command-line interface.
+- :ref:`plugin_creation`: Describes how to create a launcher plugin to
+  extend   the local product launcher for use with another Ansys product.
 
 .. toctree::
     :maxdepth: 2

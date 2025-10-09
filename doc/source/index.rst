@@ -1,7 +1,7 @@
-Ansys tools common |version|
+Ansys Common Tools |version|
 ############################
 
-The Ansys tools project is a collection of tools for the PyAnsys ecosystem.
+Ansys Common Tools provides a collection of tools for the PyAnsys ecosystem.
 
 
 
@@ -13,14 +13,15 @@ The Ansys tools project is a collection of tools for the PyAnsys ecosystem.
         :link: getting_started/index
         :link-type: doc
 
-        Learn how to install the collection.
+        Learn how to install Ansys Common Tools in user mode.
 
     .. grid-item-card:: User guide :material-regular:`menu_book`
         :padding: 2 2 2 2
         :link: user_guide/index
         :link-type: doc
 
-        Understand key concepts for using the tools into your workflow.
+        Understand key concepts for implementing its set of tools
+        in your workflows.
 
 
     .. grid-item-card:: API reference :material-regular:`bookmark`
@@ -29,7 +30,7 @@ The Ansys tools project is a collection of tools for the PyAnsys ecosystem.
         :link-type: doc
 
         Understand how to use Python to interact programmatically with
-        the Ansys tools collection.
+        its set of tools.
 
     .. grid-item-card:: Contribute :material-regular:`group`
         :padding: 2 2 2 2

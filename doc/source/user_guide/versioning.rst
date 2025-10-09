@@ -1,28 +1,19 @@
 .. ref_versioning:
 
-User guide
-==========
+Ansys versioning tool
+=====================
 
-The fundamental object provided by ``ansys.tools.versioning`` is a decorator
-named :meth:`ansys.tools.versioning.requires_version` which accepts:
+Use the Ansys versioning tool to enforce version requirements for methods in classes. The :meth:`requires_version <ansys.tools.versioning.requires_version>` decorator specifies the required version and version map. This decorator accepts the following:
 
-* The required version as a string ``"<Major>.<Minor>.<Patch>"`` or tuple
-  ``(<Major>, <Minor>, <Patch>)``.
+* The required version as a string (``"<Major>.<Minor>.<Patch>"``) or
+  a tuple (``(<Major>, <Minor>, <Patch>)``)
+* A version map in the form of dictionary relating the required version to
+  its Ansys unified install, such as ``VERSION_MAP = {(<Major>, <Minor>, <Patch>): "2022R1"}``
 
-* A version map in the form of dictionary relating the required version and its
-  Ansys unified install, ``VERSION_MAP = {(<Major>, <Minor>, <Patch>): "2022R1"}``
-
-
-How to use
-----------
 The ``requires_version`` decorator is expected to be used in all the desired
-methods of a class containing a ``_server_version`` attribute. If the class in
-which it is used does not contain this attribute, an ``AttributeError`` is
-raised.
+methods of a class containing a ``_server_version`` attribute. If the class in which the decorator is used does not contain this attribute, an ``AttributeError`` is raised.
 
-As an example, consider the following code declaring a generic ``Server`` class
-and a ``VERSION_MAP`` dictionary
-
+The following example declares a generic ``Server`` class and a ``VERSION_MAP`` dictionary:
 
 .. code-block:: python
 
@@ -34,7 +25,7 @@ and a ``VERSION_MAP`` dictionary
 
 
     class Server:
-        """A basic class for modelling a server."""
+        """A basic class for modeling a server."""
 
         def __init__(self, version):
             """Initializes the server."""
@@ -48,18 +39,14 @@ and a ``VERSION_MAP`` dictionary
         def new_method(self):
             pass
 
-
-Suppose that two servers are created using previous class. Each of the servers
-is using a different version, meaning that some of the methods are available
-while some others are not:
+Suppose you create two servers using the previous class. Each server uses a different version, meaning that some methods are available while others are not:
 
 .. code-block:: pycon
 
     >>> old_server = Server("0.4.5")  # Can use "old_method" but not "new_method"
     >>> new_server = Server("0.5.5")  # Can use "old_method" and "new_method"
 
-Executing each one of the methods it is possible to see that both instances can
-execute the ``old_method`` function:
+If you execute each of the methods, both instances execute ``old_method`` without any issues:
 
 .. code-block:: pycon
 
@@ -67,8 +54,8 @@ execute the ``old_method`` function:
     ...     server.old_method()
     ...
 
-However, when trying to run ``new_method``, the old server raises a
-``VersionError`` exception, indicating that a higher server version is required:
+However, when you run ``new_method``, the old server raises a
+``VersionError`` exception, indicating that it requires a higher server version:
 
 .. code-block:: pycon
 

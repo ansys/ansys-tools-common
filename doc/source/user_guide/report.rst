@@ -1,40 +1,29 @@
 .. _ref_report:
 
-User guide
-==========
+Report tool
+===========
 
-This section explains how to use ``pyansys-tools-report`` and its features.
+Use the Ansys report tool to generate reports. This tool includes the main
+:class:`Report <ansys.tools.common.report.Report>` class, which extends ``scooby.Report`` and customizes it to display Ansys libraries and variables in a common format.
 
-Using PyAnsys Tools Report
---------------------------
-
-Once the ``pyansys-tools-report`` package is installed in your own personal environment (if not, please proceed
-to :ref:`ref_getting_started`), you can start importing the package and using it.
-
-In order to import the package, please run:
+To import the package, run this command:
 
 .. code:: python
 
     import ansys.tools.report as pyansys_report
 
-The ``pyansys-tools-report`` contains a main class called ``Report``. This class is basically an extension of the
-``scooby.Report``, but customized for showing Ansys libraries and variables in a common format.
-
-The possible arguments that the ``Report`` class accepts can be found in the `API reference <../api/index.html>`_. Please, have a look
-at it to understand the arguments you may use. A simple example of Ansys variables and libraries is shown below.
+Here is a simple example of Ansys variables and libraries:
 
 .. code:: python
 
-    # After defining my_ansys_libs and my_ansys_vars with the needed format (see API Reference)
-    # we can start the instantiation of the report
-    #
+    # Define my_ansys_libs and my_ansys_vars with the required format (see API Reference)
     # Instantiate a Report object
     rep = report.Report(ansys_libs=my_ansys_libs, ansys_vars=my_ansys_vars)
 
-    # For printing the report
+    # Print the report
     rep
 
-The typical output of a ``Report`` would look as follows:
+The typical output of a report looks like this:
 
 .. code-block:: text
 
@@ -99,10 +88,7 @@ The typical output of a ``Report`` would look as follows:
     >>> MYVAR_1                        VAL_1
     >>> MYVAR_2                        VAL_2
 
-
-By default, the ``Report`` class would look for a certain set of environment variables. The following
-strings are searched for in the available environment variables. If any match is found, they are included
-in the report:
+By default, the ``Report`` class searches for a specific set of environment variables. The following strings are searched in the available environment variables. If any match is found, they are included in the report.
 
 * ``AWP_ROOT``
 * ``ANS``
@@ -111,8 +97,7 @@ in the report:
 * ``AEDT``
 * ``DPF``
 
-Also, several Python packages are reported by default. The set of reported packages always includes
-the following list:
+The report also includes several Python packages by default. The set of reported packages always includes the following:
 
 * ``ansys-mapdl-core``
 * ``ansys-dpf-core``
@@ -140,8 +125,5 @@ the following list:
 * ``grpc``
 * ``google.protobuf``
 
-If you want the ``Report`` class to look for some extra environment variables by default, please
-`raise an issue <https://github.com/ansys/ansys-tools-common/issues>`_.
-
-Enjoy its use. If you have any doubts, please raise a question/issue in the
-`PyAnsys Tools Report Issues <https://github.com/ansys/ansys-tools-common/issues>`_ site.
+If you want the ``Report`` class to include additional environment variables by default, create an
+`issue <https://github.com/ansys/ansys-tools-common/issues>`_ and provide details about the variables that you want to include.
