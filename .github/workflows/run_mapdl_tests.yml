@@ -43,10 +43,12 @@ jobs:
       run: |
         uv sync --extra tests
     - name: Run tests
+      env:
+        PACKAGE_NAMESPACE: ${{ env.PACKAGE_NAMESPACE }}
       run: |
         uv sync --extra tests --no-dev
         uv pip install tests/launcher/pkg_with_entrypoint
-        uv run pytest -vx --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
+        uv run pytest -vx --cov=${PACKAGE_NAMESPACE} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
 
       # - uses: codecov/codecov-action@v5
       #   name: 'Upload coverage to CodeCov'
