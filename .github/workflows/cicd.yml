@@ -24,7 +24,7 @@ jobs:
         contents: write
         pull-requests: write
       steps:
-        - uses: ansys/actions/doc-deploy-changelog@v10
+        - uses: ansys/actions/doc-deploy-changelog@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
           with:
             token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
             bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
@@ -47,7 +47,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
           - name: PyAnsys code style checks
-            uses: ansys/actions/code-style@v10
+            uses: ansys/actions/code-style@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
             with:
               python-version: ${{ env.MAIN_PYTHON_VERSION }}
     smoke-tests:
@@ -60,7 +60,7 @@ jobs:
                 python-version: ['3.10', '3.11', '3.12']
         steps:
         - name: Build wheelhouse and perform smoke test
-          uses: ansys/actions/build-wheelhouse@v10
+          uses: ansys/actions/build-wheelhouse@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
           with:
             library-name: ${{ env.PACKAGE_NAME }}
             operating-system: ${{ matrix.os }}
@@ -77,9 +77,9 @@ jobs:
 
       steps:
         - name: Checkout repository
-          uses: actions/checkout@v3
+          uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
         - name: Set up Python
-          uses: actions/setup-python@v4
+          uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4.9.1
           with:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
             cache: 'pip'
@@ -107,7 +107,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: PyAnsys documentation style checks
-          uses: ansys/actions/doc-style@v10
+          uses: ansys/actions/doc-style@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
           with:
             token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -117,7 +117,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Build documentation
-          uses: ansys/actions/doc-build@v10
+          uses: ansys/actions/doc-build@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
           with:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
             check-links: false # Delete after first release
@@ -128,7 +128,7 @@ jobs:
         needs: [tests, doc-build]
         steps:
             - name: Build library source and wheel artifacts
-              uses: ansys/actions/build-library@v10
+              uses: ansys/actions/build-library@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
               with:
                 library-name: ${{ env.PACKAGE_NAME }}
                 python-version: ${{ env.MAIN_PYTHON_VERSION }}
@@ -159,14 +159,14 @@ jobs:
         #     skip-existing: false
 
         - name: "Release to the private PyPI repository"
-          uses: ansys/actions/release-pypi-private@v9
+          uses: ansys/actions/release-pypi-private@495ca3d79c1627f5b96c469cfbe799718e9dc35f # v9.0.13
           with:
             library-name: "ansys-tools-common"
             twine-username: "__token__"
             twine-token: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
 
         - name: Release to GitHub
-          uses: ansys/actions/release-github@v10
+          uses: ansys/actions/release-github@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
           with:
             token: ${{ secrets.GITHUB_TOKEN }}
             library-name: ${{ env.PACKAGE_NAME }}
@@ -178,7 +178,7 @@ jobs:
       needs: [release]
       steps:
         - name: Deploy the stable documentation
-          uses: ansys/actions/doc-deploy-stable@v10
+          uses: ansys/actions/doc-deploy-stable@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
           with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
