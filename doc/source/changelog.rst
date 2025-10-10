@@ -1,7 +1,8 @@
 Release notes
 #############
 
-This document contains the release notes for the |project| project.
+This document contains the release notes for the ``ansys-tools-common``
+project.
 
 .. vale off
 
