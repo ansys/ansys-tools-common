@@ -19,7 +19,9 @@ permissions:
   packages: read
 
 jobs:
+
   build-tests:
+    name: "Build tests"
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/ansys/mapdl:v22.2-ubuntu@sha256:024c587f4a8190e99cc3f08a2dc231583032e784a8ef7d7659f8dd9748116697
