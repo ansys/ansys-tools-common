@@ -8,6 +8,12 @@ This section explains key concepts for implementing the Ansys tools common in yo
 You can use the Ansys tools common in your examples as well as integrate this library into
 your own code.
 
+.. important::
+   This library only supports the last two major versions of Python. Usage with older
+   versions might or might not work.
+
+
+
 .. grid:: 1 2 2 2
 
     .. grid-item-card:: Ansys tools path

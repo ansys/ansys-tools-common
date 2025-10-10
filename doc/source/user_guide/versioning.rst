@@ -1,7 +1,7 @@
 .. ref_versioning:
 
-User guide
-==========
+Ansys versioning tool
+=====================
 
 The fundamental object provided by ``ansys.tools.versioning`` is a decorator
 named :meth:`ansys.tools.versioning.requires_version` which accepts:
