@@ -72,14 +72,14 @@ class DownloadManager(metaclass=DownloadManagerMeta):
     def download_file(
         self, filename: str, directory: str, destination: Optional[str] = None, force: bool = False
     ) -> str:
-        """Download an example file from the ``example-data'' repository.
+        """Download an example file from the ``example-data`` repository.
 
         Parameters
         ----------
         filename : str
             Name of the example file to download.
          directory : str
-            Path under the ``example-data'' repository.
+            Path under the ``example-data`` repository.
         destination : str, default: None
             Path to download the example file to. The default
             is ``None``, in which case the default path for app data
@@ -95,7 +95,6 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Tuple containing the filepath to use and the local
             filepath of the downloaded directory. The two are
             different in case of containers.
-
         """
         # Convert to Path object
         destination_path = Path(destination) if destination is not None else None
