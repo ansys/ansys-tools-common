@@ -1,3 +1,4 @@
+---
 name: GitHub CI
 
 on:
@@ -5,199 +6,171 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - "*"
+    - '*'
     branches:
-      - main
+    - main
 
 env:
-    PACKAGE_NAME: ansys-tools-common
-    MAIN_PYTHON_VERSION: 3.13
-    DOCUMENTATION_CNAME: tools.docs.pyansys.com
+  PACKAGE_NAME: ansys-tools-common
+  MAIN_PYTHON_VERSION: 3.13
+  DOCUMENTATION_CNAME: tools.docs.pyansys.com
 
 permissions:
   contents: read
 
 jobs:
 
-    update-changelog:
-      name: "Update CHANGELOG (on release)"
-      if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-      runs-on: ubuntu-latest
-      permissions:
-        contents: write
-        pull-requests: write
-      steps:
-        - uses: ansys/actions/doc-deploy-changelog@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-            bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
-            bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+  changelog-fragment:
+    name: Create changelog fragment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - uses: ansys/actions/doc-changelog@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+        bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+        bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
-    # TODO uncomment after the first public release
-    # check-vulnerabilities:
-    #   name: "Check library vulnerabilities"
-    #   runs-on: ubuntu-latest
-    #   steps:
-    #     - uses: ansys/actions/check-vulnerabilities@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-    #       with:
-    #         python-version: ${{ env.MAIN_PYTHON_VERSION }}
-    #         token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-    #         python-package-name: ${{ env.PACKAGE_NAME }}
-    #         dev-mode: ${{ github.ref != 'refs/heads/main' }}
+  code-style:
+    name: Code style
+    runs-on: ubuntu-latest
+    steps:
+    - uses: ansys/actions/code-style@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-    actions-security:
-      name: Check actions security
-      runs-on: ubuntu-latest
-      steps:
-        - uses: ansys/actions/check-actions-security@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            generate-summary: true
-            token: ${{ secrets.GITHUB_TOKEN }}
-            auditing-level: 'high'
+  doc-style:
+    name: Doc style
+    runs-on: ubuntu-latest
+    steps:
+    - uses: ansys/actions/doc-style@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-    style:
-      name: Code style
-      runs-on: ubuntu-latest
-      steps:
-        - name: PyAnsys code style checks
-          uses: ansys/actions/code-style@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            python-version: ${{ env.MAIN_PYTHON_VERSION }}
+  actions-style:
+    name: Actions style
+    runs-on: ubuntu-latest
+    steps:
+    - uses: ansys/actions/check-actions-security@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        generate-summary: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+        auditing-level: high
 
-    smoke-tests:
-      name: Build and Smoke tests
-      runs-on: ${{ matrix.os }}
-      strategy:
-        fail-fast: false
-        matrix:
-          os: [ubuntu-latest, windows-latest, macos-latest]
-          python-version: ['3.10', '3.11', '3.12']
-      steps:
-        - name: Build wheelhouse and perform smoke test
-          uses: ansys/actions/build-wheelhouse@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            library-name: ${{ env.PACKAGE_NAME }}
-            operating-system: ${{ matrix.os }}
-            python-version: ${{ matrix.python-version }}
-            whitelist-license-check: "termcolor"  # Has MIT license, but it's not recognized
+  wheelhouse:
+    name: Wheelhouse / ${{ matrix.os }} /
+    runs-on: ${{ matrix.os }}
+    needs: code-style
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ['3.10', '3.11', '3.12']
+    steps:
+    - uses: ansys/actions/build-wheelhouse@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        library-name: ${{ env.PACKAGE_NAME }}
+        operating-system: ${{ matrix.os }}
+        python-version: ${{ matrix.python }}
+        whitelist-license-check: termcolor           # Has MIT license, but it's not recognized
 
-    tests:
-      name: Testing
-      runs-on: ubuntu-latest
-      needs: [smoke-tests]
-      env:
-        ANSYS_LOCAL: false
-        ON_UBUNTU: true
+  tests:
+    name: Testing
+    runs-on: ubuntu-latest
+    needs: wheelhouse
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ['3.10', '3.11', '3.12']
+    env:
+      ANSYS_LOCAL: false
+      ON_UBUNTU: true
+    steps:
+    - uses: ansys/actions/tests-pytest@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        group-dependencies: tests
+            # uv pip install tests/launcher/pkg_with_entrypoint
 
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
-          with:
-            persist-credentials: false
-        - name: Set up Python
-          uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4.9.1
-          with:
-            python-version: ${{ env.MAIN_PYTHON_VERSION }}
+  doc-build:
+    name: Build documentation
+    needs: doc-style
+    runs-on: ubuntu-latest
+    steps:
+    - uses: ansys/actions/doc-build@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        python-version: ${{ env.MAIN_PYTHON_VERSION }}
+        check-links: false
+        group-dependencies: doc
 
-        - name: Install uv and create venv
-          run: |
-            python -m pip install --upgrade pip
-            pip install uv
-        - name: Install project dependencies
-          run: |
-            uv sync --extra tests
-        - name: Run tests
-          run: |
-            uv sync --extra tests --no-dev
-            uv pip install tests/launcher/pkg_with_entrypoint
-            uv run pytest
+  build-library:
+    name: Build library
+    runs-on: ubuntu-latest
+    needs: [doc-build, tests]
+    steps:
+    - uses: ansys/actions/build-library@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        library-name: ${{ env.PACKAGE_NAME }}
+        python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-        # - uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
-        #   name: 'Upload coverage to CodeCov'
-        #   with:
-        #     token: ${{ secrets.CODECOV_TOKEN }}
+  release:
+    name: Release project
+    if: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
+    needs: build-library
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093         # v4.3.0
+      with:
+        name: ${{ env.PACKAGE_NAME }}-artifacts
+        path: ${{ env.PACKAGE_NAME }}-artifacts
 
-    docs-style:
-      name: Documentation Style Check
-      runs-on: ubuntu-latest
-      steps:
-        - name: PyAnsys documentation style checks
-          uses: ansys/actions/doc-style@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release to the public PyPI
+      uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc         # v1.12.4
+      with:
+        repository-url: https://upload.pypi.org/legacy/
+        print-hash: true
+        packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
+        skip-existing: false
 
-    doc-build:
-      name: Build documentation
-      needs: [docs-style]
-      runs-on: ubuntu-latest
-      steps:
-        - name: Build documentation
-          uses: ansys/actions/doc-build@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            python-version: ${{ env.MAIN_PYTHON_VERSION }}
-            check-links: false # Delete after first release
+    - name: Release to GitHub
+      uses: ansys/actions/release-github@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        library-name: ${{ env.PACKAGE_NAME }}
 
-    package:
-      name: Package library
-      runs-on: ubuntu-latest
-      needs: [tests, doc-build]
-      steps:
-        - name: Build library source and wheel artifacts
-          uses: ansys/actions/build-library@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            library-name: ${{ env.PACKAGE_NAME }}
-            python-version: ${{ env.MAIN_PYTHON_VERSION }}
+  doc-deploy-stable:
+    name: Deploy stable docs
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+    - uses: ansys/actions/doc-deploy-stable@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        cname: ${{ env.DOCUMENTATION_CNAME }}
+        token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+        bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+        bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
-    release:
-      name: Release project
-      if: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
-      needs: [package]
-      runs-on: ubuntu-latest
-      environment: release
-      permissions:
-        id-token: write
-        contents: write
-      steps:
-        - name: "Download the library artifacts from build-library step"
-          uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-          with:
-            name: ${{ env.PACKAGE_NAME }}-artifacts
-            path: ${{ env.PACKAGE_NAME }}-artifacts
+  deploy-changelog:
+    name: Deploy changelog
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    needs: doc-deploy-stable
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - uses: ansys/actions/doc-deploy-changelog@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+      with:
+        token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+        bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+        bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
-        # TODO uncomment after the first public release
-        # - name: "Upload artifacts to PyPI using trusted publisher"
-        #   uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
-        #   with:
-        #     repository-url: "https://upload.pypi.org/legacy/"
-        #     print-hash: true
-        #     packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
-        #     skip-existing: false
 
-        - name: "Release to the private PyPI repository"
-          uses: ansys/actions/release-pypi-private@495ca3d79c1627f5b96c469cfbe799718e9dc35f # v9.0.13
-          with:
-            library-name: "ansys-tools-common"
-            twine-username: "__token__"
-            twine-token: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
-
-        - name: Release to GitHub
-          uses: ansys/actions/release-github@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            library-name: ${{ env.PACKAGE_NAME }}
-
-    upload_docs_release:
-      name: Upload release documentation
-      if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-      runs-on: ubuntu-latest
-      needs: [release]
-      permissions:
-        contents: write
-      steps:
-        - name: Deploy the stable documentation
-          uses: ansys/actions/doc-deploy-stable@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-          with:
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-            bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
-            bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}

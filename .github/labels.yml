@@ -1,3 +1,4 @@
+---
 - name: bug
   description: Something isn't working
   color: d42a34

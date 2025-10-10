@@ -1,11 +1,12 @@
+---
 documentation:
 - changed-files:
-  - any-glob-to-any-file: ['doc/source/**/*', 'README.md']
+  - any-glob-to-any-file: [doc/source/**/*, README.md]
 
 maintenance:
 - changed-files:
-  - any-glob-to-any-file: ['.github/**/*', 'pyproject.toml', 'tox.ini', '.pre-commit-config.yaml']
+  - any-glob-to-any-file: [.github/**/*, pyproject.toml, tox.ini, .pre-commit-config.yaml]
 
 testing:
 - changed-files:
-  - any-glob-to-any-file: ['tests/*']
+  - any-glob-to-any-file: [tests/*]

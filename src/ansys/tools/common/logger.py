@@ -27,8 +27,6 @@ import datetime
 import logging
 from pathlib import Path
 
-from ansys.tools.common.logger_formatter import DEFAULT_FORMATTER
-
 
 class SingletonType(type):
     """Provides the singleton helper class for the logger."""
@@ -40,6 +38,37 @@ class SingletonType(type):
         if cls not in cls._instances:
             cls._instances[cls] = super(SingletonType, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
+
+
+class CustomFormatter(logging.Formatter):
+    """Custom formatter to truncate long columns."""
+
+    def set_column_width(self, width: int):
+        """Set the maximum column width for module and function names."""
+        # at least 8
+        if width < 8:
+            raise ValueError("Column width must be at least 8 characters.")
+        self._max_column_width = width
+
+    @property
+    def max_column_width(self):
+        """Get the maximum column length."""
+        if not hasattr(self, "_max_column_width"):
+            self._max_column_width = 15
+        return self._max_column_width
+
+    def format(self, record):
+        """Format the log record, truncating the module and function names if necessary."""
+        if len(record.module) > self.max_column_width:
+            record.module = record.module[: self.max_column_width - 3] + "..."
+        if len(record.funcName) > self.max_column_width:
+            record.funcName = record.funcName[: self.max_column_width - 3] + "..."
+
+        # Fill the module and function names with spaces to align them
+        record.module = record.module.ljust(self.max_column_width)
+        record.funcName = record.funcName.ljust(self.max_column_width)
+
+        return super().format(record)
 
 
 class Logger(object, metaclass=SingletonType):
@@ -62,7 +91,9 @@ class Logger(object, metaclass=SingletonType):
         """Initialize the logger."""
         self._logger = logging.getLogger(logger_name)
         self._logger.setLevel(level)
-        self._formatter = DEFAULT_FORMATTER
+        self._formatter = CustomFormatter(
+            "%(asctime)s [%(levelname)-8s | %(module)s | %(funcName)s:%(lineno)-4d] > %(message)s"
+        )
         self._formatter.set_column_width(column_width)
 
     def get_logger(self):

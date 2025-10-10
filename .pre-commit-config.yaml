@@ -1,4 +1,18 @@
+---
 repos:
+
+- repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+  rev: 0.2.1
+  hooks:
+  - id: yamlfmt
+    args: [--mapping, '2', --sequence, '2', --offset, '0']
+
+- repo: https://github.com/tox-dev/pyproject-fmt
+  rev: v2.8.0
+  hooks:
+  - id: pyproject-fmt
+    args: [--keep-full-version]
+
 - repo: https://github.com/adamchainz/blacken-docs
   rev: 1.19.1
   hooks:
@@ -9,7 +23,7 @@ repos:
   rev: v2.4.1
   hooks:
   - id: codespell
-    args: ["--ignore-words", "doc/styles/config/vocabularies/ANSYS/accept.txt"]
+    args: [--ignore-words, doc/styles/config/vocabularies/ANSYS/accept.txt]
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v5.0.0
@@ -22,19 +36,18 @@ repos:
 - repo: https://github.com/ansys/pre-commit-hooks
   rev: v0.5.2
   hooks:
-    - id: add-license-headers
-      files: '(src|examples|tests|docker)/.*\.(py)|\.(proto)'
-      args:
-      - --start_year=2025
+  - id: add-license-headers
+    files: (src|examples|tests|docker)/.*\.(py)|\.(proto)
+    args:
+    - --start_year=2025
 
-# this validates our github workflow files
 - repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.33.0
   hooks:
-    - id: check-github-workflows
+  - id: check-github-workflows
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.11.11
   hooks:
-    - id: ruff-check
-    - id: ruff-format
+  - id: ruff-check
+  - id: ruff-format

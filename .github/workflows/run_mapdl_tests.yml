@@ -1,3 +1,4 @@
+---
 name: MAPDL dependent tests for paths tool
 
 on:
@@ -5,13 +6,13 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - "*"
+    - '*'
     branches:
-      - main
+    - main
 
 env:
-    PACKAGE_NAME: ansys-tools-common
-    MAIN_PYTHON_VERSION: 3.13
+  PACKAGE_NAME: ansys-tools-common
+  MAIN_PYTHON_VERSION: 3.13
 
 permissions:
   contents: read

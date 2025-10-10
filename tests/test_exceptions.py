@@ -22,7 +22,15 @@
 
 """Module for exception testing."""
 
-from ansys.tools.common.exceptions import AnsysError, AnsysLogicError, AnsysTypeError, VersionError, VersionSyntaxError
+from ansys.tools.common.exceptions import (
+    AnsysError,
+    AnsysHostnameValueError,
+    AnsysLogicError,
+    AnsysPortValueError,
+    AnsysTypeError,
+    VersionError,
+    VersionSyntaxError,
+)
 
 
 def test_ansys_error():
@@ -32,6 +40,24 @@ def test_ansys_error():
     except AnsysError as e:
         assert str(e) == "This is a test error."
         assert e.message == "This is a test error."
+
+
+def test_ansys_hostname_value_error():
+    """Test the AnsysHostnameValueError exception."""
+    try:
+        raise AnsysHostnameValueError("Only localhost is supported.")
+    except AnsysHostnameValueError as e:
+        assert str(e) == "Only localhost is supported."
+        assert e.message == "Only localhost is supported."
+
+
+def test_ansys_port_value_error():
+    """Test the AnsysPortValueError exception."""
+    try:
+        raise AnsysPortValueError("Port number must be in range from 0 to 65535")
+    except AnsysPortValueError as e:
+        assert str(e) == "Port number must be in range from 0 to 65535"
+        assert e.message == "Port number must be in range from 0 to 65535"
 
 
 def test_ansys_type_error():
