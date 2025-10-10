@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Convenience CLI to save path for ansys application in configuration."""
+"""Convenience CLI to save path for Ansys application in configuration."""
 
 import click
 
@@ -40,14 +40,14 @@ from ansys.tools.common.path.path import _save_path
     "--allow-prompt",
     is_flag=True,
     default=False,
-    help="Allow prompt. Used in case a path is not given or the given path is not valid",
+    help="Allow prompt. Used in case a path is not given or the given path is not valid.",
 )
 def cli(
     name: str,
     location: str,
     allow_prompt: bool,
 ):
-    """CLI tool to store the path of a solver.
+    """CLI tool to store the path of a product.
 
     USAGE:
 
