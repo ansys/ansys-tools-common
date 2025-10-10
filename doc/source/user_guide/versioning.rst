@@ -3,12 +3,16 @@
 Ansys versioning tool
 =====================
 
-Use the Ansys versioning tool to enforce version requirements for methods in classes. The :meth:`requires_version <ansys.tools.versioning.requires_version>` decorator specifies the required version and version map. This decorator accepts the following:
+Use the Ansys versioning tool to enforce version requirements for methods in classes. The :meth:`requires_version <ansys.tools.versioning.requires_version>` decorator, available in the ``ansys.tools.versioning`` module, specifies the required version and version map. This decorator accepts the following:
 
 * The required version as a string (``"<Major>.<Minor>.<Patch>"``) or
-  a tuple (``(<Major>, <Minor>, <Patch>)``)
-* A version map in the form of dictionary relating the required version to
-  its Ansys unified install, such as ``VERSION_MAP = {(<Major>, <Minor>, <Patch>): "2022R1"}``
+  a tuple (``(<Major>, <Minor>, <Patch>)``).
+* A version map in the form of a dictionary relating the required version to
+  its Ansys unified installation. For example:
+
+  .. code-block:: python
+
+      VERSION_MAP = {("<Major>", "<Minor>", "<Patch>"): "<Release>"}
 
 The ``requires_version`` decorator is expected to be used in all the desired
 methods of a class containing a ``_server_version`` attribute. If the class in which the decorator is used does not contain this attribute, an ``AttributeError`` is raised.
@@ -39,14 +43,14 @@ The following example declares a generic ``Server`` class and a ``VERSION_MAP`` 
         def new_method(self):
             pass
 
-Suppose you create two servers using the previous class. Each server uses a different version, meaning that some methods are available while others are not:
+Suppose you create two servers using the previous class. Because each server uses a different version, some methods are available on both servers while other methods are not:
 
 .. code-block:: pycon
 
     >>> old_server = Server("0.4.5")  # Can use "old_method" but not "new_method"
     >>> new_server = Server("0.5.5")  # Can use "old_method" and "new_method"
 
-If you execute each of the methods, both instances execute ``old_method`` without any issues:
+If you run each of these methods, both instances execute ``old_method`` without any issues:
 
 .. code-block:: pycon
 
@@ -55,7 +59,7 @@ If you execute each of the methods, both instances execute ``old_method`` withou
     ...
 
 However, when you run ``new_method``, the old server raises a
-``VersionError`` exception, indicating that it requires a higher server version:
+``VersionError`` exception. This exception indicates that the method requires a higher server version than the one available:
 
 .. code-block:: pycon
 

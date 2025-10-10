@@ -4,12 +4,10 @@
 User guide
 ==========
 
-This section explains key concepts for implementing its set of tools in your
-PyAnsys workflows. You can use these tools in your examples as well as integrate Ansys Common Tools into your own code.
+This section explains key concepts for implementing the tools in Ansys Common Tools in your PyAnsys workflows. You can use these tools in your examples as well as integrate them into your own code.
 
 .. important::
-   This library only supports the last two major versions of Python. Usage with older
-   versions might or might not work.
+   Ansys Common Tools only supports the last two major versions of Python. Usage with older versions might not work.
 
 
 
@@ -20,14 +18,14 @@ PyAnsys workflows. You can use these tools in your examples as well as integrate
         :link: ansys_tools_path
         :link-type: doc
 
-        Learn how to use Ansys path tool.
+        Learn how to use the Ansys path tool.
 
     .. grid-item-card:: Ansys example downloader
         :padding: 2 2 2 2
         :link: ansys_downloader
         :link-type: doc
 
-        Learn how to use the example downloader tool.
+        Learn how to use the example downloader.
 
     .. grid-item-card:: Ansys exceptions
         :padding: 2 2 2 2

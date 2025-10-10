@@ -3,9 +3,11 @@
 Ansys exceptions
 ================
 
-Use the Ansys exceptions tool to gracefully catch and handle exceptions that might occur when using Ansys tools, thereby providing a better user experience.
+Ansys exceptions are a set of predefined error-handling classes designed to help developers identify, catch, and handle errors that might occur when using Ansys tools. These exceptions provide a structured way to manage errors, ensuring that your programs can gracefully recover from unexpected issues and provide meaningful feedback to users.
 
-After importing this tool, use the base :class:`AnsysError <ansys.tools.common.exceptions.AnsysError>` class to catch and handle exceptions related to Ansys tools, extending with your exceptions or using them directly in your programs:
+By using Ansys exceptions, you can improve the robustness and maintainability of your code. They allow you to differentiate between various types of errors, such as invalid input types or logical inconsistencies, and handle them appropriately.
+
+You can import exception classes and use the predefined exceptions directly in your programs:
 
 .. code:: pycon
 
@@ -18,3 +20,15 @@ After importing this tool, use the base :class:`AnsysError <ansys.tools.common.e
    AnsysTypeError: An invalid type was provided.
    >>> raise AnsysLogicError("A logic error occurred in Ansys tools.")
    AnsysLogicError: A logic error occurred in Ansys tools.
+
+You can also extend the base exception class to define your own custom exceptions. This allows you to create error types specific to your needs:
+
+```python
+class CustomError(AnsysError):
+    """A custom exception for specific error handling."""
+
+    pass
+
+
+raise CustomError("This is a custom error message.")
+```

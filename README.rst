@@ -43,9 +43,9 @@ The documentation has these sections:
 - `Getting started <https://ansys.tools.docs.pyansys.com/version/stable/getting_started/index.html>`_: Learn
   how to install Ansys Common Tools in user mode.
 - `User guide <https://ansys.tools.docs.pyansys.com/version/stable/user_guide/index.html>`_: Understand key
-  concepts for implementing its set of tools in your workflows.
+  concepts for implementing its tools in your workflows.
 - `API reference <https://ansys.tools.docs.pyansys.com/version/stable/api/index.html>`_: Understand how to
-  use Python to interact programmatically with its set of tools.
+  use Python to interact programmatically with its tools.
 - `Contribute <https://ansys.tools.docs.pyansys.com/version/stable/contributing.html>`_: Learn how to
   contribute to the Ansys Common Tools codebase or documentation.
 

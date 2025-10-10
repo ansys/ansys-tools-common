@@ -3,7 +3,7 @@
 Ansys path tool
 ===============
 
-Use the Ansys path tool to find the path of the latest local Ansys installation. After importing this tool, call the :func:`find_ansys <ansys.tools.common.path.find_ansys>` function to return the installation path:
+Use the Ansys path tool to find the path of the latest local Ansys installation. Importing this tool and then call the :func:`find_ansys <ansys.tools.common.path.find_ansys>` function to return the installation path:
 
 .. code:: pycon
 

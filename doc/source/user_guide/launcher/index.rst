@@ -1,7 +1,7 @@
 Local product launcher
 ----------------------
 
-Use the local product launcher rather than launch functions implemented by various PyAnsys libraries. These pages provide an overview and describes how to use it.
+Use the local product launcher rather than the launch functions implemented by various PyAnsys libraries. These pages provide an overview and describe how to use the local product launcher:
 
 - :ref:`rationale`: Provides a high-level overview of the problem that the
   local product launcher solves.

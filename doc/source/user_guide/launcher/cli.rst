@@ -3,10 +3,10 @@
 Command-line interface
 ======================
 
-You use the ``ansys-launcher`` command-line interface to edit the default
-launch configuration.
+Use the ``ansys-launcher`` command-line interface to edit default
+launch configurations.
 
-Configuration options for products are defined by each product plugin.
+Each product plugin defines configuration options for its products.
 
 .. click:: ansys.tools.common.launcher._cli:cli
     :prog: ansys-launcher

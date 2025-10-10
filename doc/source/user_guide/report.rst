@@ -1,20 +1,18 @@
 .. _ref_report:
 
-Report tool
-===========
+Ansys report tool
+=================
 
-Use the Ansys report tool to generate reports. This tool includes the main
-:class:`Report <ansys.tools.common.report.Report>` class, which extends
-``scooby.Report`` and customizes it to display Ansys libraries and
-variables in a common format.
+Use the Ansys report tool to generate detailed reports. This tool includes the main :class:`Report <ansys.tools.common.report.Report>` class, which extends ``scooby.Report`` and customizes it to display Ansys libraries and
+environment variables in a standardized format.
 
-To import the package, please run:
+To use the tool, import it:
 
 .. code:: python
 
     import ansys.tools.report as pyansys_report
 
-Here is a simple example of Ansys variables and libraries:
+Here is an example of how to use the tool to display Ansys variables and libraries:
 
 .. code:: python
 
@@ -90,7 +88,7 @@ The typical output of a report looks like this:
     >>> MYVAR_1                        VAL_1
     >>> MYVAR_2                        VAL_2
 
-By default, the ``Report`` class searches for a specific set of environment variables. The following strings are searched in the available environment variables. If any match is found, they are included in the report.
+By default, the ``Report`` class searches for a predefined set of environment variables. The following strings are searched in the available environment variables, and any matches are included in the report:
 
 * ``AWP_ROOT``
 * ``ANS``
@@ -99,7 +97,7 @@ By default, the ``Report`` class searches for a specific set of environment vari
 * ``AEDT``
 * ``DPF``
 
-The report also includes several Python packages by default. The set of reported packages always includes the following:
+The report also includes several Python packages by default. These packages are always included:
 
 * ``ansys-mapdl-core``
 * ``ansys-dpf-core``
