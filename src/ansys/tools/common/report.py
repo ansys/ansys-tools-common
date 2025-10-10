@@ -237,7 +237,7 @@ class Report(scooby.Report):
         """
         if not isinstance(env_var, str):
             return False
-        
+
         # Check if the variable starts with any known Ansys prefix
         return any(env_var.startswith(prefix) for prefix in __ANSYS_VARS_PREFIX__)
 
