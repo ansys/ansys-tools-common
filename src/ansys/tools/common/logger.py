@@ -94,7 +94,7 @@ class Logger(object, metaclass=SingletonType):
 
         Parameters
         ----------
-        stream: TextIO, default: ``sys.stderr``
+        stream: TextIO, default: ``None``
             Stream to output the log output to.
 
         """

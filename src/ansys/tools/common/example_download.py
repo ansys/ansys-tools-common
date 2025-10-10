@@ -135,7 +135,10 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         Parameters
         ----------
         base : str
-            Base URL to which the paths will be appended.
+            Base URL to which the directory path will be appended.
+            If it doesn't end with '/', one will be added automatically.
+        directory : str
+            Directory path to append to the base URL.
 
         Returns
         -------
