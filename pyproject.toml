@@ -103,13 +103,12 @@ addopts = "-ra --cov=ansys.tools.common --cov-report html:.cov/html --cov-report
 
 [tool.towncrier]
 package = "ansys.tools.common"
-directory = "doc/changelog.d"
-filename = "CHANGELOG.md"
-start_string = "<!-- towncrier release notes start -->\n"
-underlines = [ "", "", "" ]
-template = "doc/changelog.d/changelog_template.jinja"
-title_format = "## [{version}](https://github.com/ansys/ansys-tools-common/releases/tag/v{version}) - {project_date}"
-issue_format = "[#{issue}](https://github.com/ansys/ansys-tools-common/pull/{issue})"
+directory = "doc/source/changelog"
+filename = "doc/source/changelog.rst"
+start_string = ".. towncrier release notes start\n"
+template = "doc/changelog/template"
+title_format = "`{version} <https://github.com/ansys/pystk/releases/tag/v{version}>`_ - {project_date}"
+issue_format = "`#{issue} <https://github.com/ansys/pystk/pull/{issue}>`_"
 
 [[tool.towncrier.type]]
 directory = "added"
