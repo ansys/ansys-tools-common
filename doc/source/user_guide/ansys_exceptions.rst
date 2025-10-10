@@ -23,12 +23,12 @@ You can import exception classes and use the predefined exceptions directly in y
 
 You can also extend the base exception class to define your own custom exceptions. This allows you to create error types specific to your needs:
 
-```python
-class CustomError(AnsysError):
-    """A custom exception for specific error handling."""
+.. code:: python
 
-    pass
+   class CustomError(AnsysError):
+       """A custom exception for specific error handling."""
 
+       pass
 
-raise CustomError("This is a custom error message.")
+   raise CustomError("This is a custom error message.")
 ```
