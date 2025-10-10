@@ -54,4 +54,4 @@ jobs:
       run: |
         uv run pytest \
           -vx \
-          --cov=${{ env.PACKAGE_NAMESPACE }} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
+          --cov=${PACKAGE_NAMESPACE} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
