@@ -54,7 +54,7 @@ jobs:
             generate-summary: true
             token: ${{ secrets.GITHUB_TOKEN }}
             auditing-level: 'high'
-          
+
     style:
       name: Code style
       runs-on: ubuntu-latest
@@ -63,7 +63,7 @@ jobs:
           uses: ansys/actions/code-style@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
           with:
             python-version: ${{ env.MAIN_PYTHON_VERSION }}
-    
+
     smoke-tests:
       name: Build and Smoke tests
       runs-on: ${{ matrix.os }}
