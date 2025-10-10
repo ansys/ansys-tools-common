@@ -70,6 +70,8 @@ jobs:
     smoke-tests:
       name: Build and Smoke tests
       runs-on: ${{ matrix.os }}
+      permissions:
+        contents: read
       strategy:
         fail-fast: false
         matrix:
