@@ -91,7 +91,7 @@ jobs:
     steps:
     - uses: ansys/actions/tests-pytest@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
       with:
-        group-dependencies: tests
+        group-dependencies-name: tests
             # uv pip install tests/launcher/pkg_with_entrypoint
 
   doc-build:
