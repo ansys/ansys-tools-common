@@ -103,7 +103,7 @@ jobs:
       with:
         python-version: ${{ env.MAIN_PYTHON_VERSION }}
         check-links: false
-        group-dependencies: doc
+        group-dependencies-name: doc
 
   build-library:
     name: Build library
