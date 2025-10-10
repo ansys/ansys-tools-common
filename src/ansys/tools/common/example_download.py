@@ -78,7 +78,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         ----------
         filename : str
             Name of the example file to download.
-         directory : str
+        directory : str
             Path under the ``example-data`` repository.
         destination : str, default: None
             Path to download the example file to. The default
