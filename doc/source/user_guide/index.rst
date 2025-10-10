@@ -7,6 +7,12 @@ User guide
 This section explains key concepts for implementing its set of tools in your
 PyAnsys workflows. You can use these tools in your examples as well as integrate Ansys Common Tools into your own code.
 
+.. important::
+   This library only supports the last two major versions of Python. Usage with older
+   versions might or might not work.
+
+
+
 .. grid:: 1 2 2 2
 
     .. grid-item-card:: Ansys path tool

@@ -4,9 +4,11 @@ Report tool
 ===========
 
 Use the Ansys report tool to generate reports. This tool includes the main
-:class:`Report <ansys.tools.common.report.Report>` class, which extends ``scooby.Report`` and customizes it to display Ansys libraries and variables in a common format.
+:class:`Report <ansys.tools.common.report.Report>` class, which extends
+``scooby.Report`` and customizes it to display Ansys libraries and
+variables in a common format.
 
-To import the package, run this command:
+To import the package, please run:
 
 .. code:: python
 
