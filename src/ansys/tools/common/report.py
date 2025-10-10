@@ -228,18 +228,18 @@ class Report(scooby.Report):
         Parameters
         ----------
         env_var : str
-            The environment variable to be evaluated.
+            The environment variable name to evaluate.
 
         Returns
         -------
         bool
-            ``True`` when successful, ``False`` when failed.
+            ``True`` if the variable is identified as Ansys-related, ``False`` otherwise.
         """
-        # Loop over the Ansys default variables prefixes
-        for prefix in __ANSYS_VARS_PREFIX__:
-            # Check if the "prefix" substring is found
-            if env_var.startswith(prefix):
-                return True
+        if not isinstance(env_var, str):
+            return False
+
+        # Check if the variable starts with any known Ansys prefix
+        return any(env_var.startswith(prefix) for prefix in __ANSYS_VARS_PREFIX__)
 
     def __repr__(self):
         """Print out the report.
