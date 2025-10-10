@@ -1,12 +1,12 @@
 .. _ref_report:
 
-User guide
-==========
+Ansys report tool
+==================
 
 This section explains how to use ``pyansys-tools-report`` and its features.
 
-Using PyAnsys Tools Report
---------------------------
+Using PyAnsys report tool
+-------------------------
 
 Once the ``pyansys-tools-report`` package is installed in your own personal environment (if not, please proceed
 to :ref:`ref_getting_started`), you can start importing the package and using it.
