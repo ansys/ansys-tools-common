@@ -29,7 +29,7 @@ import ansys.tools.common.report as report
 
 
 def test_create_ansys_report_empty():
-    """Test the creation of a Report and its correct output."""
+    """Test the creation of a report and its correct output."""
     # Instantiate a "default" Report
     rep = report.Report()
 
@@ -106,9 +106,9 @@ None"""
 
 
 def test_create_ansys_report_with_vars():
-    """Test the creation of a Report and its correct output.
+    """Test the creation of a report and its correct output.
 
-    Test the creation of a Report and its correct output
+    Test the creation of a report and its correct output
     when imaginary Ansys variables are provided.
     """
     # Let us imagine some ansys variables
@@ -141,9 +141,9 @@ MYVAR_2                        VAL_2"""
 
 
 def test_create_ansys_report_with_libs_and_vars():
-    """Test the creation of a Report and its correct output.
+    """Test the creation of a report and its correct output.
 
-    Test the creation of a Report and its correct output
+    Test the creation of a report and its correct output
     when imaginary Ansys libraries and variables are provided.
     """
     # Let us imagine some ansys libraries
@@ -202,9 +202,9 @@ None"""
 
 
 def test_create_ansys_report_with_def_vars():
-    """Test the creation of a Report and its correct output.
+    """Test the creation of a report and its correct output.
 
-    Test the creation of a Report and its correct output
+    Test the creation of a report and its correct output
     when imaginary Ansys variables are provided. In this case,
     default vars are expected. And it is also testing when a
     default var is provided specifically, if it is not printed twice.
@@ -245,9 +245,9 @@ FLUENT_VAR1                    FL_VAL_1"""
 
 
 def test_create_ansys_report_with_no_vars():
-    """Test the creation of a Report.
+    """Test the creation of a report.
 
-    Test the creation of a Report and its correct output
+    Test the creation of a report and its correct output
     when no Ansys variables are provided. In this case,
     default vars are expected, even though none are provided.
     """

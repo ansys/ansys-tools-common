@@ -20,7 +20,7 @@ Ansys Common Tools provides a collection of tools for the PyAnsys ecosystem.
         :link: user_guide/index
         :link-type: doc
 
-        Understand key concepts for implementing its tools
+        Understand key concepts for implementing the tools
         in your workflows.
 
 
@@ -29,15 +29,14 @@ Ansys Common Tools provides a collection of tools for the PyAnsys ecosystem.
         :link: api/index
         :link-type: doc
 
-        Understand how to use Python to interact programmatically with
-        its tools.
+        Understand how to use Python to interact programmatically with the tools.
 
     .. grid-item-card:: Contribute :material-regular:`group`
         :padding: 2 2 2 2
         :link: contributing
         :link-type: doc
 
-        Learn how to contribute to the Ansys tools codebase or documentation.
+        Learn how to contribute to the Ansys Common Tools codebase or documentation.
 
 
 

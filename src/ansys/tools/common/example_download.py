@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Module for downloading examples from example-data repository."""
+"""Module for downloading examples from the PyAnsys Github ``example-data`` repository."""
 
 from pathlib import Path
 import tempfile
@@ -55,8 +55,8 @@ class DownloadManagerMeta(type):
 class DownloadManager(metaclass=DownloadManagerMeta):
     """Manages downloads of example files.
 
-    Manages the download of example from the example-data
-    repository https://github.com/ansys/example-data.
+    Manages the download of example from the ``example-data``
+    repository, which is at https://github.com/ansys/example-data.
     """
 
     def __init__(self):
@@ -72,28 +72,29 @@ class DownloadManager(metaclass=DownloadManagerMeta):
     def download_file(
         self, filename: str, directory: str, destination: Optional[str] = None, force: bool = False
     ) -> str:
-        """Download an example file from the example data.
+        """Download an example file from the ``example-data'' repository.
 
         Parameters
         ----------
         filename : str
             Name of the example file to download.
-        destination : str, optional
+         directory : str
+            Path under the ``example-data'' repository.
+        destination : str, default: None
             Path to download the example file to. The default
             is ``None``, in which case the default path for app data
             is used.
-        force : bool, optional
+        force : bool, default: False
             Whether to always download the example file. The default is
             ``False``, in which case if the example file is cached, it
             is reused.
-        directory : str
-            Path under the PyAnsys Github examples repository.
 
         Returns
         -------
         tuple[str, str]
-            Tuple containing the filepath to use and the local filepath of the downloaded
-            directory. The two are different in case of containers.
+            Tuple containing the filepath to use and the local
+            filepath of the downloaded directory. The two are
+            different in case of containers.
 
         """
         # Convert to Path object
@@ -105,7 +106,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         # Check if it was able to create the dir, very rare case
         if destination_path is not None and not destination_path.is_dir():
-            raise ValueError("Destination directory provided does not exist")  # pragma: no cover
+            raise ValueError("Destination directory provided does not exist.")  # pragma: no cover
 
         url = self._get_filepath_on_default_server(filename, directory)
         local_path = self._retrieve_data(url, filename, dest=destination, force=force)
@@ -135,15 +136,15 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         Parameters
         ----------
         base : str
-            Base URL to which the directory path will be appended.
-            If it doesn't end with '/', one will be added automatically.
+            Base URL to append the directory path to.
+            If this URL doesn't end with '/', then it is added automatically.
         directory : str
             Directory path to append to the base URL.
 
         Returns
         -------
         str
-            The joined URL with the base and paths.
+            Joined URL with the base and paths.
         """
         if base[-1] != "/":
             base += "/"
@@ -156,8 +157,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         ----------
         filename : str
             Name of the file to download.
-        directory : str, optional
-            Path under the example-data repository.
+        directory : str, default: None
+            Path under the ``example-data`` repository.
 
         Returns
         -------
@@ -177,18 +178,18 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         Parameters
         ----------
         url : str
-            The URL to download the file from.
+            URL to download the file from.
         filename : str
-            The name of the file to save the downloaded content as.
-        dest : str, optional
-            Destination path of the file, by default None
-        force : bool, optional
-            Force download to avoid cached examples, by default False
+            Name of the file to save the downloaded content as.
+        dest : str, default: None
+            Destination path of the file.
+        force : bool, default: False
+            Whether to force downloading to avoid cached examples.
 
         Returns
         -------
         str
-            The local path where the file was saved.
+            Local path where the file was saved.
         """
         if dest is None:
             dest = tempfile.gettempdir()

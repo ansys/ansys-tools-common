@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Tools for managing Local Product Launcher configuration.
+"""Tools for managing local product launcher configuration.
 
 The methods in the ``config`` class manage the default configuration
 for launching products. The configuration is loaded from and stored to a
@@ -71,9 +71,9 @@ def get_launch_mode_for(*, product_name: str, launch_mode: str | None = None) ->
 
     Parameters
     ----------
-    product_name :
+    product_name : str
         Product to retrieve the launch mode for.
-    launch_mode :
+    launch_mode : str, default: None
         Launch mode to use. The default is ``None``, in which case the default
         launch mode is used. If a launch mode is specified, this value is returned.
 
@@ -93,22 +93,23 @@ def get_launch_mode_for(*, product_name: str, launch_mode: str | None = None) ->
 
 
 def get_config_for(*, product_name: str, launch_mode: str | None) -> DataclassProtocol:
-    """Get the configuration object for a (product, launch_mode) combination.
+    """Get the configuration object for a given product and launch mode.
 
     Get the default configuration object for the product. If a
-    ``launch_mode`` parameter is given, the configuration for this mode is returned.
-    Otherwise, the configuration for the default launch mode is returned.
+    ``launch_mode`` parameter is given, the configuration for
+    this mode is returned. Otherwise, the configuration for
+    the default launch mode is returned.
 
     Parameters
     ----------
-    product_name :
+    product_name : str
         Product to get the configuration for.
-    launch_mode :
+    launch_mode : str, default: None
         Launch mode for the configuration.
 
     Returns
     -------
-    :
+    DataclassProtocol
         Configuration object.
 
     Raises
@@ -132,7 +133,7 @@ def get_config_for(*, product_name: str, launch_mode: str | None) -> DataclassPr
         except TypeError as exc:
             raise RuntimeError(
                 f"Launch mode '{launch_mode}' for product '{product_name}' "
-                f"does not have a default configuration, and is not configured."
+                f"does not have a default configuration and is not configured."
             ) from exc
         return config_entry
 
@@ -147,18 +148,18 @@ def get_config_for(*, product_name: str, launch_mode: str | None) -> DataclassPr
 
 
 def is_configured(*, product_name: str, launch_mode: str | None = None) -> bool:
-    """Check if a configuration exists for the product/launch mode.
+    """Check if a configuration exists for a given product and launch mode.
 
-    Note that if only the fallback launcher/configuration is available, this
-    method returns ``False``.
+    Note that if only the fallback launcher/configuration is available, this method returns ``False``.
 
     Parameters
     ----------
-    product_name :
+    product_name :str
         Product whose configuration is checked.
-    launch_mode :
-        Launch mode whose configuration is checked. The default is ``None``,
-        in which case the default launch mode is used.
+    launch_mode : str, default: None
+        Launch mode whose configuration is checked. The
+        default is ``None``, in which case the default
+        launch mode is used.
     """
     try:
         launch_mode = get_launch_mode_for(product_name=product_name, launch_mode=launch_mode)
@@ -182,18 +183,18 @@ def set_config_for(
     Update the configuration by setting the configuration for the
     given product and launch mode.
 
-    This method only updates the in-memory configuration, and
-    it does not store it to a file.
+    This method only updates the in-memory configuration. It
+    does not store it to a file.
 
     Parameters
     ----------
-    product_name :
+    product_name : str
         Name of the product whose configuration to update.
-    launch_mode :
+    launch_mode : str
         Launch mode that the configuration applies to.
-    config :
+    config : LAUNCHER_CONFIG_T
         Configuration object.
-    overwrite_default :
+    overwrite_default : bool, default: False
         Whether to change the default launch mode for the product
         to the value specified for the ``launch_mode`` parameter.
     """

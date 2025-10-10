@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Helper modules for implementing Local Product Launcher plugins."""
+"""Helper modules for implementing local product launcher plugins."""
 
 from . import grpc, ports
 

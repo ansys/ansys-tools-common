@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Mechanical-specific logic for ansys-tools-path."""
+"""Mechanical-specific logic for the Ansys path tool."""
 
 import os
 from pathlib import Path
@@ -33,7 +33,7 @@ def is_valid_executable_path(exe_loc: str) -> bool:
     Parameters
     ----------
     exe_loc : str
-        The path to the executable file.
+        Path to the executable file.
 
     Returns
     -------

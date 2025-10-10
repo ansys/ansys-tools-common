@@ -21,9 +21,10 @@
 # SOFTWARE.
 
 """
-Tools to find/cache installed Ansys products.
+Tools to find or cache installed Ansys products.
 
-WARNING: This is not concurrent-safe (multiple Python processes might race on this data.)
+.. warning::
+   This is not concurrent-safe. (Multiple Python processes might race on this data.)
 """
 
 from ansys.tools.common.path.path import (
