@@ -138,6 +138,8 @@ jobs:
     doc-build:
       name: Build documentation
       needs: [docs-style]
+      permissions:
+        contents: read
       runs-on: ubuntu-latest
       steps:
         - name: Build documentation
