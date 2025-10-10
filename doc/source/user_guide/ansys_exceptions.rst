@@ -32,4 +32,3 @@ You can also extend the base exception class to define your own custom exception
 
 
    raise CustomError("This is a custom error message.")
-```
