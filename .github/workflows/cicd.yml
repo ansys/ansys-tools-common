@@ -60,6 +60,8 @@ jobs:
           
     style:
       name: Code style
+      permissions:
+        contents: read
       runs-on: ubuntu-latest
       steps:
         - name: PyAnsys code style checks
