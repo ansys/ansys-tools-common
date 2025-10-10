@@ -89,10 +89,25 @@ jobs:
       ANSYS_LOCAL: false
       ON_UBUNTU: true
     steps:
-    - uses: ansys/actions/tests-pytest@c2fa7c93f6883114e0e643599431b33d29f0b13f         # v10.1.4
+    - name: Checkout repository
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8     # 5.0.0
+
+    - name: Set up uv
+      uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c     # 7.0.0
       with:
-        group-dependencies-name: tests
-            # uv pip install tests/launcher/pkg_with_entrypoint
+        python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+    - name: Install project dependencies
+      run: |
+        uv sync --group tests
+
+    - name: Install test package containing entrypoint
+      run: |
+        uv pip install tests/launcher/pkg_with_entrypoint
+
+    - name: Run tests
+      run: |
+        uv run pytest
 
   doc-build:
     name: Build documentation
