@@ -26,6 +26,9 @@ from functools import lru_cache
 import importlib.metadata
 from importlib.metadata import entry_points
 from typing import Any
+import warnings
+
+from ansys.tools.common.logger import LOGGER
 
 from .interface import FALLBACK_LAUNCH_MODE_NAME, DataclassProtocol, LauncherProtocol
 
@@ -64,7 +67,9 @@ def get_all_plugins(hide_fallback: bool = True) -> dict[str, dict[str, type[Laun
         try:
             product_name, launch_mode = entry_point.name.split(".")
         except ValueError:
-            # skip malformed entry point names
+            message = f"Skipping malformed entry point name: {entry_point.name}"
+            warnings.warn(message)
+            LOGGER.warning(message)
             continue
 
         if hide_fallback and launch_mode == FALLBACK_LAUNCH_MODE_NAME:
@@ -72,8 +77,10 @@ def get_all_plugins(hide_fallback: bool = True) -> dict[str, dict[str, type[Laun
 
         try:
             launcher_class = entry_point.load()  # type: ignore
-        except Exception:
-            # skip broken plugins
+        except Exception as exception:
+            message = f"Skipping broken plugin '{entry_point.name}': {exception}"
+            warnings.warn(message)
+            LOGGER.warning(message)
             continue
 
         res.setdefault(product_name, dict())
