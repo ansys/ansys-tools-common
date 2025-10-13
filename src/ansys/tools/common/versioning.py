@@ -294,16 +294,16 @@ def requires_version(version, version_map=None):
 
 
 class VersionMeta:
-    """Metaclass for version comparison.
+    """Provides a metaclass for version comparison.
 
-    Implements modification to magic methods.
+    Implements modifications to magic methods.
     """
 
     def __le__(self, __x: Union[str, int]) -> bool:
         """Less equal.
 
-        If compared against a string which contains 'dev' it will always evaluate to True.
-        If compared against an int, it will perform a classic 'less equal' operation.
+        If compared against a string that contains ``dev``, it always evaluates to ``True``.
+        If compared against an integer, it performs a classic 'less equal' operation.
         """
         if isinstance(__x, str):
             if "dev" in __x and isinstance(self, str) and "dev" in self:
@@ -318,8 +318,8 @@ class VersionMeta:
     def __lt__(self, __x: Union[str, int]) -> bool:
         """Less than.
 
-        If compared against a string which contains 'dev' it will always evaluate to True.
-        If compared against an int, it will perform a classic 'less than' operation.
+        If compared against a string which contains ``dev``, it always evaluates to ``True``.
+        If compared against an integer, it performs a classic 'less than' operation.
         """
         if isinstance(__x, str):
             if "dev" in __x and isinstance(self, str) and "dev" in self:
@@ -334,8 +334,8 @@ class VersionMeta:
     def __ge__(self, __x: Union[str, int]) -> bool:
         """Greater equal.
 
-        If compared against a string which contains 'dev' it will always evaluate to False.
-        If compared against an int, it will perform a classic 'greater equal' operation.
+        If compared against a string that contains ``dev``, it always evaluates to ``False``.
+        If compared against an integer, it performs a classic 'greater equal' operation.
         """
         if isinstance(__x, str):
             if "dev" in __x and isinstance(self, str) and "dev" in self:
@@ -350,8 +350,8 @@ class VersionMeta:
     def __gt__(self, __x: Union[str, int]) -> bool:
         """Greater than.
 
-        If compared against a string which contains 'dev' it will always evaluate to False.
-        If compared against an int, it will perform a classic 'greater than' operation.
+        If compared against a string that contains ``dev``, it always evaluates to ``False``.
+        If compared against an integer, it performs a classic 'greater than' operation.
         """
         if isinstance(__x, str):
             if "dev" in __x and isinstance(self, str) and "dev" in self:
@@ -359,15 +359,15 @@ class VersionMeta:
             elif "dev" in __x:
                 return False
             else:
-                raise VersionSyntaxError("Invalid version string")
+                raise VersionSyntaxError("Version string is invalid.")
         else:
             return super().__gt__(__x)
 
     def __eq__(self, __x: object) -> bool:
         """Equal method.
 
-        If compared against a string which contains 'dev' it will always evaluate to False.
-        If compared against an int, it will perform a classic 'equal' operation.
+        If compared against a string that contains ''dev``, it always evaluates to ``False``.
+        If compared against an integer, it performs a classic 'equal' operation.
         """
         if isinstance(self, str) and isinstance(__x, str) and "dev" in self and "dev" in __x:
             return str(self) == str(__x)
@@ -380,8 +380,8 @@ class VersionMeta:
     def __ne__(self, __x: object) -> bool:
         """Not equal.
 
-        If compared against a string which contains 'dev' it will always evaluate to not
-        'equal' operation (True). If compared against an int, it will perform a classic 'not equal' operation.
+        If compared against a string that contains ``dev``, it always evaluates to not
+        'equal' operation (``True``). If compared against an integer, it performs a classic 'not equal' operation.
         """
         if isinstance(__x, str):
             return not self.__eq__(__x)
@@ -395,11 +395,11 @@ class VersionMeta:
 
 class SemanticVersion(tuple):
     """
-    Class for semantic versioning.
+    Provides a class for semantic versioning.
 
-    It is a subclass of tuple and can be instantiated from a string or a tuple.
+    It is a subclass of a tuple and can be instantiated from a string or a tuple.
 
-    You can use 'dev' in the patch version, but nowhere else.
+    You can use ``dev`` in the patch version, but nowhere else.
 
     """
 
@@ -410,46 +410,48 @@ class SemanticVersion(tuple):
         minor: Optional[Union[int, str]] = None,
         patch: Optional[Union[int, str]] = None,
     ):
-        """Construct class.
+        """Provide a construct class.
 
         Parameters
         ----------
         cls : type
-            Class type
-        __iterable : Iterable[str, int], optional
-            Iterable with major, minor and patch numbers as str or int, by default None.
-        major : VersionNumber, optional
-            Major version digit, by default None.
-        minor : VersionNumber, optional
-            Minor version digit, by default None.
-        patch : VersionNumber, optional
-            Patch version digit, by default None.
+            Class type.
+        __iterable : Iterable[str, int], default: None
+            Iterable with major, minor. and patch numbers as a string or integer.
+        major : VersionNumber, default: None
+            Major version digit.
+        minor : VersionNumber, default: None
+            Minor version digit.
+        patch : VersionNumber, default: Noneptional
+            Patch version digit.
 
         Returns
         -------
         Myint, Mystr
-            Depending on the input, the output will be a Myint or a Mystr class.
+            Depending on the input, the output is a ``Myint`` or ``Mystr`` class.
 
         """
         if __iterable is None:
             if major and minor and patch:
                 __iterable = (major, minor, patch)
             else:
-                raise VersionSyntaxError("Semantic version must have 3 components (major, minor, patch)")
+                raise VersionSyntaxError("Semantic version must have three components: (major, minor, patch).")
 
         if isinstance(__iterable, str):
             __iterable = __iterable.split(".")
 
             if not all(valid_version_string(each) for each in __iterable):
-                raise VersionSyntaxError("Semantic version not allow characters other than numbers, 'dev' and dots")
+                raise VersionSyntaxError(
+                    "Semantic version does not allow characters" + "other than numbers, 'dev', and dots."
+                )
 
         if len(__iterable) != 3:
-            raise VersionSyntaxError("Semantic version must have 3 components (major, minor, patch)")
+            raise VersionSyntaxError("Semantic version must have three components: (major, minor, patch).")
 
         if not valid_semantic_version(__iterable):
             raise VersionSyntaxError(
-                "Semantic version format is incorrect. Only integers are allowed, and for"
-                + " patch also a string containing 'dev' is allowed"
+                "Semantic version format is incorrect. Only integers are allowed. For a"
+                + " patch, also a string containing 'dev' is allowed."
             )
 
         __iterable = tuple(VersionNumber(i) for i in __iterable)
@@ -457,56 +459,56 @@ class SemanticVersion(tuple):
 
     @property
     def major(self):
-        """Return major version number."""
+        """Major version number."""
         return self[0]
 
     @property
     def minor(self):
-        """Return minor version number."""
+        """Minor version number."""
         return self[1]
 
     @property
     def patch(self):
-        """Return patch version number."""
+        """Patch version number."""
         return self[2]
 
     def as_string(self):
-        """Return the version as string."""
+        """Version as string."""
         return ".".join(str(i) for i in self)
 
     def as_tuple(self):
-        """Return the version as tuple."""
+        """Version as tuple."""
         return tuple(self)
 
     def as_list(self):
-        """Return the version as list."""
+        """Version as list."""
         return list(self)
 
     def as_dict(self):
-        """Return the version as dict."""
+        """Version as dictionary."""
         return {"major": self.major, "minor": self.minor, "patch": self.patch}
 
 
 class Mystr(VersionMeta, str):
-    """Custom class to hold strings for versioning."""
+    """Provides the custom class to hold strings for versioning."""
 
     pass
 
 
 class Myint(VersionMeta, int):
-    """Custom class to hold integers for versioning."""
+    """Provides the custom class to hold integers for versioning."""
 
     pass
 
 
 class VersionNumber:
-    """Class for version comparison.
+    """Provides the class for version comparison.
 
     This class can be instantiated from a string or an integer.
-    The constructor will choose the corresponding class.
+    The constructor chooses the corresponding class.
 
-    Any combination of 'dev' and integers will be considered as a string.
-    'dev' is considered as the highest version number possible.
+    Any combination of ``dev`` and integers are considered as a string.
+    ``dev`` is considered as the highest version number possible.
 
     Examples
     --------
@@ -531,12 +533,12 @@ class VersionNumber:
         Parameters
         ----------
         value : str or int
-            Version value to be stored.
+            Version value to store.
 
         Returns
         -------
         Mystr, Myint
-           Subclass of str or int depending on value.
+           Subclass of a string or integer depending on the value.
         """
         if isinstance(value, str):
             if value.strip().isdigit():
@@ -553,7 +555,7 @@ class VersionNumber:
 
 
 def valid_version_string(version):
-    """Check if version string is valid."""
+    """Check if the version string is valid."""
     if isinstance(version, str) and _valid_version_string(version):
         return True
     elif isinstance(version, int):

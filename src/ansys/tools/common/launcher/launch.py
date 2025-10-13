@@ -42,19 +42,19 @@ def launch_product(
 
     Parameters
     ----------
-    product_name :
+    product_name : str
         Name of the product to launch.
-    launch_mode :
+    launch_mode : str, default: None
         Launch mode to use. The default is ``None``, in which case
         the default launched mode is used. Options available
         depend on the launcher plugin.
-    config :
+    config : LAUNCHER_CONFIG_T, default: None
         Configuration to use for launching the product. The default is
         ``None``, in which case the default configuration is used.
 
     Returns
     -------
-    :
+    ProductInstance
         Object that can be used to interact with the started product.
 
     Raises
@@ -79,6 +79,6 @@ def launch_product(
         config = get_config_for(product_name=product_name, launch_mode=launch_mode)  # type: ignore
     if not isinstance(config, launcher_klass.CONFIG_MODEL):
         raise TypeError(
-            f"Incompatible config of type '{type(config)} is supplied. It needs '{launcher_klass.CONFIG_MODEL}'."
+            f"Incompatible config of type '{type(config)} is supplied. It needs to be '{launcher_klass.CONFIG_MODEL}'."
         )
     return ProductInstance(launcher=launcher_klass(config=config))

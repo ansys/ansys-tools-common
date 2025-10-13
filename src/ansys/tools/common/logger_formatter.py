@@ -27,7 +27,7 @@ from typing import Final
 
 
 class PyAnsysBaseFormatter(logging.Formatter):
-    """Custom formatter to truncate long columns."""
+    """Provides a custom formatter to truncate long columns."""
 
     def set_column_width(self, width: int = 15):
         """Set the maximum column width for module and function names."""

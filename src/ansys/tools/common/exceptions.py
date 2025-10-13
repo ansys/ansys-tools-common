@@ -25,7 +25,7 @@
 class AnsysError(Exception):
     """Base class for all exceptions raised by the Ansys API.
 
-    Can be used to catch all Ansys-related exceptions.
+    You can use this base class to catch all Ansys-related exceptions.
     """
 
     def __init__(self, message: str) -> None:
@@ -37,15 +37,15 @@ class AnsysError(Exception):
 class AnsysTypeError(AnsysError):
     """Error raised when an argument is of the wrong type.
 
-    Exception raised when python wise types would work, but internal
-    Ansys specific typing is not right.
+    This exception is raised when Python-wise types would work, but internal
+    Ansys-specific typing is not right.
 
     Parameters
     ----------
     expected_type : str | type
-        The expected type of the argument.
+        Expected type of the argument.
     actual_type : str | type
-        The actual type of the argument.
+        Actual type of the argument.
     """
 
     def __init__(self, expected_type: str | type, actual_type: str | type = None) -> None:
@@ -64,7 +64,7 @@ class AnsysLogicError(AnsysError):
     Parameters
     ----------
     message : str
-        The error message.
+        Error message.
     """
 
     def __init__(self, message: str) -> None:
@@ -73,7 +73,7 @@ class AnsysLogicError(AnsysError):
 
 
 class VersionSyntaxError(AnsysError):
-    """An exception to be raised when an invalid version syntax is found."""
+    """An exception raised when an invalid version syntax is found."""
 
     def __init__(self, msg):
         """Initialize the exception.
@@ -81,14 +81,14 @@ class VersionSyntaxError(AnsysError):
         Parameters
         ----------
         msg : str
-            The message to be raised for the exception.
+            Message to raise for the exception.
 
         """
         super().__init__(msg)
 
 
 class VersionError(AnsysError):
-    """An exception to be raised when a version is not valid."""
+    """An exception raised when a version is not valid."""
 
     def __init__(self, msg):
         """Initialize the exception.
@@ -96,7 +96,7 @@ class VersionError(AnsysError):
         Parameters
         ----------
         msg : str
-            The message to be raised for the exception.
+            Message to raise for the exception.
 
         """
         super().__init__(msg)

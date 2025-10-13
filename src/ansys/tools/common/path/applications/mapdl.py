@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""MAPDL-specific logic for ansys-tools-path."""
+"""MAPDL-specific logic for the Ansys path tool."""
 
 from pathlib import Path
 import re
@@ -32,7 +32,7 @@ def is_valid_executable_path(exe_loc: str) -> bool:
     Parameters
     ----------
     exe_loc : str
-        The path to the executable file.
+        Path to the executable file.
 
     Returns
     -------

@@ -39,7 +39,7 @@ def check_grpc_health(channel: grpc.Channel, timeout: float | None = None) -> bo
 
     Returns
     -------
-    :
+    bool
         ``True`` if the health check succeeds, ``False`` otherwise.
     """
     try:

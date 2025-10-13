@@ -6,18 +6,16 @@ Contribute
 Overall guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
 in the *PyAnsys developer's guide*. Ensure that you are thoroughly familiar
-with this guide before attempting to contribute to the Ansys tools common repository.
+with this guide before attempting to contribute to Ansys Common Tools.
 
-The following contribution information is specific to the Ansys tools common.
+The following contribution information is specific to Ansys Common Tools.
 
 Install in developer mode
 -------------------------
 
-Installing the Ansys tools in developer mode allows you to modify and enhance
-the source.
+Installing Ansys Common Tools in developer mode allows you to modify and enhance the source.
 
-To clone and install the latest Ansys tools release in development mode, run
-these commands:
+To clone and install the latest Ansys Common Tools release in development mode, run these commands:
 
 .. code::
 
@@ -29,22 +27,20 @@ these commands:
 Run tests
 ---------
 
-Ansys tools common uses `pytest <https://docs.pytest.org/en/stable/>`_ for testing.
+Ansys Common Tools uses `pytest <https://docs.pytest.org/en/stable/>`_ for testing.
 
-#. Prior to running tests, you must run this command to install
-   test dependencies::
+#. Prior to running tests, you must run this command to install test dependencies::
 
     pip install -e .[tests]
 
-#. To then run the tests, navigate to the root directory of the repository and run this
-   command::
+#. To then run the tests, navigate to the root directory of the repository and run this command::
 
     pytest
 
 Adhere to code style
 --------------------
 
-The Ansys tools common follows the PEP8 standard as outlined in
+Ansys Common Tools follows the PEP8 standard as outlined in
 `PEP 8 <https://dev.docs.pyansys.com/coding-style/pep8.html>`_ in
 the *PyAnsys developer's guide* and implements style checking using
 `pre-commit <https://pre-commit.com/>`_.
@@ -76,7 +72,7 @@ This way, it's not possible for you to push code that fails the style checks::
 Build the documentation
 -----------------------
 
-You can build the Ansys tools common documentation locally.
+You can build Ansys Common Tools documentation locally.
 
 #. Prior to building the documentation, you must run this command to install
    documentation dependencies::
@@ -105,11 +101,10 @@ You can clean the documentation build by running this command::
 Post issues
 -----------
 
-Use the `Ansys tools common Issues <https://github.com/ansys/ansys-tools-common/issues>`_
-page to report bugs and request new features. When possible, use the issue templates provided.
+Use the Ansys Common Tools `Issues <https://github.com/ansys/ansys-tools-common/issues>`_ page to report bugs and request new features. When possible, use the issue templates provided.
 If your issue does not fit into one of these templates, click the link for opening a blank issue.
 
 If you have general questions about the PyAnsys ecosystem, email
 `pyansys.core@ansys.com <pyansys.core@ansys.com>`_. If your
-question is specific to the Ansys tools common, ask your
+question is specific to Ansys Common Tools, ask your
 question in an issue as described in the previous paragraph.

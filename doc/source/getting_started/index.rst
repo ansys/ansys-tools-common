@@ -3,14 +3,14 @@
 Getting started
 ===============
 
-This section describes how to install theAnsys tools common in user mode and
-quickly begin using it. If you are interested in contributing to theAnsys tools common,
-see :ref:`contribute` for information on installing in developer mode.
+This section describes how to install Ansys Common Tools in user mode.
+If you are interested in contributing to Ansys Common Tools, see
+:ref:`contribute` for information on installing in developer mode.
 
 Installation
 ------------
 
-To use `pip <https://pypi.org/project/pip/>`_ to install the Ansys tools common project,
+To use `pip <https://pypi.org/project/pip/>`_ to install Ansys Common Tools,
 run this command:
 
 .. code:: bash
