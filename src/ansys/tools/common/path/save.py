@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Convenience CLI to save path for Ansys application in configuration."""
+"""Convenience CLI to save the path for an Ansys application in the configuration."""
 
 import click
 
@@ -47,11 +47,9 @@ def cli(
     location: str,
     allow_prompt: bool,
 ):
-    """CLI tool to store the path of a product.
+    """Use the CLI tool to store the path of an Ansys product.
 
-    USAGE:
-
-    The following example demonstrates the main use of this tool:
+    This example demonstrates the main use of this tool::
 
         $ save-ansys-path --name dyna /path/to/dyna
     """

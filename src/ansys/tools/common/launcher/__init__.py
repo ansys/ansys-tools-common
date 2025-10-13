@@ -20,11 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""
-Tools.
-
-local_product_launcher
-"""
+"""Local product launcher."""
 
 from . import config, helpers, interface, product_instance
 from .launch import launch_product

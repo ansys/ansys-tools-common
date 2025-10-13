@@ -20,17 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""dyna-specific logic for ansys-tools-path."""
+"""LS-DYNA-specific logic for the Ansys path tool."""
 
 
 # TODO: Remove?
 def is_valid_executable_path(exe_loc: str) -> bool:
-    """Check if the executable path is valid for Ansys Dyna.
+    """Check if the executable path is valid for Ansys LS-DYNA.
 
     Parameters
     ----------
     exe_loc : str
-        The path to the executable file.
+        Path to the executable file.
 
     Returns
     -------

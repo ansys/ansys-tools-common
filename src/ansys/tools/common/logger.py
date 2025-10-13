@@ -77,7 +77,7 @@ class Logger(object, metaclass=SingletonType):
     Parameters
     ----------
     level : int, default: ``logging.ERROR``
-        Output Level of the logger.
+        Output level of the logger.
     logger_name : str, default: ``"Logger"``
         Name of the logger.
     column_width : int, default: ``15``
@@ -113,7 +113,7 @@ class Logger(object, metaclass=SingletonType):
         Parameters
         ----------
         level : int
-            Output Level of the logger.
+            Output level of the logger.
 
         """
         self._logger.setLevel(level=level)
@@ -140,7 +140,7 @@ class Logger(object, metaclass=SingletonType):
         Parameters
         ----------
         logs_dir : str or Path, default: ``".log"``
-            Directory where the log file will be saved. If it does not exist, it will be created.
+            Directory to save the log file to. If it does not exist, it is created.
         """
         now = datetime.datetime.now()
         logs_dir = Path(logs_dir) if isinstance(logs_dir, str) else logs_dir
@@ -197,6 +197,6 @@ class Logger(object, metaclass=SingletonType):
 LOGGER = Logger()
 """Global logger instance.
 
-This is a global instance of the Logger class that can be used throughout the application.
+This is a global instance of the ``Logger`` class that can be used throughout the application.
 It is initialized with default settings and can be configured as needed.
 """

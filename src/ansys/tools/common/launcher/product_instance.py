@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Defines a wrapper for interacting with launched product instances."""
+"""Provides a wrapper for interacting with launched product instances."""
 
 from __future__ import annotations
 
@@ -106,7 +106,7 @@ class ProductInstance:
 
         Parameters
         ----------
-        timeout :
+        timeout : float, default: None
             Time in seconds after which the instance is forcefully stopped.
             Not all launch methods implement this parameter.
 
@@ -127,7 +127,7 @@ class ProductInstance:
 
         Parameters
         ----------
-        stop_timeout :
+        stop_timeout : float, default: None
             Time in seconds after which the instance is forcefully stopped.
 
         Raises
@@ -143,9 +143,10 @@ class ProductInstance:
 
         Parameters
         ----------
-        timeout :
-            Time in seconds to wait for the servers to respond. This is a hint
-            to the launcher; the method may return earlier or later.
+        timeout : float, default: None
+            Time in seconds to wait for the servers to respond. There
+            is no guarantee that the ``check()`` method returns within this time.
+            Instead, this parameter is used as a hint to the launcher implementation.
         """
         return self._launcher.check(timeout=timeout)
 
@@ -157,7 +158,7 @@ class ProductInstance:
 
         Parameters
         ----------
-        timeout :
+        timeout : float, default: None
             Wait time in seconds before raising an exception.
 
         Raises

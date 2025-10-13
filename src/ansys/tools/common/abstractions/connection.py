@@ -39,9 +39,9 @@ class AbstractGRPCConnection(ABC):
     Parameters
     ----------
     host : str
-        The host where the gRPC server is running.
+        Host where the gRPC server is running.
     port : str
-        The port where the gRPC server is listening.
+        Port where the gRPC server is listening.
     """
 
     @abstractmethod
@@ -62,12 +62,12 @@ class AbstractGRPCConnection(ABC):
     @property
     @abstractmethod
     def service(self):
-        """Return the gRPC stub for making requests."""
+        """GRPC stub for making requests."""
         pass  # pragma: no cover
 
     @property
     def _host(self) -> str:
-        """Return the host for the gRPC connection."""
+        """Host for the gRPC connection."""
         return self.__host
 
     @_host.setter
@@ -92,12 +92,12 @@ class AbstractGRPCConnection(ABC):
 
     @property
     def is_closed(self) -> bool:
-        """Check if the connection is closed.
+        """Flag indicating if the connection is closed.
 
         Returns
         -------
         bool
-            True if the connection is closed, False otherwise.
+            ``True`` if the connection is closed, ``False`` otherwise.
         """
         try:
             return self._channel._connectivity_state != grpc.ChannelConnectivity.READY

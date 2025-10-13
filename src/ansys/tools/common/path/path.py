@@ -289,12 +289,12 @@ def _get_available_base_unified(
 def get_available_ansys_installations(
     supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS,
 ) -> Dict[int, str]:
-    r"""Return a dictionary of available Ansys unified installation versions with their base paths.
+    r"""Get a dictionary of available Ansys unified installation versions with their base paths.
 
     Returns
     -------
     dict[int: str]
-        Return all Ansys unified installations paths in Windows.
+        Dictionary of all Ansys unified installations paths in Windows.
 
     Notes
     -----
@@ -357,7 +357,7 @@ def find_mechanical(
     supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS,
 ) -> Union[Tuple[str, float], Tuple[Literal[""], Literal[""]]]:
     """
-    Search for the Mechanical path in the standard installation location.
+    Search for the Ansys Mechanical path in the standard installation location.
 
     Returns
     -------
@@ -397,7 +397,7 @@ def find_mapdl(
     version: Optional[Union[int, float]] = None,
     supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS,
 ) -> Union[Tuple[str, float], Tuple[Literal[""], Literal[""]]]:
-    """Search for Ansys MAPDL path within the standard install location.
+    """Search for the Ansys MAPDL path within the standard install location.
 
     Returns the path of the latest version.
 
@@ -451,7 +451,7 @@ def find_dyna(
     version: Optional[Union[int, float]] = None,
     supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS,
 ) -> Union[Tuple[str, float], Tuple[Literal[""], Literal[""]]]:
-    """Search for Ansys LS-Dyna path within the standard install location.
+    """Search for the Ansys LS-DYNA path within the standard install location.
 
     Returns the path of the latest version.
 
@@ -535,7 +535,7 @@ def find_ansys(
     version: Optional[float] = None,
     supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS,
 ) -> Union[Tuple[str, float], Tuple[Literal[""], Literal[""]]]:
-    """Obsolete method, use find_mapdl."""
+    """Obsolete method. Use ``find_mapdl`` instead."""
     warnings.warn(
         "This method is going to be deprecated in future versions. Please use 'find_mapdl'.",
         category=DeprecationWarning,
@@ -674,7 +674,7 @@ def change_default_mapdl_path(exe_loc: str) -> None:
 
 
 def change_default_dyna_path(exe_loc: str) -> None:
-    """Change your default Ansys LS-Dyna path.
+    """Change your default Ansys LS-DYNA path.
 
     Parameters
     ----------
@@ -729,7 +729,7 @@ def change_default_mechanical_path(exe_loc: str) -> None:
 
 
 def change_default_ansys_path(exe_loc: str) -> None:
-    """Deprecated, use `change_default_mapdl_path` instead."""  # noqa: D401
+    """Deprecated. Use ``change_default_mapdl_path`` instead."""  # noqa: D401
     warnings.warn(
         "This method is going to be deprecated in future versions. Please use 'change_default_mapdl_path'.",
         category=DeprecationWarning,
@@ -753,7 +753,7 @@ def _save_path(product: str, exe_loc: Optional[str] = None, allow_prompt: bool =
 
 
 def save_mechanical_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> str:  # pragma: no cover
-    """Find the Mechanical path or query user.
+    """Find the Mechanical path or query the user.
 
     Parameters
     ----------
@@ -801,27 +801,27 @@ def save_mechanical_path(exe_loc: Optional[str] = None, allow_prompt: bool = Tru
 
 
 def save_dyna_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> str:
-    """Find Ansys LD-Dyna's path or query user.
+    """Find Ansys LS-DYNA's path or query the user.
 
-    If no ``exe_loc`` argument is supplied, this function attempt
-    to obtain the Ansys LS-Dyna executable from (and in order):
+    If no ``exe_loc`` argument is supplied, this function attempts
+    to obtain the Ansys LS-DYNA executable from (and in order):
 
-    - The default ansys paths (i.e. ``'C:/Program Files/Ansys Inc/vXXX/ansys/bin/winx64/LSDYNAXXX'``)
+    - The default Ansys paths (such as ``'C:/Program Files/Ansys Inc/vXXX/ansys/bin/winx64/LSDYNAXXX'``)
     - The configuration file
     - User input
 
-    If ``exe_loc`` is supplied, this function does some checks.
-    If successful, it will write that ``exe_loc`` into the config file.
+    If the ``exe_loc`` argument is supplied, this function performs some checks.
+    If successful, it writes the value for the ``exe_loc`` argument into the configuration file.
 
     Parameters
     ----------
-    exe_loc : str, optional
-        Path of the LS-Dyna executable ('lsdynaXXX'), by default ``None``.
+    exe_loc : str, default: None
+        Path of the LS-DYNA executable (``'lsdynaXXX'``).
 
     Returns
     -------
     str
-        Path of the LS-Dyna executable.
+        Path of the LS-DYNA executable.
 
     Notes
     -----
@@ -837,8 +837,8 @@ def save_dyna_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> 
 
     Examples
     --------
-    You can change the default ``exe_loc`` either by modifying the mentioned
-    ``config.txt`` file or by executing:
+    You can change the default ``exe_loc`` parameter value either by modifying the mentioned
+    ``config.txt`` file or by executing this code:
 
     >>> from ansys.tools.common.path import save_dyna_path
     >>> save_dyna_path("/new/path/to/executable")
@@ -848,22 +848,22 @@ def save_dyna_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> 
 
 
 def save_mapdl_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> str:
-    """Find Ansys MAPDL's path or query user.
+    """Find the Ansys MAPDL's path or query the user.
 
-    If no ``exe_loc`` argument is supplied, this function attempt
+    If no ``exe_loc`` argument is supplied, this function attempts
     to obtain the Ansys MAPDL executable from (and in order):
 
-    - The default ansys paths (i.e. ``'C:/Program Files/Ansys Inc/vXXX/ansys/bin/winx64/ansysXXX'``)
+    - The default Ansys paths (i.e. ``'C:/Program Files/Ansys Inc/vXXX/ansys/bin/winx64/ansysXXX'``)
     - The configuration file
     - User input
 
-    If ``exe_loc`` is supplied, this function does some checks.
-    If successful, it will write that ``exe_loc`` into the config file.
+    If the ``exe_loc`` argument is supplied, this function performs some checks.
+    If successful, it writes the value for the ``exe_loc`` parameter into the configuration file.
 
     Parameters
     ----------
-    exe_loc : str, optional
-        Path of the MAPDL executable ('ansysXXX'), by default ``None``.
+    exe_loc : str, default: None
+        Path of the MAPDL executable (``ansysXXX``).
 
     Returns
     -------
@@ -884,8 +884,8 @@ def save_mapdl_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) ->
 
     Examples
     --------
-    You can change the default ``exe_loc`` either by modifying the mentioned
-    ``config.txt`` file or by executing:
+    You can change the default value for the ``exe_loc`` parameter either by modifying the mentioned
+    ``config.txt`` file or by executing this code:
 
     >>> from ansys.tools.common.path import save_mapdl_path
     >>> save_mapdl_path("/new/path/to/executable")
@@ -895,7 +895,7 @@ def save_mapdl_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) ->
 
 
 def save_ansys_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> str:
-    """Deprecated, use `save_mapdl_path` instead."""  # noqa: D401
+    """Deprecated. Use ``save_mapdl_path`` instead."""  # noqa: D401
     warnings.warn(
         "This method is going to be deprecated in future versions. Please use 'save_ansys_path'.",
         category=DeprecationWarning,
@@ -1156,7 +1156,7 @@ def _get_application_path(
 
 
 def get_mapdl_path(allow_input: bool = True, version: Optional[float] = None, find: bool = True) -> Optional[str]:
-    """Acquires Ansys MAPDL Path.
+    """Acquires the Ansys MAPDL path.
 
     First, it looks in the configuration file, used by `save_mapdl_path`
     Then, it tries to find it based on conventions for where it usually is.
@@ -1179,7 +1179,7 @@ def get_mapdl_path(allow_input: bool = True, version: Optional[float] = None, fi
 
 
 def get_dyna_path(allow_input: bool = True, version: Optional[float] = None, find: bool = True) -> Optional[str]:
-    """Acquires Ansys LS-Dyna Path from a cached file or user input.
+    """Acquires the Ansys LS-DYNA path from a cached file or user input.
 
     First, it looks in the configuration file, used by `save_dyna_path`
     Then, it tries to find it based on conventions for where it usually is.
@@ -1202,7 +1202,7 @@ def get_dyna_path(allow_input: bool = True, version: Optional[float] = None, fin
 
 
 def get_ansys_path(allow_input: bool = True, version: Optional[float] = None) -> Optional[str]:
-    """Deprecated, use `get_mapdl_path` instead."""  # noqa: D401
+    """Deprecated. Use ``get_mapdl_path`` instead."""  # noqa: D401
     warnings.warn(
         "This method is going to be deprecated in future versions. Please use 'get_mapdl_path'.",
         category=DeprecationWarning,
@@ -1211,7 +1211,7 @@ def get_ansys_path(allow_input: bool = True, version: Optional[float] = None) ->
 
 
 def get_mechanical_path(allow_input: bool = True, version: Optional[float] = None, find: bool = True) -> Optional[str]:
-    """Acquires Ansys Mechanical Path.
+    """Acquires the Ansys Mechanical path.
 
     First, it looks in the configuration file, used by `save_mechanical_path`
     Then, it tries to find it based on conventions for where it usually is.
@@ -1309,7 +1309,7 @@ def version_from_path(product: PRODUCT_TYPE, path: str) -> int:
 
 
 def get_latest_ansys_installation() -> Tuple[int, str]:
-    """Return a tuple with the latest ansys installation version and its path.
+    """Return a tuple with the latest Ansys installation version and its path.
 
     If there is a student version and a regular installation for the latest release, the regular one is returned
 

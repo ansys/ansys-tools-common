@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """
-Application plugin for ansys-tools-path.
+ Application plugin for the Ansys path tool.
 
 This defines the interface of a plugin, which is implemented using a module.
 """
@@ -31,7 +31,7 @@ This defines the interface of a plugin, which is implemented using a module.
 
 
 class ApplicationPlugin:
-    """Class for application plugins."""
+    """Provides for application plugins."""
 
     def is_valid_executable_path(self, exe_loc: str) -> bool:
         """Check if the executable path is valid for the application.
@@ -39,7 +39,7 @@ class ApplicationPlugin:
         Parameters
         ----------
         exe_loc : str
-            The path to the executable file.
+            Path to the executable file.
 
         Returns
         -------

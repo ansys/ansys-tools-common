@@ -21,9 +21,9 @@
 # SOFTWARE.
 
 """
-PyAnsys Tools Report.
+Ansys report tool.
 
-Module containing the standardized Report class for PyAnsys projects.
+Module containing the standardized ``Report`` class for PyAnsys projects.
 """
 
 import os
@@ -84,26 +84,26 @@ class Report(scooby.Report):
 
     Parameters
     ----------
-    additional : list(ModuleType), list(str), optional
+    additional : list(ModuleType), list(str), default: None
         List of packages or package names to add to output information.
-        Defaults to ``None``.
-    ncol : int, optional
-        Number of package-columns in html table; only has effect if
-        ``mode='HTML'`` or ``mode='html'``. Defaults to 3.
-    text_width : int, optional
-        The text width for non-HTML display modes. Defaults to 80.
-    sort : bool, optional
-        Alphabetically sort the packages. Defaults to ``False``.
-    gpu : bool, optional
-        Gather information about the GPU. Defaults to ``True`` but if
-        experiencing rendering issues, pass ``False`` to safely generate
+    ncol : int, default: 3
+        Number of package-columns in the HTML table. This parameter is
+        applicable only has effect if ``mode='HTML'`` or ``mode='html'``.
+    text_width : int, default: 80
+        Text width for non-HTML display modes.
+    sort : bool, default: False
+        Whether to alphabetically sort the packages.
+    gpu : bool, default: True
+        Whether to gather information about the GPU. While
+        the default is``True``, if rendering issues are
+        experienced, pass ``False`` to safely generate
         a report.
-    ansys_vars : list of str, optional
-        List containing the Ansys environment variables to be reported.
-        (e.g. ["MYVAR_1", "MYVAR_2" ...]). Defaults to ``None``.
-    ansys_libs : dict {str : str}, optional
-        Dictionary containing the Ansys libraries and versions to be reported.
-        (e.g. {"MyLib" : "v1.2", ...}). Defaults to ``None``.
+    ansys_vars : list of str, default: None
+        List containing the Ansys environment variables to report on.
+        For example, ``["MYVAR_1", "MYVAR_2" ...]``
+    ansys_libs : dict {str : str}, default: None
+        Dictionary containing the Ansys libraries and versions to report on.
+        For example, ``{"MyLib" : "v1.2", ...}``.
     """
 
     def __init__(
@@ -175,12 +175,12 @@ class Report(scooby.Report):
         )
 
     def project_info(self):
-        """Return information regarding the Ansys environment and installation.
+        """Get information regarding the Ansys environment and installation.
 
         Returns
         -------
         str
-            The project information (env variables and installation)
+            Project information (environment variables and installation).
         """
         # List installed Ansys
         lines = ["", "Ansys Environment Report", "-" * 79, "\n"]
@@ -223,12 +223,12 @@ class Report(scooby.Report):
 
     def _is_ansys_var(self, env_var):
         """
-        Determine if an env. variable belongs to the set of ANSYS default env. variables.
+        Check if an environment variable belongs to the set of Ansys default environment variables.
 
         Parameters
         ----------
         env_var : str
-            The environment variable name to evaluate.
+            Environment variable name to evaluate.
 
         Returns
         -------

@@ -22,7 +22,7 @@
 
 """Interface definitions for implementing a local product launcher.
 
-A plugin for the Local Product Launcher must implement the :class:`LauncherProtocol`
+A plugin for the local product launcher must implement the :class:`LauncherProtocol`
 class and register it.
 """
 
@@ -89,17 +89,17 @@ class ServerType(Enum):
 
 @runtime_checkable
 class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
-    """Interface for managing a local product instance.
+    """Provides the interface for managing a local product instance.
 
-    A plugin to the Local Product Launcher must implement the interface
+    A plugin to the local product launcher must implement the interface
     defined in this class.
 
-    To check for compatibility, it is recommended to derive from this
-    class, for example ``MyLauncher(LauncherProtocol[MyConfigModel])``, and
-    check the resulting code with `mypy <https://mypy.readthedocs.io>`_.
+    To check for compatibility, you should derive from this
+    class. For example ``MyLauncher(LauncherProtocol[MyConfigModel])``.
+    Check the resulting code with `Mypy <https://mypy.readthedocs.io>`_.
 
     The ``__init__`` method should accept exactly one keyword-only
-    parameter: ``config``. Note that this is `not enforced by mypy
+    parameter: ``config``. Note that this is `not enforced by Mypy
     <https://bugs.python.org/issue44807>`_.
 
     Parameters
@@ -112,7 +112,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
     CONFIG_MODEL: ClassVar[type[LAUNCHER_CONFIG_T]]
     """Defines the configuration options for the launcher.
 
-    The configuration options which this launcher accepts, specified
+    The configuration options that this launcher accepts, specified
     as a :py:func:`dataclass <dataclasses.dataclass>`. Note that the
     ``default`` and ``metadata[METADATA_KEY_DOC]`` of the fields are
     used in the configuration CLI, if available.
@@ -154,7 +154,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
 
         Parameters
         ----------
-        timeout :
+        timeout : float
             Time after which the instance can be forcefully stopped.
             The timeout should be interpreted as a hint to the implementation.
             It is *not required* to trigger a force-shutdown, but the stop
@@ -166,7 +166,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
 
         Parameters
         ----------
-        timeout :
+        timeout : float
             Timeout in seconds for the check.
             The timeout should be interpreted as a hint to the implementation.
             It is *not required* to return within the given time, but the
@@ -176,7 +176,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
         Returns
         -------
         bool
-            Whether the product instance is responding.
+            ``True`` if the product instance is responding, ``False`` otherwise.
         """
 
     @property
