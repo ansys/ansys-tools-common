@@ -1,10 +1,11 @@
-## [0.1.0](https://github.com/ansys/ansys-tools-common/releases/tag/v0.1.0) - July 28, 2025
+# CHANGELOG
 
+This project uses [towncrier](https://towncrier.readthedocs.io/) to generate
+changelogs.
 
-### Maintenance
+Refer to the [raw release notes](doc/source/changelog.rst) for more
+information.
 
-- Finish cicd [#34](https://github.com/ansys/ansys-tools-common/pull/34)
-
-This document contains the release notes for the project. See release notes for v{latest-version} and earlier
-in `CHANGELOG.md <https://github.com/ansys-internal/ansys-tools-common/blob/main/CHANGELOG.md>`_.
-<!-- towncrier release notes start -->
+[Published release
+notes](https://tools.docs.pyansys.com/version/stable/changelog.html) can be
+found in the online documentation.
