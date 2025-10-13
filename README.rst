@@ -55,8 +55,8 @@ to viewing the documentation for the development version or previously
 released versions.
 
 On the Ansys Common Tools `Issues <https://github.com/ansys/ansys-tools-common/issues>`_
-page, you can create issues to report bugs and request new features. On the
-`Discussions <https://discuss.ansys.com/>`_ page on the Ansys Developer portal,
+page, you can create issues to report bugs and request new features. On the `Ansys Common Tools Discussions <https://github.com/ansys/ansys-tools-common/discussions>`_ page
+or the `Discussions <https://discuss.ansys.com/>`_ page on the Ansys Developer portal,
 you can post questions, share ideas, and get community feedback.
 
 If you have general questions about the PyAnsys ecosystem, email
