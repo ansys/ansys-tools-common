@@ -34,6 +34,10 @@ class AnsysError(Exception):
         self.message = message
 
 
+class ProductInstanceError(AnsysError):
+    """Custom exception for ProductInstance lifecycle errors."""
+
+
 class AnsysHostnameValueError(AnsysError):
     """Error raised when hostname value is not valid."""
 

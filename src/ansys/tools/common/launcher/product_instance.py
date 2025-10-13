@@ -32,15 +32,13 @@ import weakref
 import grpc
 from typing_extensions import Self
 
+from ansys.tools.common.exceptions import ProductInstanceError
+
 from .interface import LAUNCHER_CONFIG_T, LauncherProtocol, ServerType
 
 __all__ = ["ProductInstance", "ProductInstanceError"]
 
 _GRPC_MAX_MESSAGE_LENGTH = 256 * 1024**2  # 256 MB
-
-
-class ProductInstanceError(RuntimeError):
-    """Custom exception for ProductInstance lifecycle errors."""
 
 
 class ProductInstance:
