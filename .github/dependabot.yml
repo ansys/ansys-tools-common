@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    cooldown:
+      default-days: 5  # Fallback cooldown if no specific rule applies
+      semver-major-days: 30  # Cooldown for major version updates
+      semver-minor-days: 7   # Cooldown for minor version updates
+      semver-patch-days: 3   # Cooldown for patch updates
+      exclude:
+        - "ansys-sphinx-theme"
+        - "ansys-tools-visualization-interface"
+    labels:
+      - "maintenance"
+      - "dependencies"
+    assignees:
+      - "pyansys-ci-bot"
+    commit-message:
+      prefix: "build"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    cooldown:
+      default-days: 5  # Fallback cooldown if no specific rule applies
+      semver-major-days: 30  # Cooldown for major version updates
+      semver-minor-days: 7   # Cooldown for minor version updates
+      semver-patch-days: 3   # Cooldown for patch updates
+      exclude:
+        - "ansys/actions/*"
+    labels:
+      - "maintenance"
+      - "dependencies"
+    assignees:
+      - "pyansys-ci-bot"
+    commit-message:
+      prefix: "ci"
