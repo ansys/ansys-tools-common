@@ -59,7 +59,7 @@ jobs:
           auditing-level: high
 
   wheelhouse:
-    name: Wheelhouse / ${{ matrix.os }} /
+    name: Wheelhouse / ${{ matrix.os }} / ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     needs: code-style
     strategy:
