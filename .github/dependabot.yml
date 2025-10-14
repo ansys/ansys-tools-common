@@ -19,6 +19,10 @@ updates:
       - "pyansys-ci-bot"
     commit-message:
       prefix: "build"
+    groups:
+      grpc-deps:
+        patterns:
+          - "grpc*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
