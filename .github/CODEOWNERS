@@ -10,4 +10,4 @@
 /src/ansys/common/tools/launcher/* @greschd
 
 # Documentation
-/doc/* @pipkat
+/doc/source/* @PipKat
