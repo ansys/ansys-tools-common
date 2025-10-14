@@ -36,7 +36,7 @@ from ansys.tools.common.exceptions import ProductInstanceError
 
 from .interface import LAUNCHER_CONFIG_T, LauncherProtocol, ServerType
 
-__all__ = ["ProductInstance", "ProductInstanceError"]
+__all__ = ["ProductInstance"]
 
 _GRPC_MAX_MESSAGE_LENGTH = 256 * 1024**2  # 256 MB
 
