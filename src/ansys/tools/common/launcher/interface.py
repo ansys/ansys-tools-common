@@ -27,7 +27,8 @@ class and register it.
 """
 
 from enum import Enum, auto
-from typing import Any, ClassVar, Protocol, TypeVar
+from types import MappingProxyType
+from typing import Any, ClassVar, Protocol, TypeVar, runtime_checkable
 
 __all__ = [
     "DataclassProtocol",
@@ -52,7 +53,7 @@ FALLBACK_LAUNCH_MODE_NAME = "__fallback__"
 
 
 class DataclassProtocol(Protocol):
-    """Provides the ``Protocol`` class for Python dataclasses."""
+    """Protocol for objects generated with :func:`dataclasses.dataclass`."""
 
     __dataclass_fields__: ClassVar[dict[str, Any]]
 
@@ -86,6 +87,7 @@ class ServerType(Enum):
     """
 
 
+@runtime_checkable
 class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
     """Provides the interface for managing a local product instance.
 
@@ -107,7 +109,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
         must be an instance of ``CONFIG_MODEL``.
     """
 
-    CONFIG_MODEL: type[LAUNCHER_CONFIG_T]
+    CONFIG_MODEL: ClassVar[type[LAUNCHER_CONFIG_T]]
     """Defines the configuration options for the launcher.
 
     The configuration options that this launcher accepts, specified
@@ -116,7 +118,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
     used in the configuration CLI, if available.
     """
 
-    SERVER_SPEC: dict[str, ServerType]
+    SERVER_SPEC: ClassVar[dict[str, ServerType]] = MappingProxyType({})
     """Defines the server types that are started.
 
     Examples
@@ -127,7 +129,12 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
 
     .. code:: python
 
-        SERVER_SPEC = {"MAIN": ServerType.GENERIC, "FILE_TRANSFER": ServerType.GRPC}
+        SERVER_SPEC = MappingProxyType(
+            {
+                "MAIN": ServerType.GENERIC,
+                "FILE_TRANSFER": ServerType.GRPC,
+            }
+        )
 
     The :attr:`.ProductInstance.urls` attribute then has keys
     ``{"MAIN", "FILE_TRANSFER"}``, whereas the
@@ -136,6 +143,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
     """
 
     def __init__(self, *, config: LAUNCHER_CONFIG_T):
+        """Initialize the launcher with a configuration model."""
         pass  # pragma: no cover
 
     def start(self) -> None:
@@ -177,4 +185,9 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
 
         The keys of the returned dictionary must correspond to the keys
         defined in the :attr:`.LauncherProtocol.SERVER_SPEC` attribute.
+
+        Example
+        -------
+        >>> launcher.urls
+        {"MAIN": "http://127.0.0.1:8080", "FILE_TRANSFER": "grpc://127.0.0.1:50051"}
         """

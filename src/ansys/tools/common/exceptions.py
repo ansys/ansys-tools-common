@@ -34,6 +34,40 @@ class AnsysError(Exception):
         self.message = message
 
 
+class ProductInstanceError(AnsysError):
+    """Custom exception for ProductInstance lifecycle errors."""
+
+
+class AnsysHostnameValueError(AnsysError):
+    """Error raised when hostname value is not valid."""
+
+    def __init__(self, msg):
+        """Initialize the exception.
+
+        Parameters
+        ----------
+        msg : str
+            The message to be raised for the exception.
+
+        """
+        super().__init__(msg)
+
+
+class AnsysPortValueError(AnsysError):
+    """Error raised when port value is not valid."""
+
+    def __init__(self, msg):
+        """Initialize the exception.
+
+        Parameters
+        ----------
+        msg : str
+            The message to be raised for the exception.
+
+        """
+        super().__init__(msg)
+
+
 class AnsysTypeError(AnsysError):
     """Error raised when an argument is of the wrong type.
 

@@ -1,40 +1,54 @@
 repos:
-- repo: https://github.com/adamchainz/blacken-docs
-  rev: 1.19.1
-  hooks:
-  - id: blacken-docs
-    additional_dependencies: [black==23.12.1]
 
-- repo: https://github.com/codespell-project/codespell
-  rev: v2.4.1
-  hooks:
-  - id: codespell
-    args: ["--ignore-words", "doc/styles/config/vocabularies/ANSYS/accept.txt"]
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.17.2
+    hooks:
+      - id: yamlfmt
+        args:
+          - "-formatter"
+          - "max_line_length=80,retain_line_breaks=true,retain_line_breaks_single=true"
 
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v5.0.0
-  hooks:
-  - id: check-merge-conflict
-  - id: debug-statements
-  - id: check-yaml
-  - id: trailing-whitespace
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: v2.8.0
+    hooks:
+      - id: pyproject-fmt
+        args: [--keep-full-version]
 
-- repo: https://github.com/ansys/pre-commit-hooks
-  rev: v0.5.2
-  hooks:
-    - id: add-license-headers
-      files: '(src|examples|tests|docker)/.*\.(py)|\.(proto)'
-      args:
-      - --start_year=2025
+  - repo: https://github.com/adamchainz/blacken-docs
+    rev: 1.19.1
+    hooks:
+      - id: blacken-docs
+        additional_dependencies: [black==23.12.1]
 
-# this validates our github workflow files
-- repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.33.0
-  hooks:
-    - id: check-github-workflows
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        args: [--ignore-words, doc/styles/config/vocabularies/ANSYS/accept.txt]
 
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.11.11
-  hooks:
-    - id: ruff-check
-    - id: ruff-format
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: check-yaml
+      - id: trailing-whitespace
+
+  - repo: https://github.com/ansys/pre-commit-hooks
+    rev: v0.5.2
+    hooks:
+      - id: add-license-headers
+        files: (src|examples|tests|docker)/.*\.(py)|\.(proto)
+        args:
+          - --start_year=2025
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.33.0
+    hooks:
+      - id: check-github-workflows
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.11
+    hooks:
+      - id: ruff-check
+      - id: ruff-format
