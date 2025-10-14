@@ -8,3 +8,6 @@
 
 # Local launcher
 /src/ansys/common/tools/launcher/* @greschd
+
+# Documentation
+/doc/* @pipkat
