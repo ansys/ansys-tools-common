@@ -30,16 +30,16 @@ jobs:
             bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
             bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
 
-  vulnerabilities:
-    name: Check library vulnerabilities
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/check-vulnerabilities@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-          python-package-name: ${{ env.PACKAGE_NAME }}
-          dev-mode: ${{ github.ref != 'refs/heads/main' }}
+    vulnerabilities:
+      name: Check library vulnerabilities
+      runs-on: ubuntu-latest
+      steps:
+        - uses: ansys/actions/check-vulnerabilities@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
+          with:
+            python-version: ${{ env.MAIN_PYTHON_VERSION }}
+            token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+            python-package-name: ${{ env.PACKAGE_NAME }}
+            dev-mode: ${{ github.ref != 'refs/heads/main' }}
 
     style:
         name: Code style
