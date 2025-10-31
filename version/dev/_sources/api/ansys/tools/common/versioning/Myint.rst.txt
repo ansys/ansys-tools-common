@@ -1,0 +1,31 @@
+
+
+
+
+
+
+:class:`Myint`
+==============
+
+
+.. py:class:: ansys.tools.common.versioning.Myint
+
+   Bases: :py:obj:`VersionMeta`, :py:obj:`int`
+
+
+   Custom class to hold integers for versioning.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.versioning import Myint
+
+
+
+
+
