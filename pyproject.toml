@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ansys-tools-common"
-version = "0.1.0"
+version = "0.1.1"
 description = "A set of tools for PyAnsys libraries"
 readme = "README.rst"
 requires-python = ">=3.10,<4"
