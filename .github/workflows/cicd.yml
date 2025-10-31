@@ -17,6 +17,10 @@ env:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
 
   changelog:
@@ -156,7 +160,7 @@ jobs:
   release:
     name: Release project
     if: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
-    needs: build-library
+    needs: [build-library, changelog]
     runs-on: ubuntu-latest
     environment: release
     permissions:
