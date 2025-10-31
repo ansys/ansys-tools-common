@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/ansys/ansys-tools-common/releases/tag/v0.1.1) - October 31, 2025
+
+
+### Miscellaneous
+
+- Fix: Prepare for public release [#74](https://github.com/ansys/ansys-tools-common/pull/74)
+
 ## [0.1.0](https://github.com/ansys/ansys-tools-common/releases/tag/v0.1.0) - July 28, 2025
 
 
