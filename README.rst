@@ -29,7 +29,7 @@ Ansys Common Tools
 Overview
 --------
 
-Ansys Common Tools provides a set of tools for the PyAnsys ecosystem.
+Ansys Common Tools provides a set of tools for the PyAnsys ecosystems.
 
 
 Documentation and issues
