@@ -8,6 +8,22 @@ project.
 
 .. towncrier release notes start
 
+`0.2.1 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.2.1>`_ - October 31, 2025
+=============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Chore: update CHANGELOG for v0.2.0
+          - `#76 <https://github.com/ansys/ansys-tools-common/pull/76>`_
+
+
 `0.2.0 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.2.0>`_ - October 31, 2025
 =============================================================================================
 
