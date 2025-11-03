@@ -73,6 +73,9 @@ doc = [
 [tool.hatch.build.targets.wheel]
 packages = [ "src/ansys" ]
 
+[tool.uv]
+package = true
+
 [tool.ruff]
 line-length = 120
 extend-exclude = [ "examples/**/*.py" ]
@@ -149,6 +152,3 @@ showcontent = true
 directory = "test"
 name = "Test"
 showcontent = true
-
-[tool.uv]
-package = true
