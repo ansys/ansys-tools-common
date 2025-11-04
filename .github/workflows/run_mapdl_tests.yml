@@ -27,7 +27,7 @@ jobs:
     name: Build tests
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ansys/mapdl:v22.2-ubuntu@sha256:024c587f4a8190e99cc3f08a2dc231583032e784a8ef7d7659f8dd9748116697
+      image: ghcr.io/ansys/mapdl:v26.1.0@sha256:0c570344f3859b17a01bdf38f9fc69659823511370864b3233ac13159aa73550
       options: -u=0:0 --entrypoint /bin/bash
       credentials:
         username: ${{ secrets.GH_USERNAME }}
