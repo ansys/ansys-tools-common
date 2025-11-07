@@ -55,7 +55,7 @@ scripts.save-ansys-path = "ansys.tools.common.path.save:cli"
 tests = [
   "grpcio==1.76.0",
   "grpcio-health-checking==1.76.0",
-  "hypothesis==6.142.5",
+  "hypothesis==6.143.0",
   "pyfakefs==5.10.1",
   "pytest==8.4.2",
   "pytest-cov==7.0.0",
