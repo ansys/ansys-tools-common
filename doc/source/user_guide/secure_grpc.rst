@@ -1,18 +1,20 @@
 Securing gRPC connections
 #########################
 
-The PyAnsys ecosystem enables now various transport modes for securing gRPC connections.
-This page reviews the available transport modes, and how to use them.
+With the release of Ansys product service packs adding enhanced security to
+gRPC communication, the PyAnsys ecosystem enables various transport modes for
+securing gRPC connections. This page reviews the available transport modes,
+and how to use them.
 
 Supported transport modes
 =========================
 
 PyAnsys supports the following transport modes for gRPC connections:
 
-- **Mutual TLS (mTLS).** This mode allows secure connections using TLS
-  encryption and client/server certificates. It is recommended for production
-  use, especially when transmitting sensitive data. Works both locally and over
-  the network.
+- **Mutual TLS (mTLS).** This mode, which works both locally and over the
+  network, allows secure connections using TLS encryption and client/server
+  certificates. It is recommended for production use, especially when
+  transmitting sensitive data.
 
 - **Unix Domain Sockets (UDS).** This mode allows connections over a local
   socket file. UDS is only supported for local inter-process communication
@@ -33,9 +35,9 @@ The ``cyberchannel`` module
 The ``cyberchannel`` module eases the transition to secure gRPC. It is meant to
 be used by client applications to create gRPC channels with the server.
 
-This module implements all transport modes described above. It also abstracts
-away the details of connection setup and certificate handling, making it easier
-to connect clients to gRPC servers in different environments.
+This module implements all transport modes described previously. It also
+abstracts away the details of connection setup and certificate handling, making
+it easier to connect clients to gRPC servers in different environments.
 
 Example usage
 -------------
@@ -117,7 +119,7 @@ Generate a certificate authority
     openssl genrsa -out ca.key 4096
 
     # Generate self-signed CA certificate
-    openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.crt \
+    openssl req -x509 -new -nodes -key ca.key -sha256 -days 200 -out ca.crt \
         -subj "/CN=MyRootCA"
 
 Generate the server certificate
@@ -134,7 +136,7 @@ Generate the server certificate
 
     # Generate server certificate signed by the CA
     openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
-        -out server.crt -days 365 -sha256
+        -out server.crt -days 200 -sha256
 
 Generate the client certificate
 -------------------------------
@@ -150,7 +152,7 @@ Generate the client certificate
 
     # Generate client certificate signed by the CA
     openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
-        -out client.crt -days 365 -sha256
+        -out client.crt -days 200 -sha256
 
 Verify certificates
 -------------------
