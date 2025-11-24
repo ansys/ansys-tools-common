@@ -78,17 +78,17 @@ Environment variables
 ---------------------
 
 .. list-table::
-   :header-rows: 1
-   :widths: 20 60 20
+    :header-rows: 1
+    :widths: 20 60 20
 
-   * - Variable
-     - Description
-     - Default
-   * - ``ANSYS_GRPC_CERTIFICATES``
-     - Path to folder containing ``ca.crt``, ``client.crt``, and ``client.key``
-       for mTLS connections. If not set, defaults to a local ``./certs``
-       directory.
-     - ``./certs``
+    * - Variable
+      - Description
+      - Default
+    * - ``ANSYS_GRPC_CERTIFICATES``
+      - Path to folder containing ``ca.crt``, ``client.crt``, and ``client.key``
+        for mTLS connections. If not set, defaults to a local ``./certs``
+        directory.
+      - ``./certs``
 
 Generating certificates for mTLS
 ================================
