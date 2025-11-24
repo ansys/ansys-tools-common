@@ -46,10 +46,12 @@ Example usage
     import hello_pb2_grpc
 
     channel = create_channel(
-        host="localhost", port=50051,                               # Channel details
-        transport_mode="mtls", certs_dir="path/to/certs",           # Security details
-        grpc_options=[                                              # Extra details
-            ('grpc.max_receive_message_length', 50 * 1024 * 1024)
+        host="localhost",
+        port=50051,  # Channel details
+        transport_mode="mtls",
+        certs_dir="path/to/certs",  # Security details
+        grpc_options=[  # Extra details
+            ("grpc.max_receive_message_length", 50 * 1024 * 1024)
         ],
     )
     stub = hello_pb2_grpc.GreeterStub(channel)
