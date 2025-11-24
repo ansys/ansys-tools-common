@@ -112,6 +112,7 @@ certificates for mTLS.
 .. list-table:: Client certificate files
    :widths: auto
    :header-rows: 1
+
    * - Required Files
      - Purpose
    * - client.crt
