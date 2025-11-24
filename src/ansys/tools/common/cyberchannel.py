@@ -49,7 +49,11 @@ from pathlib import Path
 from typing import cast
 from warnings import warn
 
-import grpc
+try:
+    import grpc
+except ImportError:  # pragma: no cover
+    warn("grpc module is not available - reach out to the library maintainers to include it into their dependencies")
+
 
 _IS_WINDOWS = os.name == "nt"
 LOOPBACK_HOSTS = ("localhost", "127.0.0.1")
