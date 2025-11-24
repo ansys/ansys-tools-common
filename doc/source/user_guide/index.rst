@@ -55,6 +55,13 @@ This section explains key concepts for implementing the tools in Ansys Common To
 
         Learn how to use the local launcher tool.
 
+    .. grid-item-card:: Securing gRPC connections
+        :padding: 2 2 2 2
+        :link: secure_grpc
+        :link-type: doc
+
+        Learn how to secure gRPC connections in PyAnsys.
+
 .. toctree::
     :hidden:
     :maxdepth: 3
@@ -65,3 +72,4 @@ This section explains key concepts for implementing the tools in Ansys Common To
     versioning
     report
     launcher/index
+    secure_grpc
