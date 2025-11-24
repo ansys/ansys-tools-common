@@ -97,30 +97,30 @@ Generating certificates for mTLS
 certificates for mTLS.
 
 .. list-table:: Server certificate files
-   :widths: auto
-   :header-rows: 1
+    :header-rows: 1
+    :widths: auto
 
-   * - Required Files
-     - Purpose
-   * - server.crt
-     - Server identity
-   * - server.key
-     - Server private key
-   * - ca.crt
-     - To verify client certificates
+    * - Required Files
+      - Purpose
+    * - server.crt
+      - Server identity
+    * - server.key
+      - Server private key
+    * - ca.crt
+      - To verify client certificates
 
 .. list-table:: Client certificate files
-   :widths: auto
-   :header-rows: 1
+    :header-rows: 1
+    :widths: auto
 
-   * - Required Files
-     - Purpose
-   * - client.crt
-     - Client identity
-   * - client.key
-     - Client private key
-   * - ca.crt
-     - To verify server certificates
+    * - Required Files
+      - Purpose
+    * - client.crt
+      - Client identity
+    * - client.key
+      - Client private key
+    * - ca.crt
+      - To verify server certificates
 
 These files can be generated using `OpenSSL <https://www.openssl.org/>`__.
 
