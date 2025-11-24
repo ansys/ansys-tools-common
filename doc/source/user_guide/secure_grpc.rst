@@ -96,24 +96,30 @@ Generating certificates for mTLS
 `OpenSSL <https://www.openssl.org/>`__ can be used to generate the necessary
 certificates for mTLS.
 
-Certificate files used by the server:
+.. list-table:: Server certificate files
+   :widths: auto
+   :header-rows: 1
 
-=======================  =========================================
-Required Files           Purpose
-=======================  =========================================
-server.crt               Server identity
-server.key               Server private key
-ca.crt                   To verify client certificates
+   * - Required Files
+     - Purpose
+   * - server.crt
+     - Server identity
+   * - server.key
+     - Server private key
+   * - ca.crt
+     - To verify client certificates
 
-Certificate files used by the client:
-
-=======================  =========================================
-Required Files           Purpose
-=======================  =========================================
-client.crt               Client identity
-client.key               Client private key
-ca.crt                   To verify server certificates
-=======================  =========================================
+.. list-table:: Client certificate files
+   :widths: auto
+   :header-rows: 1
+   * - Required Files
+     - Purpose
+   * - client.crt
+     - Client identity
+   * - client.key
+     - Client private key
+   * - ca.crt
+     - To verify server certificates
 
 These files can be generated using `OpenSSL <https://www.openssl.org/>`__.
 
