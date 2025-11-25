@@ -28,6 +28,9 @@ Authentication (WNUA), and Mutual TLS (mTLS).
 
 Example
 -------
+
+.. code-block:: python
+
     channel = create_channel(
         host="localhost",
         port=50051,
