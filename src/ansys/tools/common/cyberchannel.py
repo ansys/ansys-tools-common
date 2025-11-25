@@ -36,7 +36,7 @@ Example
         port=50051,
         transport_mode="mtls",
         certs_dir="path/to/certs",
-        grpc_options=[('grpc.max_receive_message_length', 50 * 1024 * 1024)],
+        grpc_options=[("grpc.max_receive_message_length", 50 * 1024 * 1024)],
     )
     stub = hello_pb2_grpc.GreeterStub(channel)
 
