@@ -203,7 +203,7 @@ def create_uds_channel(
     uds_fullpath : str | Path | None
         Full path to the UDS socket file.
         By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
-    uds_service : str
+    uds_service : str | None
         Service name for the UDS socket.
     uds_dir : str | Path | None
         Directory to use for Unix Domain Sockets (UDS) transport mode.
