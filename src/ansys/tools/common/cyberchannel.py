@@ -227,6 +227,8 @@ def create_uds_channel(
         raise RuntimeError("Unix Domain Sockets are not supported on this platform or gRPC version.")
 
     if uds_fullpath:
+        # Ensure the parent directory exists
+        Path(uds_fullpath).parent.mkdir(parents=True, exist_ok=True)
         target = f"unix:{uds_fullpath}"
     else:
         if not uds_service:
