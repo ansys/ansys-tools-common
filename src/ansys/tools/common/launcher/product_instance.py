@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Defines a wrapper for interacting with launched product instances."""
+"""Provides a wrapper for interacting with launched product instances."""
 
 from __future__ import annotations
 
@@ -30,6 +30,8 @@ import weakref
 
 import grpc
 from typing_extensions import Self
+
+from ansys.tools.common.exceptions import ProductInstanceError
 
 from .interface import LAUNCHER_CONFIG_T, LauncherProtocol, ServerType
 
@@ -42,7 +44,7 @@ class ProductInstance:
     """Provides a wrapper for interacting with the launched product instance.
 
     This class allows stopping and starting of the product instance. It also
-    provides access to its server URLs/channels.
+    provides access to its server URLs and gRPC channels.
 
     The :class:`ProductInstance` class can be used as a context manager, stopping
     the instance when exiting the context.
@@ -58,7 +60,7 @@ class ProductInstance:
     def __enter__(self) -> ProductInstance:
         """Enter the context manager defined by the product instance."""
         if self.stopped:
-            raise RuntimeError("The product instance is stopped. Cannot enter context.")
+            raise ProductInstanceError("The product instance is stopped. Cannot enter context.")
         return self
 
     def __exit__(self, *exc: Any) -> None:
@@ -70,15 +72,13 @@ class ProductInstance:
 
         Raises
         ------
-        RuntimeError
-            If the instance is already in the started state.
-        RuntimeError
-            If the URLs exposed by the started instance do not match
-            the expected ones defined in the launcher's
-            :attr:`.LauncherProtocol.SERVER_SPEC` attribute.
+        ProductInstanceError
+            If the instance is already started or the URLs do not match
+            the launcher's SERVER_SPEC.
         """
         if not self.stopped:
-            raise RuntimeError("Cannot start the server. It has already been started.")
+            raise ProductInstanceError("Cannot start the server. It has already been started.")
+
         self._finalizer = weakref.finalize(self, self._launcher.stop, timeout=None)
         self._launcher.start()
         self._channels = dict()
@@ -92,11 +92,11 @@ class ProductInstance:
                 )
             elif server_type == ServerType.GENERIC:
                 if key not in urls:
-                    raise RuntimeError(
+                    raise ProductInstanceError(
                         f"The URL for the generic server with key '{key}' was not provided by the launcher."
                     )
             else:
-                raise RuntimeError(f"Unsupported server type: {server_type}")
+                raise ProductInstanceError(f"Unsupported server type: {server_type}")
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the product instance.
@@ -110,11 +110,11 @@ class ProductInstance:
 
         Raises
         ------
-        RuntimeError
+        ProductInstanceError
             If the instance is already in the stopped state.
         """
         if self.stopped:
-            raise RuntimeError("Cannot stop the server. It has already been stopped.")
+            raise ProductInstanceError("Cannot stop the server. It has already been stopped.")
         self._launcher.stop(timeout=timeout)
         self._finalizer.detach()
 
@@ -130,12 +130,8 @@ class ProductInstance:
 
         Raises
         ------
-        RuntimeError
-            If the instance is already in the stopped state.
-        RuntimeError
-            If the URLs exposed by the started instance do not match
-            the expected ones defined in the launcher's
-            :attr:`.LauncherProtocol.SERVER_SPEC` attribute.
+        ProductInstanceError
+            If the instance is already stopped or URL keys mismatch.
         """
         self.stop(timeout=stop_timeout)
         self.start()
@@ -165,7 +161,7 @@ class ProductInstance:
 
         Raises
         ------
-        RuntimeError
+        ProductInstanceError
             If the server still has not responded after ``timeout`` seconds.
         """
         start_time = time.time()
@@ -177,11 +173,11 @@ class ProductInstance:
                 # delay s.t. the server isn't bombarded with requests.
                 time.sleep(timeout / 100)
         else:
-            raise RuntimeError(f"The product is not running after {timeout}s.")
+            raise ProductInstanceError(f"The product is not running after {timeout}s.")
 
     @property
     def urls(self) -> dict[str, str]:
-        """URL and port for the servers of the product instance.
+        """Read-only mapping of server keys to their URLs.
 
         Only generic server types are listed, gRPC servers should be accessed
         via the :attr:`.channels` property.
@@ -200,5 +196,5 @@ class ProductInstance:
 
     @property
     def channels(self) -> dict[str, grpc.Channel]:
-        """Channels to the gRPC servers of the product instance."""
+        """Read-only mapping of server keys to gRPC channels."""
         return self._channels
