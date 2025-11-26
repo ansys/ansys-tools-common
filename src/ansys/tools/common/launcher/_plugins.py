@@ -30,7 +30,7 @@ import warnings
 
 from .interface import FALLBACK_LAUNCH_MODE_NAME, DataclassProtocol, LauncherProtocol
 
-LAUNCHER_ENTRY_POINT = "ansys.tools.local_product_launcher.launcher"
+LAUNCHER_ENTRY_POINT = "ansys.tools.common.launcher"
 
 
 def get_launcher(*, product_name: str, launch_mode: str) -> type[LauncherProtocol[DataclassProtocol]]:

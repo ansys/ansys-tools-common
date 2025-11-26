@@ -20,19 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Provides a wrapper for interacting with launched product instances."""
+"""Defines a wrapper for interacting with launched product instances."""
 
 from __future__ import annotations
 
 import time
-from types import MappingProxyType
-from typing import Any, Mapping
+from typing import Any
 import weakref
 
 import grpc
 from typing_extensions import Self
-
-from ansys.tools.common.exceptions import ProductInstanceError
 
 from .interface import LAUNCHER_CONFIG_T, LauncherProtocol, ServerType
 
@@ -45,7 +42,7 @@ class ProductInstance:
     """Provides a wrapper for interacting with the launched product instance.
 
     This class allows stopping and starting of the product instance. It also
-    provides access to its server URLs and gRPC channels.
+    provides access to its server URLs/channels.
 
     The :class:`ProductInstance` class can be used as a context manager, stopping
     the instance when exiting the context.
@@ -53,15 +50,15 @@ class ProductInstance:
 
     def __init__(self, *, launcher: LauncherProtocol[LAUNCHER_CONFIG_T]):
         self._launcher = launcher
-        self._finalizer: weakref.finalize[Any, Self] | None = None
-        self._urls: Mapping[str, str] | None = None
-        self._channels: Mapping[str, grpc.Channel] | None = None
+        self._finalizer: weakref.finalize[Any, Self]
+        self._urls: dict[str, str]
+        self._channels: dict[str, grpc.Channel]
         self.start()
 
     def __enter__(self) -> ProductInstance:
         """Enter the context manager defined by the product instance."""
         if self.stopped:
-            raise ProductInstanceError("The product instance is stopped. Cannot enter context.")
+            raise RuntimeError("The product instance is stopped. Cannot enter context.")
         return self
 
     def __exit__(self, *exc: Any) -> None:
@@ -73,65 +70,72 @@ class ProductInstance:
 
         Raises
         ------
-        ProductInstanceError
-            If the instance is already started or the URLs do not match
-            the launcher's SERVER_SPEC.
+        RuntimeError
+            If the instance is already in the started state.
+        RuntimeError
+            If the URLs exposed by the started instance do not match
+            the expected ones defined in the launcher's
+            :attr:`.LauncherProtocol.SERVER_SPEC` attribute.
         """
         if not self.stopped:
-            raise ProductInstanceError("Cannot start the server. It has already been started.")
-
+            raise RuntimeError("Cannot start the server. It has already been started.")
         self._finalizer = weakref.finalize(self, self._launcher.stop, timeout=None)
         self._launcher.start()
+        self._channels = dict()
+        urls = self.urls
 
-        self._channels = {}
-        self._urls = MappingProxyType(self._launcher.urls)
-
-        if self._urls.keys() != self._launcher.SERVER_SPEC.keys():
-            raise ProductInstanceError(
-                f"The URL keys '{self._urls.keys()}' provided by the launcher "
-                f"do not match the SERVER_SPEC keys '{self._launcher.SERVER_SPEC.keys()}'"
-            )
-
+        transport_options_map = self._launcher.transport_options
         for key, server_type in self._launcher.SERVER_SPEC.items():
             if server_type == ServerType.GRPC:
-                self._channels[key] = grpc.insecure_channel(
-                    self._urls[key],
-                    options=[("grpc.max_receive_message_length", _GRPC_MAX_MESSAGE_LENGTH)],
+                self._channels[key] = transport_options_map[key].create_channel(
+                    grpc_options=[("grpc.max_receive_message_length", _GRPC_MAX_MESSAGE_LENGTH)],
                 )
+            elif server_type == ServerType.GENERIC:
+                if key not in urls:
+                    raise RuntimeError(
+                        f"The URL for the generic server with key '{key}' was not provided by the launcher."
+                    )
+            else:
+                raise RuntimeError(f"Unsupported server type: {server_type}")
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the product instance.
 
         Parameters
         ----------
-        timeout : float, default: None
+        timeout :
             Time in seconds after which the instance is forcefully stopped.
-            Not all launch methods implement this parameter.
+            Not all launch methods implement this parameter. If the parameter
+            is not implemented, it is ignored.
 
         Raises
         ------
-        ProductInstanceError
-            If the instance is already stopped.
+        RuntimeError
+            If the instance is already in the stopped state.
         """
         if self.stopped:
-            raise ProductInstanceError("Cannot stop the server. It has already been stopped.")
-
+            raise RuntimeError("Cannot stop the server. It has already been stopped.")
         self._launcher.stop(timeout=timeout)
-        if self._finalizer is not None:
-            self._finalizer.detach()
+        self._finalizer.detach()
 
     def restart(self, stop_timeout: float | None = None) -> None:
         """Stop and then start the product instance.
 
         Parameters
         ----------
-        stop_timeout : float, default: None
+        stop_timeout :
             Time in seconds after which the instance is forcefully stopped.
+            Not all launch methods implement this parameter. If the parameter
+            is not implemented, it is ignored.
 
         Raises
         ------
-        ProductInstanceError
-            If the instance is already stopped or URL keys mismatch.
+        RuntimeError
+            If the instance is already in the stopped state.
+        RuntimeError
+            If the URLs exposed by the started instance do not match
+            the expected ones defined in the launcher's
+            :attr:`.LauncherProtocol.SERVER_SPEC` attribute.
         """
         self.stop(timeout=stop_timeout)
         self.start()
@@ -141,7 +145,7 @@ class ProductInstance:
 
         Parameters
         ----------
-        timeout : float, default: None
+        timeout :
             Time in seconds to wait for the servers to respond. There
             is no guarantee that the ``check()`` method returns within this time.
             Instead, this parameter is used as a hint to the launcher implementation.
@@ -156,37 +160,45 @@ class ProductInstance:
 
         Parameters
         ----------
-        timeout : float, default: None
+        timeout :
             Wait time in seconds before raising an exception.
 
         Raises
         ------
-        ProductInstanceError
-            If the server still has not responded after `timeout` seconds.
+        RuntimeError
+            If the server still has not responded after ``timeout`` seconds.
         """
         start_time = time.time()
         while time.time() - start_time <= timeout:
             if self.check(timeout=timeout / 3):
                 break
-            time.sleep(max(timeout / 100, 0.01))  # minimum sleep to avoid busy waiting
+            else:
+                # Try again until the timeout is reached. We add a small
+                # delay s.t. the server isn't bombarded with requests.
+                time.sleep(timeout / 100)
         else:
-            raise ProductInstanceError(f"The product is not running after {timeout}s.")
+            raise RuntimeError(f"The product is not running after {timeout}s.")
 
     @property
-    def urls(self) -> Mapping[str, str]:
-        """Read-only mapping of server keys to their URLs."""
-        if self._urls is None:
-            return MappingProxyType({})
-        return self._urls
+    def urls(self) -> dict[str, str]:
+        """URL and port for the servers of the product instance.
+
+        Only generic server types are listed, gRPC servers should be accessed
+        via the :attr:`.channels` property.
+        """
+        return self._launcher.urls
 
     @property
     def stopped(self) -> bool:
         """Flag indicating if the product instance is currently stopped."""
-        return self._finalizer is None or not self._finalizer.alive
+        try:
+            return not self._finalizer.alive
+        # If the server has never been started, the '_finalizer' attribute
+        # may not be defined.
+        except AttributeError:
+            return True
 
     @property
-    def channels(self) -> Mapping[str, grpc.Channel]:
-        """Read-only mapping of server keys to gRPC channels."""
-        if self._channels is None:
-            return MappingProxyType({})
-        return MappingProxyType(self._channels)
+    def channels(self) -> dict[str, grpc.Channel]:
+        """Channels to the gRPC servers of the product instance."""
+        return self._channels
