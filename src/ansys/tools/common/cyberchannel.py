@@ -190,19 +190,16 @@ def create_insecure_channel(
 
 
 def create_uds_channel(
-    uds_fullpath: str | Path | None = None,
     uds_service: str | None = None,
     uds_dir: str | Path | None = None,
     uds_id: str | None = None,
     grpc_options: list[tuple[str, object]] | None = None,
+    uds_fullpath: str | Path | None = None,
 ) -> grpc.Channel:
     """Create a gRPC channel using Unix Domain Sockets (UDS).
 
     Parameters
     ----------
-    uds_fullpath : str | Path | None
-        Full path to the UDS socket file.
-        By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
     uds_service : str
         Service name for the UDS socket.
     uds_dir : str | Path | None
@@ -216,6 +213,9 @@ def create_uds_channel(
         gRPC channel options to pass when creating the channel.
         Each option is a tuple of the form ("option_name", value).
         By default `None` and thus only the default authority option is added.
+    uds_fullpath : str | Path | None
+        Full path to the UDS socket file.
+        By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
 
     Returns
     -------
@@ -489,10 +489,10 @@ def verify_transport_mode(transport_mode: str, mode: str | None = None) -> None:
 
 
 def verify_uds_socket(
-    uds_fullpath: str | Path | None = None,
     uds_service: str | None = None,
     uds_dir: Path | None = None,
     uds_id: str | None = None,
+    uds_fullpath: str | Path | None = None,
 ) -> bool:
     """Verify that the UDS socket file has been created.
 
@@ -507,6 +507,9 @@ def verify_uds_socket(
         Unique identifier for the UDS socket (optional).
         By default `None` and thus it will use "<uds_service>.sock".
         Otherwise, the socket filename will be "<uds_service>-<uds_id>.sock".
+    uds_fullpath : str | Path | None
+        Full path to the UDS socket file.
+        By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
 
     Returns
     -------
