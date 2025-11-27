@@ -200,7 +200,7 @@ def create_uds_channel(
 
     Parameters
     ----------
-    uds_service : str
+    uds_service : str | None
         Service name for the UDS socket.
     uds_dir : str | Path | None
         Directory to use for Unix Domain Sockets (UDS) transport mode.
@@ -231,7 +231,7 @@ def create_uds_channel(
         Path(uds_fullpath).parent.mkdir(parents=True, exist_ok=True)
         target = f"unix:{uds_fullpath}"
     else:
-        if not uds_service:
+        if uds_service is None:
             raise ValueError("When using UDS transport mode, 'uds_service' must be provided.")
 
         # Determine UDS folder
@@ -500,7 +500,7 @@ def verify_uds_socket(
 
     Parameters
     ----------
-    uds_service : str
+    uds_service : str | None
         Service name for the UDS socket.
     uds_dir : Path | None
         Directory where the UDS socket file is expected to be (optional).
@@ -520,9 +520,8 @@ def verify_uds_socket(
     """
     if uds_fullpath:
         return Path(uds_fullpath).exists()
-
     else:
-        if not uds_service:
+        if uds_service is None:
             raise ValueError("When using UDS transport mode, 'uds_service' must be provided.")
 
         # Generate socket filename with optional ID
