@@ -59,6 +59,8 @@ tests = [
   "pyfakefs==5.10.2",
   "pytest==9.0.1",
   "pytest-cov==7.0.0",
+  "mypy==1.18.2",
+  "mypy-extensions==1.1.0",
 ]
 
 doc = [
@@ -100,6 +102,10 @@ lint.isort.force-sort-within-sections = true
 lint.isort.known-first-party = [ "ansys" ]
 # Settings: https://docs.astral.sh/ruff/settings/#lintpydocstyle
 lint.pydocstyle.convention = "numpy"
+
+[tool.mypy]
+python_version = "3.10"
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src:$MYPY_CONFIG_FILE_DIR/tests:$MYPY_CONFIG_FILE_DIR/examples/example_httpserver_plugin/src"
 
 [tool.pytest.ini_options]
 addopts = "-ra --cov=ansys.tools.common --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term --capture=sys -vv"
