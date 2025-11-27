@@ -128,7 +128,7 @@ exclude_patterns = ["changelog/*.md"]
 # sphinx gallery options
 sphinx_gallery_conf = {
     # convert rst to md for ipynb
-    "pypandoc": True,
+    "pypandoc": False,
     # path to your examples scripts
     "examples_dirs": ["../../examples"],
     # path where to save gallery generated examples
