@@ -82,6 +82,7 @@ extensions = [
     "sphinx_design",
     "ansys_sphinx_theme.extension.autoapi",
     "sphinx_click",  # Required by local-product-launcher
+    "sphinx_gallery.gen_gallery",
 ]
 
 # numpydoc configuration
