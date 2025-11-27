@@ -8,6 +8,80 @@ project.
 
 .. towncrier release notes start
 
+`0.3.0 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.3.0>`_ - November 25, 2025
+==============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Ci: bump ansys/actions from 10.1.4 to 10.1.5
+          - `#92 <https://github.com/ansys/ansys-tools-common/pull/92>`_
+
+        * - Build: bump pyfakefs from 5.10.1 to 5.10.2
+          - `#95 <https://github.com/ansys/ansys-tools-common/pull/95>`_
+
+        * - Build: bump pytest from 9.0.0 to 9.0.1
+          - `#102 <https://github.com/ansys/ansys-tools-common/pull/102>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Chore: update CHANGELOG for v0.2.1
+          - `#77 <https://github.com/ansys/ansys-tools-common/pull/77>`_
+
+        * - Ci: make changelog stage as required for releasing and avoid running old workflows
+          - `#78 <https://github.com/ansys/ansys-tools-common/pull/78>`_
+
+        * - Ci: bump astral-sh/setup-uv from 7.0.0 to 7.1.2
+          - `#79 <https://github.com/ansys/ansys-tools-common/pull/79>`_
+
+        * - Build: bump pyfakefs from 5.10.0 to 5.10.1
+          - `#80 <https://github.com/ansys/ansys-tools-common/pull/80>`_
+
+        * - [pre-commit.ci] pre-commit autoupdate
+          - `#82 <https://github.com/ansys/ansys-tools-common/pull/82>`_, `#97 <https://github.com/ansys/ansys-tools-common/pull/97>`_, `#101 <https://github.com/ansys/ansys-tools-common/pull/101>`_, `#109 <https://github.com/ansys/ansys-tools-common/pull/109>`_
+
+        * - Build: bump hypothesis from 6.142.4 to 6.142.5
+          - `#91 <https://github.com/ansys/ansys-tools-common/pull/91>`_
+
+        * - Build: bump hypothesis from 6.142.5 to 6.143.0
+          - `#93 <https://github.com/ansys/ansys-tools-common/pull/93>`_
+
+        * - Docs: Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#94 <https://github.com/ansys/ansys-tools-common/pull/94>`_
+
+        * - Build: bump hypothesis from 6.143.0 to 6.146.0
+          - `#98 <https://github.com/ansys/ansys-tools-common/pull/98>`_
+
+        * - Build: bump hypothesis from 6.146.0 to 6.147.0
+          - `#99 <https://github.com/ansys/ansys-tools-common/pull/99>`_
+
+        * - Build: bump pytest from 8.4.2 to 9.0.0
+          - `#100 <https://github.com/ansys/ansys-tools-common/pull/100>`_
+
+        * - Ci: bump astral-sh/setup-uv from 7.1.2 to 7.1.3
+          - `#103 <https://github.com/ansys/ansys-tools-common/pull/103>`_
+
+        * - Ci: bump actions/checkout from 5.0.0 to 5.0.1
+          - `#104 <https://github.com/ansys/ansys-tools-common/pull/104>`_
+
+        * - Build: bump hypothesis from 6.147.0 to 6.148.0
+          - `#105 <https://github.com/ansys/ansys-tools-common/pull/105>`_
+
+        * - Feat: adding cyberchannel module
+          - `#107 <https://github.com/ansys/ansys-tools-common/pull/107>`_
+
+
 `0.2.1 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.2.1>`_ - October 31, 2025
 =============================================================================================
 
