@@ -22,13 +22,14 @@
 
 """Interface definitions for implementing a local product launcher.
 
-A plugin for the local product launcher must implement the :class:`LauncherProtocol`
+A plugin for the Local Product Launcher must implement the :class:`LauncherProtocol`
 class and register it.
 """
 
 from enum import Enum, auto
-from types import MappingProxyType
 from typing import Any, ClassVar, Protocol, TypeVar, runtime_checkable
+
+from .grpc_transport import TransportOptionsType
 
 __all__ = [
     "DataclassProtocol",
@@ -109,7 +110,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
         must be an instance of ``CONFIG_MODEL``.
     """
 
-    CONFIG_MODEL: ClassVar[type[LAUNCHER_CONFIG_T]]
+    CONFIG_MODEL: type[LAUNCHER_CONFIG_T]
     """Defines the configuration options for the launcher.
 
     The configuration options that this launcher accepts, specified
@@ -118,7 +119,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
     used in the configuration CLI, if available.
     """
 
-    SERVER_SPEC: ClassVar[dict[str, ServerType]] = MappingProxyType({})
+    SERVER_SPEC: dict[str, ServerType]
     """Defines the server types that are started.
 
     Examples
@@ -129,12 +130,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
 
     .. code:: python
 
-        SERVER_SPEC = MappingProxyType(
-            {
-                "MAIN": ServerType.GENERIC,
-                "FILE_TRANSFER": ServerType.GRPC,
-            }
-        )
+        SERVER_SPEC = {"MAIN": ServerType.GENERIC, "FILE_TRANSFER": ServerType.GRPC}
 
     The :attr:`.ProductInstance.urls` attribute then has keys
     ``{"MAIN", "FILE_TRANSFER"}``, whereas the
@@ -191,3 +187,20 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
         >>> launcher.urls
         {"MAIN": "http://127.0.0.1:8080", "FILE_TRANSFER": "grpc://127.0.0.1:50051"}
         """
+        if any(val == ServerType.GENERIC for val in self.SERVER_SPEC.values()):
+            raise NotImplementedError("LauncherProtocol.urls must be implemented if any generic servers are started.")
+        return {}
+
+    @property
+    def transport_options(self) -> dict[str, TransportOptionsType]:
+        """Dictionary of transport options for the gRPC servers started.
+
+        The keys of the returned dictionary must correspond to the keys
+        defined in the :attr:`.LauncherProtocol.SERVER_SPEC` attribute
+        which have the value :attr:`ServerType.GRPC`.
+        """
+        if any(val == ServerType.GRPC for val in self.SERVER_SPEC.values()):
+            raise NotImplementedError(
+                "LauncherProtocol.transport_options must be implemented if any gRPC servers are started."
+            )
+        return {}

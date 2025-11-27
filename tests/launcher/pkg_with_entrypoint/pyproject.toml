@@ -16,6 +16,6 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 
-[tool.poetry.plugins."ansys.tools.local_product_launcher.launcher"]
+[tool.poetry.plugins."ansys.tools.common.launcher"]
 "pkg_with_entrypoint.test_entry_point" = "pkg_with_entrypoint:Launcher"
 "pkg_with_entrypoint.__fallback__" = "pkg_with_entrypoint:Launcher"

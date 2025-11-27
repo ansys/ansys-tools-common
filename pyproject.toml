@@ -48,7 +48,7 @@ urls.Documentation = "https://ansys.tools.docs.pyansys.com/"
 urls.Issues = "https://github.com/ansys/ansys-tools-common/issues"
 urls.Releases = "https://github.com/ansys/ansys-tools-common/releases/"
 urls.Source = "https://github.com/ansys/ansys-tools-common"
-scripts.ansys-launcher = "ansys.tools.local_product_launcher._cli:cli"
+scripts.ansys-launcher = "ansys.tools.common.launcher._cli:cli"
 scripts.save-ansys-path = "ansys.tools.common.path.save:cli"
 
 [dependency-groups]
