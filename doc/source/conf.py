@@ -88,7 +88,6 @@ extensions = [
 
 # sphinx gallery options
 sphinx_gallery_conf = {
-
     # path to your examples scripts
     "examples_dirs": ["../../examples"],
     # path where to save gallery generated examples
@@ -149,4 +148,3 @@ suppress_warnings = ["autoapi.python_import_resolution", "ref.python"]
 
 # Ignore files
 exclude_patterns = ["changelog/*.md"]
-
