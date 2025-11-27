@@ -190,7 +190,7 @@ def create_insecure_channel(
 
 
 def create_uds_channel(
-    uds_service: str | None,
+    uds_service: str | None = None,
     uds_dir: str | Path | None = None,
     uds_id: str | None = None,
     grpc_options: list[tuple[str, object]] | None = None,

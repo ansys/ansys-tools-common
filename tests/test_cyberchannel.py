@@ -21,6 +21,7 @@
 # SOFTWARE.
 """Tests for cyberchannel."""
 
+import os
 from pathlib import Path
 import tempfile
 
@@ -58,6 +59,7 @@ def test_cyberchannel_insecure():
     assert not ch.close()
 
 
+@pytest.mark.skipif(os.name != "nt", reason="WNUA is only supported on Windows.")
 def test_cyberchannel_wnua():
     """Test cyberchannel wnua."""
     ch = cyberchannel.create_wnua_channel(host="localhost", port=12345)
@@ -71,7 +73,7 @@ def test_cyberchannel_uds():
     uds_file = Path(tempfile.gettempdir()) / "test_uds.sock"
     with uds_file.open("w"):
         pass
-    ch = cyberchannel.create_uds_channel(uds_fullpath=uds_file)
+    ch = cyberchannel.create_uds_channel_fullpath(uds_fullpath=uds_file)
     assert ch is not None
     assert ch._channel.target().decode() == f"unix:{uds_file}"
     assert not ch.close()
