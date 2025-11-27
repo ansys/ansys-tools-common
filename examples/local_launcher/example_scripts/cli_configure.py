@@ -21,6 +21,8 @@
 # SOFTWARE.
 
 """
+.. _ref_cli_configure:
+
 Configure the launcher from the command line
 --------------------------------------------
 
