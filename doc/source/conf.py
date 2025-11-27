@@ -83,7 +83,32 @@ extensions = [
     "ansys_sphinx_theme.extension.autoapi",
     "sphinx_click",  # Required by local-product-launcher
     "sphinx_gallery.gen_gallery",
+    "sphinx_jinja",
 ]
+
+# sphinx gallery options
+sphinx_gallery_conf = {
+
+    # path to your examples scripts
+    "examples_dirs": ["../../examples"],
+    # path where to save gallery generated examples
+    "gallery_dirs": ["examples"],
+    # Pattern to search for example files
+    "filename_pattern": r"\.py",
+    # Remove the "Download all examples" button from the top level gallery
+    "download_all_examples": False,
+    # Sort gallery example by file name instead of number of lines (default)
+    "within_subsection_order": "FileNameSortKey",
+    # directory where function granular galleries are stored
+    "backreferences_dir": None,
+    # Modules for which function level galleries are created.  In
+    "doc_module": "ansys-tools-common",
+    "image_scrapers": ("matplotlib",),
+    "ignore_pattern": r"__init__\.py",
+    "thumbnail_size": (350, 350),
+    "copyfile_regex": r".*\.rst",
+}
+
 
 # numpydoc configuration
 numpydoc_show_class_members = False
@@ -125,27 +150,3 @@ suppress_warnings = ["autoapi.python_import_resolution", "ref.python"]
 # Ignore files
 exclude_patterns = ["changelog/*.md"]
 
-# sphinx gallery options
-sphinx_gallery_conf = {
-    # convert rst to md for ipynb
-    "pypandoc": False,
-    # path to your examples scripts
-    "examples_dirs": ["../../examples"],
-    # path where to save gallery generated examples
-    "gallery_dirs": ["examples"],
-    # Pattern to search for example files
-    "filename_pattern": r"\.py",
-    # Remove the "Download all examples" button from the top level gallery
-    "download_all_examples": False,
-    # Sort gallery example by file name instead of number of lines (default)
-    "within_subsection_order": "FileNameSortKey",
-    # directory where function granular galleries are stored
-    "backreferences_dir": None,
-    # Modules for which function level galleries are created.  In
-    "doc_module": "ansys-tools-common",
-    "promote_jupyter_magic": True,
-    "image_scrapers": ("matplotlib",),
-    "ignore_pattern": r"__init__\.py",
-    "thumbnail_size": (350, 350),
-    "copyfile_regex": r".*\.rst",
-}

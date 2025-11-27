@@ -5,7 +5,7 @@
 SPHINXOPTS    = -j auto -W --color
 SPHINXBUILD   = sphinx-build
 APIDIR        = api
-EXAMPLESDIR        = examples
+EXAMPLESDIR   = examples
 SOURCEDIR     = source
 BUILDDIR      = _build
 
