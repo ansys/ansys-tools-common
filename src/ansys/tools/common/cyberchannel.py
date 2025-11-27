@@ -75,10 +75,10 @@ def create_channel(
     transport_mode: str,
     host: str | None = None,
     port: int | str | None = None,
-    uds_fullpath: str | Path | None = None,
     uds_service: str | None = None,
     uds_dir: str | Path | None = None,
     uds_id: str | None = None,
+    uds_fullpath: str | Path | None = None,
     certs_dir: str | Path | None = None,
     cert_files: CertificateFiles | None = None,
     grpc_options: list[tuple[str, object]] | None = None,
@@ -98,9 +98,6 @@ def create_channel(
         Port in which the server is running.
         By default `None` - however, if not using UDS transport mode,
         it will be requested.
-    uds_fullpath : str | Path | None
-        Full path to the UDS socket file.
-        By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
     uds_service : str | None
         Optional service name for the UDS socket.
         By default `None` - however, if UDS is selected, it will
@@ -112,6 +109,9 @@ def create_channel(
         Optional ID to use for the UDS socket filename.
         By default `None` and thus it will use "<uds_service>.sock".
         Otherwise, the socket filename will be "<uds_service>-<uds_id>.sock".
+    uds_fullpath : str | Path | None
+        Full path to the UDS socket file.
+        By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
     certs_dir : str | Path | None
         Directory to use for TLS certificates.
         By default `None` and thus search for the "ANSYS_GRPC_CERTIFICATES" environment variable.
@@ -145,7 +145,7 @@ def create_channel(
             transport_mode, host, port = check_host_port(transport_mode, host, port)
             return create_insecure_channel(host, port, grpc_options)
         case "uds":
-            return create_uds_channel(uds_fullpath, uds_service, uds_dir, uds_id, grpc_options)
+            return create_uds_channel(uds_service, uds_dir, uds_id, grpc_options, uds_fullpath)
         case "wnua":
             transport_mode, host, port = check_host_port(transport_mode, host, port)
             return create_wnua_channel(host, port, grpc_options)
@@ -190,7 +190,7 @@ def create_insecure_channel(
 
 
 def create_uds_channel(
-    uds_service: str | None = None,
+    uds_service: str | None,
     uds_dir: str | Path | None = None,
     uds_id: str | None = None,
     grpc_options: list[tuple[str, object]] | None = None,
