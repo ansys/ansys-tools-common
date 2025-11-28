@@ -88,31 +88,32 @@ extensions = [
 
 # sphinx gallery options
 sphinx_gallery_conf = {
-
     # path to your examples scripts
-    "examples_dirs": ["../../examples"],
+    "examples_dirs": ["../../examples/local_launcher/example_scripts"],
     # path where to save gallery generated examples
     "gallery_dirs": ["examples"],
-    # Pattern to search for example files
+    # Pattern to search for example files - match ALL .py files
     "filename_pattern": r"\.py",
+    # Ignore pattern to exclude __init__.py
+    "ignore_pattern": "flycheck*",
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
     "within_subsection_order": "FileNameSortKey",
     # directory where function granular galleries are stored
     "backreferences_dir": None,
-    # Modules for which function level galleries are created.  In
+    # Modules for which function level galleries are created.
     "doc_module": "ansys-tools-common",
     "image_scrapers": ("matplotlib",),
-    "ignore_pattern": r"__init__\.py",
     "thumbnail_size": (350, 350),
     "copyfile_regex": r".*\.rst",
+    "plot_gallery": False,
 }
-
 
 # numpydoc configuration
 numpydoc_show_class_members = False
 numpydoc_xref_param_type = True
+
 
 # Consider enabling numpydoc validation. See:
 # https://numpydoc.readthedocs.io/en/latest/validation.html#
