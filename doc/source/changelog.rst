@@ -8,6 +8,37 @@ project.
 
 .. towncrier release notes start
 
+`0.3.1 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.3.1>`_ - November 27, 2025
+==============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Feat: bump dev version
+          - `#111 <https://github.com/ansys/ansys-tools-common/pull/111>`_
+
+        * - Chore: update CHANGELOG for v0.3.0
+          - `#112 <https://github.com/ansys/ansys-tools-common/pull/112>`_
+
+        * - Ci: doc deploy dev missing
+          - `#113 <https://github.com/ansys/ansys-tools-common/pull/113>`_
+
+        * - Feat: add fullpath to set UDS sock filename
+          - `#114 <https://github.com/ansys/ansys-tools-common/pull/114>`_
+
+        * - Ci: bump actions/checkout from 5.0.1 to 6.0.0
+          - `#115 <https://github.com/ansys/ansys-tools-common/pull/115>`_
+
+        * - Ci: bump astral-sh/setup-uv from 7.1.3 to 7.1.4
+          - `#117 <https://github.com/ansys/ansys-tools-common/pull/117>`_
+
+
 `0.3.0 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.3.0>`_ - November 25, 2025
 ==============================================================================================
 
