@@ -35,7 +35,7 @@ import os
 
 from example_httpserver_plugin import LauncherConfig
 
-from ansys.tools.common.local_product_launcher import launch_product
+from ansys.tools.common.launcher import launch_product
 
 # %%
 # Default configuration

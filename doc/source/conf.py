@@ -107,7 +107,6 @@ sphinx_gallery_conf = {
     "image_scrapers": ("matplotlib",),
     "thumbnail_size": (350, 350),
     "copyfile_regex": r".*\.rst",
-    "plot_gallery": False,
 }
 
 # numpydoc configuration
