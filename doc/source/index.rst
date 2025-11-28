@@ -31,12 +31,20 @@ Ansys Common Tools provides a collection of tools for the PyAnsys ecosystem.
 
         Understand how to use Python to interact programmatically with the tools.
 
+    .. grid-item-card:: Examples :material-regular:`play_arrow`
+        :padding: 2 2 2 2
+        :link: examples/index
+        :link-type: doc
+
+        Explore examples that show how to use the different tools in practice.
+
     .. grid-item-card:: Contribute :material-regular:`group`
         :padding: 2 2 2 2
         :link: contributing
         :link-type: doc
 
         Learn how to contribute to the Ansys Common Tools codebase or documentation.
+
 
 
 
@@ -47,5 +55,6 @@ Ansys Common Tools provides a collection of tools for the PyAnsys ecosystem.
     getting_started/index
     user_guide/index
     api/index
+    examples/index
     contributing
     changelog

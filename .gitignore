@@ -70,6 +70,8 @@ instance/
 
 # Sphinx documentation
 doc/_build/
+*sg_execution_times.rst
+doc/source/examples
 
 # PyBuilder
 .pybuilder/
@@ -131,7 +133,7 @@ celerybeat.pid
 .env
 .venv
 env/
-venv/
+*venv/
 ENV/
 env.bak/
 venv.bak/
