@@ -65,7 +65,7 @@ tests = [
 
 doc = [
   "ansys-sphinx-theme[autoapi]==1.6.3",
-  "examples/local_launcher/example_httpserver_plugin @ {root:uri}",
+  "example-httpserver-plugin",
   "grpcio==1.76.0",
   "grpcio-health-checking==1.76.0",
   "sphinx-click==6.1.0",
@@ -78,6 +78,9 @@ packages = [ "src/ansys" ]
 
 [tool.uv]
 package = true
+
+[tool.uv.sources]
+example-httpserver-plugin = { path = "examples/local_launcher/example_httpserver_plugin" }
 
 [tool.ruff]
 line-length = 120
