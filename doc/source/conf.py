@@ -150,4 +150,3 @@ suppress_warnings = ["autoapi.python_import_resolution", "ref.python"]
 
 # Ignore files
 exclude_patterns = ["changelog/*.md"]
-
