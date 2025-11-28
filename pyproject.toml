@@ -65,7 +65,7 @@ tests = [
 
 doc = [
   "ansys-sphinx-theme[autoapi]==1.6.3",
-  "examples/local_launcher/example_httpserver_plugin @ {root:uri}",
+  "examples/local-launcher/example-httpserver-plugin @ {root:uri}",
   "grpcio==1.76.0",
   "grpcio-health-checking==1.76.0",
   "sphinx-click==6.1.0",
