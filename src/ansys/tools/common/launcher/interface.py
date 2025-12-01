@@ -22,11 +22,13 @@
 
 """Interface definitions for implementing a local product launcher.
 
-A plugin for the Local Product Launcher must implement the :class:`LauncherProtocol`
+A plugin for the local product launcher must implement the :class:`LauncherProtocol`
 class and register it.
 """
 
+from collections.abc import Mapping
 from enum import Enum, auto
+from types import MappingProxyType
 from typing import Any, ClassVar, Protocol, TypeVar, runtime_checkable
 
 from .grpc_transport import TransportOptionsType
@@ -119,7 +121,7 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
     used in the configuration CLI, if available.
     """
 
-    SERVER_SPEC: dict[str, ServerType]
+    SERVER_SPEC: ClassVar[Mapping[str, ServerType]] = MappingProxyType({})
     """Defines the server types that are started.
 
     Examples
@@ -130,7 +132,12 @@ class LauncherProtocol(Protocol[LAUNCHER_CONFIG_T]):
 
     .. code:: python
 
-        SERVER_SPEC = {"MAIN": ServerType.GENERIC, "FILE_TRANSFER": ServerType.GRPC}
+        SERVER_SPEC = MappingProxyType(
+            {
+                "MAIN": ServerType.GENERIC,
+                "FILE_TRANSFER": ServerType.GRPC,
+            }
+        )
 
     The :attr:`.ProductInstance.urls` attribute then has keys
     ``{"MAIN", "FILE_TRANSFER"}``, whereas the

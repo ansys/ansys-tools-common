@@ -103,7 +103,7 @@ class ProductInstance:
 
         Parameters
         ----------
-        timeout :
+        timeout : float, default: None
             Time in seconds after which the instance is forcefully stopped.
             Not all launch methods implement this parameter. If the parameter
             is not implemented, it is ignored.
@@ -111,7 +111,7 @@ class ProductInstance:
         Raises
         ------
         ProductInstanceError
-            If the instance is already in the stopped state.
+            If the instance is already stopped.
         """
         if self.stopped:
             raise ProductInstanceError("Cannot stop the server. It has already been stopped.")
@@ -123,7 +123,7 @@ class ProductInstance:
 
         Parameters
         ----------
-        stop_timeout :
+        stop_timeout : float, default: None
             Time in seconds after which the instance is forcefully stopped.
             Not all launch methods implement this parameter. If the parameter
             is not implemented, it is ignored.
@@ -141,7 +141,7 @@ class ProductInstance:
 
         Parameters
         ----------
-        timeout :
+        timeout : float, default: None
             Time in seconds to wait for the servers to respond. There
             is no guarantee that the ``check()`` method returns within this time.
             Instead, this parameter is used as a hint to the launcher implementation.
@@ -156,7 +156,7 @@ class ProductInstance:
 
         Parameters
         ----------
-        timeout :
+        timeout : float, default: None
             Wait time in seconds before raising an exception.
 
         Raises
