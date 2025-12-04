@@ -43,9 +43,9 @@ there's quite a lot going on in this code, descriptions of each part are provide
     from typing import Optional
     import subprocess
 
-    from ansys.tools.local_product_launcher.interface import LauncherProtocol, ServerType
-    from ansys.tools.local_product_launcher.helpers.ports import find_free_ports
-    from ansys.tools.local_product_launcher.helpers.grpc import check_grpc_health
+    from ansys.tools.common.launcher.interface import LauncherProtocol, ServerType
+    from ansys.tools.common.launcher.helpers.ports import find_free_ports
+    from ansys.tools.common.launcher.helpers.grpc import check_grpc_health
 
 
     class DirectLauncher(LauncherProtocol[LauncherConfig]):
@@ -190,7 +190,7 @@ You define the entrypoint in your package's build configuration. The exact synta
 
         .. code:: toml
 
-            [project.entry-points."ansys.tools.local_product_launcher.launcher"]
+            [project.entry-points."ansys.tools.common.launcher"]
             "ACP.direct" = "<your.module.name>:DirectLauncher"
 
         In a ``setup.cfg`` file:
@@ -198,7 +198,7 @@ You define the entrypoint in your package's build configuration. The exact synta
         .. code:: cfg
 
             [options.entry_points]
-            ansys.tools.local_product_launcher.launcher =
+            ansys.tools.common.launcher =
                 ACP.direct = <your.module.name>:DirectLauncher
 
         In a ``setup.py`` file:
@@ -210,7 +210,7 @@ You define the entrypoint in your package's build configuration. The exact synta
             setup(
                 # ...,
                 entry_points={
-                    "ansys.tools.local_product_launcher.launcher": [
+                    "ansys.tools.common.launcher": [
                         "ACP.direct = <your.module.name>:DirectLauncher"
                     ]
                 }
@@ -225,7 +225,7 @@ You define the entrypoint in your package's build configuration. The exact synta
 
         .. code:: toml
 
-            [project.entry-points."ansys.tools.local_product_launcher.launcher"]
+            [project.entry-points."ansys.tools.common.launcher"]
             "ACP.direct" = "<your.module.name>:DirectLauncher"
 
         For more information, see the `Entry points sections <https://flit.pypa.io/en/stable/pyproject_toml.html#pyproject-project-entrypoints>`_ in the Flit documentation.
@@ -236,12 +236,12 @@ You define the entrypoint in your package's build configuration. The exact synta
 
         .. code:: toml
 
-            [tool.poetry.plugins."ansys.tools.local_product_launcher.launcher"]
+            [tool.poetry.plugins."ansys.tools.common.launcher"]
             "ACP.direct" = "<your.module.name>:DirectLauncher"
 
         For more information, see the `plugins <https://python-poetry.org/docs/pyproject#plugins>`_ in the Poetry documentation.
 
-In all cases, ``ansys.tools.local_product_launcher.launcher`` is an identifier specifying that the entrypoint defines a local product launcher plugin. It must be kept the same.
+In all cases, ``ansys.tools.common.launcher`` is an identifier specifying that the entrypoint defines a local product launcher plugin. It must be kept the same.
 
 The entrypoint itself has two parts:
 
@@ -275,7 +275,7 @@ the ``binary_path``:
     from typing import Union
 
     from ansys.tools.path import get_available_ansys_installations
-    from ansys.tools.local_product_launcher.interface import METADATA_KEY_DOC
+    from ansys.tools.common.launcher.interface import METADATA_KEY_DOC
 
 
     def get_default_binary_path() -> str:
@@ -316,7 +316,7 @@ For example, to make ``DirectLauncher`` the fallback for ACP, add this entry poi
 
 .. code:: toml
 
-    [project.entry-points."ansys.tools.local_product_launcher.launcher"]
+    [project.entry-points."ansys.tools.common.launcher"]
     "ACP.__fallback__" = "<your.module.name>:DirectLauncher"
 
 The fallback launch mode is used with its default configuration. This means that the configuration class must have default values for all its fields.
@@ -333,7 +333,7 @@ to ``True`` in the ``metadata`` dictionary:
 
     import dataclasses
 
-    from ansys.tools.local_product_launcher.interface import METADATA_KEY_NOPROMPT
+    from ansys.tools.common.launcher.interface import METADATA_KEY_NOPROMPT
 
 
     @dataclasses.dataclass
