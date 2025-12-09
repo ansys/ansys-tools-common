@@ -31,8 +31,8 @@ import sys
 
 import requests
 
-from ansys.tools.local_product_launcher.helpers.ports import find_free_ports
-from ansys.tools.local_product_launcher.interface import LauncherProtocol, ServerType
+from ansys.tools.common.launcher.helpers.ports import find_free_ports
+from ansys.tools.common.launcher.interface import LauncherProtocol, ServerType
 
 
 # START_LAUNCHER_CONFIG
