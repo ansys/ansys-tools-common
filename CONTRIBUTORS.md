@@ -6,6 +6,7 @@
 
 ## Individual Contributors
 
+* [Dominik Gresch](https://github.com/greschd)
 * [Edouard Coussoux](https://github.com/ecoussoux-ansys)
 * [Etienne Arnal](https://github.com/etiennearnal)
 * [Jorge Martínez](https://github.com/jorgepiloto)
