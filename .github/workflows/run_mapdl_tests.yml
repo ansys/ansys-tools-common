@@ -14,8 +14,8 @@ env:
   MAIN_PYTHON_VERSION: 3.13
 
 permissions:
-  contents: read
-  packages: read
+  contents: read # required to read files
+  packages: read # required to pull container images
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
