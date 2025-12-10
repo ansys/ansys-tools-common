@@ -20,35 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Helpers for interacting with gRPC servers."""
+"""Example plugin for ansys-tools-local-product-launcher."""
 
-import grpc  # type: ignore[import-untyped]
-from grpc_health.v1.health_pb2 import HealthCheckRequest, HealthCheckResponse  # type: ignore[import-untyped]
-from grpc_health.v1.health_pb2_grpc import HealthStub  # type: ignore[import-untyped]
+from .launcher import Launcher, LauncherConfig
 
-
-def check_grpc_health(channel: grpc.Channel, timeout: float | None = None) -> bool:
-    """Check that a gRPC server is responding to health check requests.
-
-    Parameters
-    ----------
-    channel :
-        Channel to the gRPC server.
-    timeout :
-        Timeout in seconds for the gRPC health check request.
-
-    Returns
-    -------
-    bool
-        ``True`` if the health check succeeds, ``False`` otherwise.
-    """
-    try:
-        res = HealthStub(channel).Check(
-            request=HealthCheckRequest(),
-            timeout=timeout,
-        )
-        if res.status == HealthCheckResponse.ServingStatus.SERVING:
-            return True
-    except grpc.RpcError:
-        pass
-    return False
+__version__ = "0.1.0"
+__all__ = ["LauncherConfig", "Launcher"]

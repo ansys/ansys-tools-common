@@ -1,0 +1,20 @@
+[build-system]
+build-backend = "flit_core.buildapi"
+requires = [ "flit-core>=3.2,<4" ]
+
+[project]
+name = "example-httpserver-plugin"
+authors = [ { name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" } ]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+]
+dynamic = [ "description", "version" ]
+dependencies = [ "ansys-tools-local-product-launcher", "requests" ]
+
+entry-points."ansys.tools.common.launcher"."example_httpserver.__fallback__" = "example_httpserver_plugin:Launcher"
+entry-points."ansys.tools.common.launcher"."example_httpserver.direct" = "example_httpserver_plugin:Launcher"

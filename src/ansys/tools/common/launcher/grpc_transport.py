@@ -66,7 +66,7 @@ else:
 
 
 class TransportMode(StrEnum):
-    """Enumeration of transport modes supported by the FileTransfer Tool."""
+    """Enumeration of supported gRPC transport modes."""
 
     UDS = "uds"
     WNUA = "wnua"

@@ -74,7 +74,7 @@ def get_all_plugins(hide_fallback: bool = True) -> dict[str, dict[str, type[Laun
             continue
 
         try:
-            launcher_class = entry_point.load()  # type: ignore
+            launcher_class = entry_point.load()
         except Exception as exception:
             message = f"Skipping broken plugin '{entry_point.name}': {exception}"
             warnings.warn(message)

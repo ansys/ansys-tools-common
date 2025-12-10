@@ -21,7 +21,7 @@
 # SOFTWARE.
 """Module for entry point testing."""
 
-import pkg_with_entrypoint
+import pkg_with_entrypoint  # type: ignore[import-not-found]
 
 from ansys.tools.common.launcher._plugins import (
     get_all_plugins,
