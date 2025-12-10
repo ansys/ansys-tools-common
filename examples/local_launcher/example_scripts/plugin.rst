@@ -1,4 +1,4 @@
-Define the HTTP Server launcher plugin
+Define the HTTP server launcher plugin
 --------------------------------------
 
 This example shows the launcher plugin that is used to start the Python HTTP server.
