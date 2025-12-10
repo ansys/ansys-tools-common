@@ -36,17 +36,17 @@ Documentation and issues
 ------------------------
 
 Documentation for the latest stable release of Ansys Common Tools is hosted
-at `Ansys Common Tools documentation <https://ansys.tools.docs.pyansys.com/version/stable/index.html>`_.
+at `Ansys Common Tools documentation <https://tools.docs.pyansys.com/version/stable/index.html>`_.
 
 The documentation has these sections:
 
-- `Getting started <https://ansys.tools.docs.pyansys.com/version/stable/getting_started/index.html>`_: Learn
+- `Getting started <https://tools.docs.pyansys.com/version/stable/getting_started/index.html>`_: Learn
   how to install Ansys Common Tools in user mode.
-- `User guide <https://ansys.tools.docs.pyansys.com/version/stable/user_guide/index.html>`_: Understand key
+- `User guide <https://tools.docs.pyansys.com/version/stable/user_guide/index.html>`_: Understand key
   concepts for implementing the tools in your workflows.
-- `API reference <https://ansys.tools.docs.pyansys.com/version/stable/api/index.html>`_: Understand how to
+- `API reference <https://tools.docs.pyansys.com/version/stable/api/index.html>`_: Understand how to
   use Python to interact programmatically with the tools.
-- `Contribute <https://ansys.tools.docs.pyansys.com/version/stable/contributing.html>`_: Learn how to
+- `Contribute <https://tools.docs.pyansys.com/version/stable/contributing.html>`_: Learn how to
   contribute to the Ansys Common Tools codebase or documentation.
 
 In the upper right corner of the documentation's title bar, there is an option
