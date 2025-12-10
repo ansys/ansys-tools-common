@@ -11,9 +11,9 @@ You can import exception classes and use the predefined exceptions directly in y
 
 .. code:: pycon
 
-   >>> from ansys.tools.exceptions import AnsysError
-   >>> from ansys.tools.exceptions import AnsysTypeError
-   >>> from ansys.tools.exceptions import AnsysLogicError
+   >>> from ansys.tools.common.exceptions import AnsysError
+   >>> from ansys.tools.common.exceptions import AnsysTypeError
+   >>> from ansys.tools.common.exceptions import AnsysLogicError
    >>> raise AnsysError("An error occurred in Ansys tools.")
    AnsysError: An error occurred in Ansys tools.
    >>> raise AnsysTypeError("An invalid type was provided.")

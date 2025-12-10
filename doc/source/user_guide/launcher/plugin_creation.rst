@@ -274,7 +274,7 @@ the ``binary_path``:
     import dataclasses
     from typing import Union
 
-    from ansys.tools.path import get_available_ansys_installations
+    from ansys.tools.common.path import get_available_ansys_installations
     from ansys.tools.common.launcher.interface import METADATA_KEY_DOC
 
 
