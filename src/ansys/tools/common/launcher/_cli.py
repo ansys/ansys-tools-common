@@ -54,7 +54,7 @@ _DEFAULT_STR = "default"
 
 
 def get_subcommands_from_plugins(
-    *, plugins: dict[str, dict[str, LauncherProtocol[LAUNCHER_CONFIG_T]]]
+    *, plugins: dict[str, dict[str, type[LauncherProtocol[LAUNCHER_CONFIG_T]]]]
 ) -> Sequence[click.Command]:
     """Construct ``configure`` subcommands from the plugins."""
     all_product_commands: list[click.Group] = []
@@ -180,7 +180,7 @@ def config_writer_callback_factory(
     return _config_writer_callback
 
 
-def build_cli(plugins: dict[str, dict[str, LauncherProtocol[LAUNCHER_CONFIG_T]]]) -> click.Group:
+def build_cli(plugins: dict[str, dict[str, type[LauncherProtocol[LAUNCHER_CONFIG_T]]]]) -> click.Group:
     """Build the CLI from the plugins."""
     _cli = click.Group()
 

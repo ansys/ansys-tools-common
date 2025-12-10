@@ -22,9 +22,9 @@
 
 """Helpers for interacting with gRPC servers."""
 
-import grpc
-from grpc_health.v1.health_pb2 import HealthCheckRequest, HealthCheckResponse
-from grpc_health.v1.health_pb2_grpc import HealthStub
+import grpc  # type: ignore[import-untyped]
+from grpc_health.v1.health_pb2 import HealthCheckRequest, HealthCheckResponse  # type: ignore[import-untyped]
+from grpc_health.v1.health_pb2_grpc import HealthStub  # type: ignore[import-untyped]
 
 
 def check_grpc_health(channel: grpc.Channel, timeout: float | None = None) -> bool:

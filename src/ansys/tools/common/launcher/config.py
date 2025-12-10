@@ -35,7 +35,7 @@ import os
 import pathlib
 from typing import Any, cast
 
-import appdirs
+import appdirs  # type: ignore[import-untyped]
 
 from ._plugins import get_config_model, get_fallback_launcher, has_fallback
 from .interface import FALLBACK_LAUNCH_MODE_NAME, LAUNCHER_CONFIG_T, DataclassProtocol
