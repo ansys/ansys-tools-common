@@ -10,7 +10,7 @@ To use the tool, import it:
 
 .. code:: python
 
-    import ansys.tools.report as pyansys_report
+    import ansys.tools.common.report as pyansys_report
 
 Here is an example of how to use the tool to display Ansys variables and libraries:
 

@@ -3,7 +3,7 @@
 Ansys versioning tool
 =====================
 
-Use the Ansys versioning tool to enforce version requirements for methods in classes. The :meth:`requires_version <ansys.tools.versioning.requires_version>` decorator, available in the ``ansys.tools.versioning`` module, specifies the required version and version map. This decorator accepts the following:
+Use the Ansys versioning tool to enforce version requirements for methods in classes. The :meth:`requires_version <ansys.tools.common.versioning.requires_version>` decorator, available in the ``ansys.tools.common.versioning`` module, specifies the required version and version map. This decorator accepts the following:
 
 * The required version as a string (``"<Major>.<Minor>.<Patch>"``) or
   a tuple (``(<Major>, <Minor>, <Patch>)``).
