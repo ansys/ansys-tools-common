@@ -1,4 +1,4 @@
 Examples
 ========
 
-This section shows how to use the local launcher.
+This section shows examples for the different tools.
