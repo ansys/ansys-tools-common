@@ -8,6 +8,63 @@ project.
 
 .. towncrier release notes start
 
+`0.4.0 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.0>`_ - December 10, 2025
+==============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Launcher: implement gRPC transport option handling
+          - `#116 <https://github.com/ansys/ansys-tools-common/pull/116>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Chore: update CHANGELOG for v0.3.1
+          - `#119 <https://github.com/ansys/ansys-tools-common/pull/119>`_
+
+        * - Docs: Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#121 <https://github.com/ansys/ansys-tools-common/pull/121>`_, `#125 <https://github.com/ansys/ansys-tools-common/pull/125>`_
+
+        * - Chore: Update missing or outdated files
+          - `#122 <https://github.com/ansys/ansys-tools-common/pull/122>`_
+
+        * - [pre-commit.ci] pre-commit autoupdate
+          - `#124 <https://github.com/ansys/ansys-tools-common/pull/124>`_, `#128 <https://github.com/ansys/ansys-tools-common/pull/128>`_
+
+        * - Ci: bump actions/checkout from 6.0.0 to 6.0.1
+          - `#126 <https://github.com/ansys/ansys-tools-common/pull/126>`_
+
+        * - Build: bump sphinx-gallery from 0.19.0 to 0.20.0
+          - `#127 <https://github.com/ansys/ansys-tools-common/pull/127>`_
+
+        * - Ci: bump ansys/actions from 10.1.5 to 10.2.2
+          - `#129 <https://github.com/ansys/ansys-tools-common/pull/129>`_
+
+        * - Build: bump sphinx-click from 6.1.0 to 6.2.0
+          - `#130 <https://github.com/ansys/ansys-tools-common/pull/130>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Fix: Local launcher fixes
+          - `#118 <https://github.com/ansys/ansys-tools-common/pull/118>`_
+
+
 `0.3.1 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.3.1>`_ - November 27, 2025
 ==============================================================================================
 
