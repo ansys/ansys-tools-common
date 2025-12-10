@@ -27,8 +27,8 @@ jobs:
     name: Changelog
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write  # required to write the changelog
+      pull-requests: write  # required to push the changelog
     steps:
       - name: Create fragment
         if: github.event_name == 'pull_request'
@@ -164,8 +164,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
     permissions:
-      id-token: write
-      contents: write
+      id-token: write # required to authenticate to PyPI
+      contents: write # required to create GitHub release
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -219,8 +219,8 @@ jobs:
     needs: [build-library]
     if: github.event_name == 'pull_request'
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # required to merge the PR
+      pull-requests: write # required to merge the PR
     steps:
       - name: Automerge PRs
         uses: ansys/actions/hk-automerge-prs@eb7d0fc873deeee6d4740774675ce1741cb6f154 # v10.2.2
