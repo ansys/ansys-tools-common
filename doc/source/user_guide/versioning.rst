@@ -65,4 +65,4 @@ However, when you run ``new_method``, the old server raises a
 
     >>> new_server.new_method()
     >>> old_server.new_method()
-    ansys.tools.versioning.exceptions.VersionError: Class method ``new_method`` requires server version >= 2022R1.
+    ansys.tools.common.exceptions.VersionError: Class method ``new_method`` requires server version >= 2022R1.
