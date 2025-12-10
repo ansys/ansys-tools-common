@@ -14,7 +14,7 @@ Launcher code
 The ``LauncherConfig`` class determines which options are available to the user when configuring the launcher. It exposes
 a single option ``directory``, which determines which directory the server is to serve files from.
 
-.. include:: ../example_httpserver_plugin/src/example_httpserver_plugin/launcher.py
+.. include:: ../../../examples/local_launcher/example_httpserver_plugin/src/example_httpserver_plugin/launcher.py
     :literal:
     :start-after: # START_LAUNCHER_CONFIG
     :end-before: # END_LAUNCHER_CONFIG
@@ -27,7 +27,7 @@ The ``Launcher`` class actually starts the server. It needs to fulfill the inter
 - The ``check`` method for checking if the server is running.
 - The ``urls`` property for getting the URLs that the the server is serving requests on.
 
-.. include:: ../example_httpserver_plugin/src/example_httpserver_plugin/launcher.py
+.. include:: ../../../examples/local_launcher/example_httpserver_plugin/src/example_httpserver_plugin/launcher.py
     :literal:
     :start-after: # START_LAUNCHER_CLS
     :end-before: # END_LAUNCHER_CLS
@@ -44,7 +44,7 @@ Besides the launcher code, the plugin must be registered by adding an entrypoint
 the ``pyproject.toml`` file, as described in :ref:`entrypoint`. In this example,
 ``flit`` is used as a build tool. Thus, the ``pyproject.toml`` file looks like this:
 
-.. include:: ../example_httpserver_plugin/pyproject.toml
+.. include:: ../../../examples/local_launcher/example_httpserver_plugin/pyproject.toml
     :literal:
 
 Two entrypoints for the local product launcher are defined:
