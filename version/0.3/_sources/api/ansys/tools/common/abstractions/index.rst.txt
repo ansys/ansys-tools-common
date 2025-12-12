@@ -1,0 +1,79 @@
+
+
+
+
+
+
+The ``abstractions`` package
+================================
+
+.. py:module:: ansys.tools.common.abstractions
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: abstractions
+.. tab-set::
+
+
+    .. tab-item:: Submodules
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.abstractions.connection`
+            - Module for abstract connection class.
+
+
+          * - :py:obj:`~ansys.tools.common.abstractions.launcher`
+            - Interface definitions for implementing a local product launcher.
+
+
+
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-fa-file"></span> connection</api/ansys/tools/common/abstractions/connection/index>
+    <span class="nf nf-fa-file"></span> launcher</api/ansys/tools/common/abstractions/launcher/index>
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Initialization module for abstractions.
+
+
+
+
+
+
