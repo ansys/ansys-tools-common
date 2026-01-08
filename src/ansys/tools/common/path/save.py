@@ -51,6 +51,7 @@ def cli(
 
     This example demonstrates the main use of this tool::
 
+        $ save-ansys-path --name mechanical /path/to/.workbench
         $ save-ansys-path --name dyna /path/to/dyna
     """
     _save_path(name, location, allow_prompt)
