@@ -4,7 +4,7 @@ requires = [ "hatchling" ]
 
 [project]
 name = "ansys-tools-common"
-version = "0.4.dev0"
+version = "0.5.dev0"
 description = "A set of tools for PyAnsys libraries"
 readme = "README.rst"
 license = "MIT"
