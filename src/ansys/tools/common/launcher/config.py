@@ -35,7 +35,7 @@ import os
 import pathlib
 from typing import Any, cast
 
-import appdirs  # type: ignore[import-untyped]
+import platformdirs
 
 from ._plugins import get_config_model, get_fallback_launcher, has_fallback
 from .interface import FALLBACK_LAUNCH_MODE_NAME, LAUNCHER_CONFIG_T, DataclassProtocol
@@ -251,7 +251,7 @@ def _get_config_path() -> pathlib.Path:
             )
 
     else:
-        config_path_dir = pathlib.Path(appdirs.user_config_dir("ansys_tools_local_product_launcher"))
+        config_path_dir = pathlib.Path(platformdirs.user_config_dir("ansys_tools_local_product_launcher"))
         config_path = config_path_dir / "config.json"
         try:
             # Set up data directory
