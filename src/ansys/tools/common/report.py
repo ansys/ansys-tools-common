@@ -118,7 +118,7 @@ class Report(scooby.Report):
         """Report class constructor."""
         # Mandatory packages
         core = [
-            "appdirs",
+            "platformdirs",
             "google.protobuf",  # protobuf library
             "grpc",  # grpcio
             "matplotlib",
