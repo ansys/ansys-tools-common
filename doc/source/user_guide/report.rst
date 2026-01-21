@@ -62,7 +62,7 @@ The typical output of a report looks like this:
     >>>                        matplotlib : X.Y.Z
     >>>                             numpy : X.Y.Z
     >>>                           pyvista : X.Y.Z
-    >>>                           appdirs : X.Y.Z
+    >>>                      platformdirs : X.Y.Z
     >>>                              tqdm : X.Y.Z
     >>>                            pyiges : X.Y.Z
     >>>                             scipy : X.Y.Z
@@ -118,7 +118,7 @@ The report also includes several Python packages by default. These packages are 
 * ``matplotlib``
 * ``numpy``
 * ``pyvista``
-* ``appdirs``
+* ``platformdirs``
 * ``tqdm``
 * ``pyiges``
 * ``scipy``
