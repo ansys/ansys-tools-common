@@ -8,6 +8,22 @@ project.
 
 .. towncrier release notes start
 
+`0.4.2 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.2>`_ - January 29, 2026
+=============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Feat: add 271 rekease
+          - `#173 <https://github.com/ansys/ansys-tools-common/pull/173>`_
+
+
 `0.4.1 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.1>`_ - January 21, 2026
 =============================================================================================
 
