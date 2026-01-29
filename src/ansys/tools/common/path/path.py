@@ -47,6 +47,7 @@ LINUX_DEFAULT_DIRS = [str(Path(*each)) for each in linux_default_dirs]
 CONFIG_FILE_NAME = "config.txt"
 
 SUPPORTED_ANSYS_VERSIONS: SUPPORTED_VERSIONS_TYPE = {
+    271: "2027R1",
     261: "2026R1",
     252: "2025R2",
     251: "2025R1",
