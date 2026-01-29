@@ -1,0 +1,108 @@
+
+
+
+
+
+
+The ``applications`` package
+================================
+
+.. py:module:: ansys.tools.common.path.applications
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: applications
+.. tab-set::
+
+
+    .. tab-item:: Submodules
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.path.applications.dyna`
+            - LS-DYNA-specific logic for the Ansys path tool.
+
+
+          * - :py:obj:`~ansys.tools.common.path.applications.mapdl`
+            - MAPDL-specific logic for the Ansys path tool.
+
+
+          * - :py:obj:`~ansys.tools.common.path.applications.mechanical`
+            - Mechanical-specific logic for the Ansys path tool.
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.path.applications.ApplicationPlugin`
+            - Provides for application plugins.
+
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-fa-file"></span> dyna</api/ansys/tools/common/path/applications/dyna/index>
+    <span class="nf nf-fa-file"></span> mapdl</api/ansys/tools/common/path/applications/mapdl/index>
+    <span class="nf nf-fa-file"></span> mechanical</api/ansys/tools/common/path/applications/mechanical/index>
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> ApplicationPlugin</api/ansys/tools/common/path/applications/ApplicationPlugin>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+ Application plugin for the Ansys path tool.
+
+This defines the interface of a plugin, which is implemented using a module.
+
+
+
+
+
+
+
+
