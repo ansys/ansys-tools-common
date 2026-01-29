@@ -1,0 +1,62 @@
+
+
+
+
+
+
+:class:`DataclassProtocol`
+==========================
+
+
+.. py:class:: ansys.tools.common.abstractions.launcher.DataclassProtocol
+
+   Bases: :py:obj:`Protocol`
+
+
+   Provides the ``Protocol`` class for Python dataclasses.
+
+
+
+.. py:currentmodule:: DataclassProtocol
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~__dataclass_fields__`
+            - 
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.abstractions.launcher import DataclassProtocol
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: __dataclass_fields__
+   :type:  ClassVar[dict[str, Any]]
+
+
+
+
+
