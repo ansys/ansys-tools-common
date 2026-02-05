@@ -388,18 +388,42 @@ def create_mtls_channel(
 def version_tuple(version_str: str) -> tuple[int, ...]:
     """Convert a version string into a tuple of integers for comparison.
 
+    This function handles version strings with pre-release identifiers
+    (alpha, beta, rc, etc.) by extracting only the numeric version parts.
+    For example, "1.78.0rc2" becomes (1, 78, 0).
+
     Parameters
     ----------
     version_str : str
-        The version string to convert.
+        The version string to convert. Can include pre-release identifiers
+        like "1.78.0rc2", "2.0.0a1", "1.63.0b5", etc.
 
     Returns
     -------
     tuple[int, ...]
         A tuple of integers representing the version.
 
+    Examples
+    --------
+    >>> version_tuple("1.2.3")
+    (1, 2, 3)
+    >>> version_tuple("1.78.0rc2")
+    (1, 78, 0)
+    >>> version_tuple("2.0.0a1")
+    (2, 0, 0)
+
     """
-    return tuple(int(x) for x in version_str.split("."))
+    import re
+
+    # Extract the numeric version part before any pre-release identifier
+    # Matches: start of string, digits, optionally followed by dot and more digits
+    match = re.match(r"^(\d+(?:\.\d+)*)", version_str)
+    if match:
+        version_part = match.group(1)
+        return tuple(int(x) for x in version_part.split("."))
+
+    # If regex doesn't match, raise an error
+    raise ValueError(f"Unable to parse version string: {version_str}")
 
 
 def check_grpc_version():
