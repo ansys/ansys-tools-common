@@ -63,7 +63,7 @@ tests = [
 ]
 
 doc = [
-  "ansys-sphinx-theme[autoapi]==1.6.4",
+  "ansys-sphinx-theme[autoapi]==1.7.0",
   "example-httpserver-plugin",
   "grpcio==1.76.0",
   "grpcio-health-checking==1.76.0",
