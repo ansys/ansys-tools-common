@@ -8,6 +8,22 @@ project.
 
 .. towncrier release notes start
 
+`0.4.3 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.3>`_ - February 05, 2026
+==============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - [WIP] Fix ValueError in version_tuple with pre-release modules
+          - `#182 <https://github.com/ansys/ansys-tools-common/pull/182>`_
+
+
 `0.4.2 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.2>`_ - January 29, 2026
 =============================================================================================
 
