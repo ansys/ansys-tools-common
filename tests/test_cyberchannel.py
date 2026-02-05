@@ -32,9 +32,25 @@ from ansys.tools.common import cyberchannel
 
 def test_version_tuple():
     """Test version tuple."""
+    # Test normal version strings
     assert cyberchannel.version_tuple("1.2.3") == (1, 2, 3)
     assert cyberchannel.version_tuple("1.2.3.4") == (1, 2, 3, 4)
     assert cyberchannel.version_tuple("1.0.0") == (1, 0, 0)
+
+    # Test pre-release version strings
+    assert cyberchannel.version_tuple("1.78.0rc2") == (1, 78, 0)
+    assert cyberchannel.version_tuple("2.0.0a1") == (2, 0, 0)
+    assert cyberchannel.version_tuple("1.63.0b5") == (1, 63, 0)
+    assert cyberchannel.version_tuple("1.50.0alpha1") == (1, 50, 0)
+    assert cyberchannel.version_tuple("1.50.0beta2") == (1, 50, 0)
+
+    # Test comparison with pre-release versions
+    assert cyberchannel.version_tuple("1.78.0rc2") >= cyberchannel.version_tuple("1.63.0")
+    assert cyberchannel.version_tuple("2.0.0a1") >= cyberchannel.version_tuple("1.63.0")
+
+    # Test invalid version string
+    with pytest.raises(ValueError, match="Unable to parse version string"):
+        cyberchannel.version_tuple("invalid_version")
 
 
 def test_cyberchannel_functions():
