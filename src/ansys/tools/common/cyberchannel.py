@@ -49,6 +49,7 @@ from dataclasses import dataclass
 import logging
 import os
 from pathlib import Path
+import re
 from typing import cast
 from warnings import warn
 
@@ -413,8 +414,6 @@ def version_tuple(version_str: str) -> tuple[int, ...]:
     (2, 0, 0)
 
     """
-    import re
-
     # Extract the numeric version part before any pre-release identifier
     # Matches: start of string, digits, optionally followed by dot and more digits
     match = re.match(r"^(\d+(?:\.\d+)*)", version_str)
