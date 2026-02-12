@@ -66,7 +66,7 @@ tests = [
   "hypothesis==6.151.5",
   "mypy==1.19.1",
   "mypy-extensions==1.1.0",
-  "pyfakefs==6.0.0",
+  "pyfakefs==6.1.0",
   "pytest==9.0.2",
   "pytest-cov==7.0.0",
 ]
