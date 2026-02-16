@@ -63,7 +63,7 @@ doc = [
 tests = [
   "grpcio==1.78.0",
   "grpcio-health-checking==1.78.0",
-  "hypothesis==6.151.5",
+  "hypothesis==6.151.6",
   "mypy==1.19.1",
   "mypy-extensions==1.1.0",
   "pyfakefs==6.1.0",
