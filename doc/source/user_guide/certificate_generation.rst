@@ -1,7 +1,7 @@
 .. _ref_certificate_generation:
 
 Certificate generation utilities
-#################################
+################################
 
 The certificate generation utilities provide a convenient way to generate
 self-signed certificates suitable for testing gRPC applications with mutual TLS
