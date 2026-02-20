@@ -65,6 +65,7 @@ doc = [
   "sphinx-gallery==0.20.0",
 ]
 tests = [
+  "cryptography==46.0.5",
   "grpcio==1.78.0",
   "grpcio-health-checking==1.78.0",
   "hypothesis==6.151.6",
