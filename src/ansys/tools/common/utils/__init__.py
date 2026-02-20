@@ -22,9 +22,7 @@
 
 """Utilities for ansys-tools-common."""
 
-from ansys.tools.common.utils.certificates import (
+from .certificates import (  # noqa F401
     CertificateGenerator,
     generate_test_certificates,
 )
-
-__all__ = ["CertificateGenerator", "generate_test_certificates"]
