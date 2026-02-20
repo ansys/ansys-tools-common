@@ -62,6 +62,13 @@ This section explains key concepts for implementing the tools in Ansys Common To
 
         Learn how to secure gRPC connections in PyAnsys.
 
+    .. grid-item-card:: Certificate generation
+        :padding: 2 2 2 2
+        :link: certificate_generation
+        :link-type: doc
+
+        Learn how to generate test certificates for secure connections.
+
 .. toctree::
     :hidden:
     :maxdepth: 3
@@ -73,3 +80,4 @@ This section explains key concepts for implementing the tools in Ansys Common To
     report
     launcher/index
     secure_grpc
+    certificate_generation
