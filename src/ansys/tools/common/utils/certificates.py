@@ -67,9 +67,9 @@ try:
     from cryptography.hazmat.primitives.asymmetric import rsa
     from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
 
-    CRYPTOGRAPHY_AVAILABLE = True
+    __CRYPTOGRAPHY_AVAILABLE = True
 except ImportError:
-    CRYPTOGRAPHY_AVAILABLE = False
+    __CRYPTOGRAPHY_AVAILABLE = False
 
 
 class CertificateGenerator:
@@ -96,7 +96,7 @@ class CertificateGenerator:
 
     def __init__(self, key_size: int = 4096, validity_days: int = 1):
         """Initialize the certificate generator."""
-        if not CRYPTOGRAPHY_AVAILABLE:
+        if not __CRYPTOGRAPHY_AVAILABLE:
             raise ImportError(
                 "The 'cryptography' library is required for certificate generation. "
                 "Install it with: pip install ansys-tools-common[other]"
@@ -422,7 +422,7 @@ def generate_test_certificates(
     ...     generate_test_certificates(output_dir=cert_dir)
     ...     return cert_dir
     """
-    if not CRYPTOGRAPHY_AVAILABLE:
+    if not __CRYPTOGRAPHY_AVAILABLE:
         raise ImportError(
             "The 'cryptography' library is required for certificate generation. "
             "Install it with: pip install ansys-tools-common[other]"
