@@ -515,7 +515,7 @@ def verify_transport_mode(transport_mode: str, mode: str | None = None) -> None:
 
 def verify_uds_socket(
     uds_service: str | None = None,
-    uds_dir: Path | None = None,
+    uds_dir: str | Path | None = None,
     uds_id: str | None = None,
     uds_fullpath: str | Path | None = None,
 ) -> bool:
@@ -525,7 +525,7 @@ def verify_uds_socket(
     ----------
     uds_service : str | None
         Service name for the UDS socket.
-    uds_dir : Path | None
+    uds_dir : str | Path | None
         Directory where the UDS socket file is expected to be (optional).
         By default `None` and thus it will use the "~/.conn" folder.
     uds_id : str | None

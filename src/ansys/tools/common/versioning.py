@@ -512,7 +512,7 @@ class VersionNumber:
 
     Examples
     --------
-    >>> from ansys.tools.versioning.utils import VersionNumber
+    >>> from ansys.tools.common.versioning import VersionNumber
     >>> VersionNumber(1)
     1
     >>> VersionNumber("dev")
