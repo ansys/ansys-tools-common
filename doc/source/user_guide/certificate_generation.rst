@@ -184,8 +184,8 @@ frequently. You can customize this if needed:
     from ansys.tools.common.utils import generate_test_certificates
     from pathlib import Path
 
-    # Generate certificates valid for 1 year
-    files = generate_test_certificates(output_dir=Path("certs"), validity_days=365)
+    # Generate certificates valid for 3 days
+    files = generate_test_certificates(output_dir=Path("certs"), validity_days=3)
 
 Using the ``CertificateGenerator`` class
 ----------------------------------------
@@ -200,7 +200,7 @@ class directly:
     from pathlib import Path
 
     # Initialize generator with custom parameters
-    generator = CertificateGenerator(key_size=4096, validity_days=365)
+    generator = CertificateGenerator(key_size=4096, validity_days=3)
 
     # Generate CA certificate
     ca_key, ca_cert = generator.create_ca_certificate("My Test CA")

@@ -89,7 +89,7 @@ class CertificateGenerator:
     Examples
     --------
     >>> from ansys.tools.common.utils.certificates import CertificateGenerator
-    >>> gen = CertificateGenerator(validity_days=365)
+    >>> gen = CertificateGenerator(validity_days=2)
     >>> ca_key, ca_cert = gen.create_ca_certificate()
     >>> server_key, server_cert = gen.create_server_certificate(ca_cert, ca_key, "localhost")
     """
@@ -119,7 +119,7 @@ class CertificateGenerator:
         )
 
     @staticmethod
-    def save_private_key(key: rsa.RSAPrivateKey, filename: Path) -> None:
+    def save_private_key(key: rsa.RSAPrivateKey, filepath: Path) -> None:
         """
         Save a private key to a PEM file.
 
@@ -127,10 +127,10 @@ class CertificateGenerator:
         ----------
         key : rsa.RSAPrivateKey
             The private key to save
-        filename : Path
+        filepath : Path
             Path to the output file
         """
-        with filename.open("wb") as f:
+        with filepath.open("wb") as f:
             f.write(
                 key.private_bytes(
                     encoding=serialization.Encoding.PEM,
@@ -140,7 +140,7 @@ class CertificateGenerator:
             )
 
     @staticmethod
-    def save_certificate(cert: x509.Certificate, filename: Path) -> None:
+    def save_certificate(cert: x509.Certificate, filepath: Path) -> None:
         """
         Save a certificate to a PEM file.
 
@@ -148,10 +148,10 @@ class CertificateGenerator:
         ----------
         cert : x509.Certificate
             The certificate to save
-        filename : Path
+        filepath : Path
             Path to the output file
         """
-        with filename.open("wb") as f:
+        with filepath.open("wb") as f:
             f.write(cert.public_bytes(serialization.Encoding.PEM))
 
     def create_ca_certificate(self, common_name: str = "Test CA") -> tuple[rsa.RSAPrivateKey, x509.Certificate]:
@@ -463,7 +463,6 @@ def generate_test_certificates(
         server_key, server_cert = generator.create_server_certificate(
             ca_cert, ca_key, primary_hostname, additional_sans
         )
-
         key_path = output_dir / f"{filename}.key"
         cert_path = output_dir / f"{filename}.crt"
         generator.save_private_key(server_key, key_path)
