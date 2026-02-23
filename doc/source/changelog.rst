@@ -8,6 +8,159 @@ project.
 
 .. towncrier release notes start
 
+`0.4.4 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.4>`_ - February 23, 2026
+==============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Feat: provide cert generator tool
+          - `#193 <https://github.com/ansys/ansys-tools-common/pull/193>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Build: bump hypothesis from 6.148.0 to 6.148.2
+          - `#106 <https://github.com/ansys/ansys-tools-common/pull/106>`_
+
+        * - Build: bump mypy from 1.18.2 to 1.19.0
+          - `#134 <https://github.com/ansys/ansys-tools-common/pull/134>`_
+
+        * - Build: bump pyfakefs from 5.10.2 to 6.0.0
+          - `#153 <https://github.com/ansys/ansys-tools-common/pull/153>`_
+
+        * - Ci: bump ansys/actions from 10.2.3 to 10.2.4
+          - `#176 <https://github.com/ansys/ansys-tools-common/pull/176>`_
+
+        * - Build: bump the grpc-deps group with 2 updates
+          - `#187 <https://github.com/ansys/ansys-tools-common/pull/187>`_
+
+        * - Build: bump pyfakefs from 6.0.0 to 6.1.0
+          - `#188 <https://github.com/ansys/ansys-tools-common/pull/188>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Chore: update CHANGELOG for v0.4.0
+          - `#131 <https://github.com/ansys/ansys-tools-common/pull/131>`_
+
+        * - Fix: doc links
+          - `#132 <https://github.com/ansys/ansys-tools-common/pull/132>`_
+
+        * - Fix: module path
+          - `#133 <https://github.com/ansys/ansys-tools-common/pull/133>`_
+
+        * - Build: bump pytest from 9.0.1 to 9.0.2
+          - `#136 <https://github.com/ansys/ansys-tools-common/pull/136>`_
+
+        * - Docs: Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#137 <https://github.com/ansys/ansys-tools-common/pull/137>`_
+
+        * - Ci: bump ansys/actions from 10.2.2 to 10.2.3
+          - `#138 <https://github.com/ansys/ansys-tools-common/pull/138>`_
+
+        * - Build: bump ansys-sphinx-theme[autoapi] from 1.6.3 to 1.6.4
+          - `#139 <https://github.com/ansys/ansys-tools-common/pull/139>`_
+
+        * - Chore: minor docstring/typehint change
+          - `#141 <https://github.com/ansys/ansys-tools-common/pull/141>`_
+
+        * - [pre-commit.ci] pre-commit autoupdate
+          - `#142 <https://github.com/ansys/ansys-tools-common/pull/142>`_, `#152 <https://github.com/ansys/ansys-tools-common/pull/152>`_, `#162 <https://github.com/ansys/ansys-tools-common/pull/162>`_, `#165 <https://github.com/ansys/ansys-tools-common/pull/165>`_, `#171 <https://github.com/ansys/ansys-tools-common/pull/171>`_, `#177 <https://github.com/ansys/ansys-tools-common/pull/177>`_, `#185 <https://github.com/ansys/ansys-tools-common/pull/185>`_, `#192 <https://github.com/ansys/ansys-tools-common/pull/192>`_
+
+        * - Build: bump matplotlib from 3.10.7 to 3.10.8
+          - `#143 <https://github.com/ansys/ansys-tools-common/pull/143>`_
+
+        * - Ci: bump actions/download-artifact from 6.0.0 to 7.0.0
+          - `#149 <https://github.com/ansys/ansys-tools-common/pull/149>`_
+
+        * - Ci: bump astral-sh/setup-uv from 7.1.4 to 7.1.6
+          - `#150 <https://github.com/ansys/ansys-tools-common/pull/150>`_
+
+        * - Build: bump mypy from 1.19.0 to 1.19.1
+          - `#151 <https://github.com/ansys/ansys-tools-common/pull/151>`_
+
+        * - Build: bump hypothesis from 6.148.7 to 6.148.8
+          - `#154 <https://github.com/ansys/ansys-tools-common/pull/154>`_
+
+        * - Build: bump hypothesis from 6.148.8 to 6.148.9
+          - `#156 <https://github.com/ansys/ansys-tools-common/pull/156>`_
+
+        * - Feat: Update example doc string
+          - `#157 <https://github.com/ansys/ansys-tools-common/pull/157>`_
+
+        * - Build: bump hypothesis from 6.148.9 to 6.148.11
+          - `#158 <https://github.com/ansys/ansys-tools-common/pull/158>`_
+
+        * - Ci: bump astral-sh/setup-uv from 7.1.6 to 7.2.0
+          - `#159 <https://github.com/ansys/ansys-tools-common/pull/159>`_
+
+        * - Build: bump hypothesis from 6.148.11 to 6.150.0
+          - `#160 <https://github.com/ansys/ansys-tools-common/pull/160>`_
+
+        * - Build: bump hypothesis from 6.150.0 to 6.150.2
+          - `#164 <https://github.com/ansys/ansys-tools-common/pull/164>`_
+
+        * - Maint: Migrate to platformdirs
+          - `#167 <https://github.com/ansys/ansys-tools-common/pull/167>`_
+
+        * - Chore: update CHANGELOG for v0.4.1
+          - `#169 <https://github.com/ansys/ansys-tools-common/pull/169>`_
+
+        * - Ci: bump actions/checkout from 6.0.1 to 6.0.2
+          - `#170 <https://github.com/ansys/ansys-tools-common/pull/170>`_
+
+        * - Build: bump hypothesis from 6.150.2 to 6.150.3
+          - `#172 <https://github.com/ansys/ansys-tools-common/pull/172>`_
+
+        * - Chore: update CHANGELOG for v0.4.2
+          - `#174 <https://github.com/ansys/ansys-tools-common/pull/174>`_
+
+        * - Build: bump hypothesis from 6.150.3 to 6.151.2
+          - `#175 <https://github.com/ansys/ansys-tools-common/pull/175>`_
+
+        * - Build: bump hypothesis from 6.151.2 to 6.151.4
+          - `#178 <https://github.com/ansys/ansys-tools-common/pull/178>`_
+
+        * - Ci: bump astral-sh/setup-uv from 7.2.0 to 7.2.1
+          - `#180 <https://github.com/ansys/ansys-tools-common/pull/180>`_
+
+        * - Chore: update CHANGELOG for v0.4.3
+          - `#183 <https://github.com/ansys/ansys-tools-common/pull/183>`_
+
+        * - Build: bump hypothesis from 6.151.4 to 6.151.5
+          - `#184 <https://github.com/ansys/ansys-tools-common/pull/184>`_
+
+        * - Ci: bump astral-sh/setup-uv from 7.2.1 to 7.3.0
+          - `#186 <https://github.com/ansys/ansys-tools-common/pull/186>`_
+
+        * - Build: bump hypothesis from 6.151.5 to 6.151.6
+          - `#189 <https://github.com/ansys/ansys-tools-common/pull/189>`_
+
+        * - Build: bump pyfakefs from 6.1.0 to 6.1.1
+          - `#190 <https://github.com/ansys/ansys-tools-common/pull/190>`_
+
+        * - Ci: bump ansys/actions from 10.2.4 to 10.2.5
+          - `#191 <https://github.com/ansys/ansys-tools-common/pull/191>`_
+
+        * - Build: bump hypothesis from 6.151.6 to 6.151.9
+          - `#194 <https://github.com/ansys/ansys-tools-common/pull/194>`_
+
+
 `0.4.3 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.3>`_ - February 05, 2026
 ==============================================================================================
 
