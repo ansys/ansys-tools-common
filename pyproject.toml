@@ -34,12 +34,16 @@ dependencies = [
 optional-dependencies.all = [
   "ansys-tools-filetransfer>=0.1.1",
   "ansys-tools-visualization-interface>=0.9.2",
+  "cryptography>=43.0",
 ]
 optional-dependencies.filetransfer = [
   "ansys-tools-filetransfer>=0.1.1",
 ]
 optional-dependencies.graphics = [
   "ansys-tools-visualization-interface>=0.9.2",
+]
+optional-dependencies.other = [
+  "cryptography>=43.0",
 ]
 urls.Discussions = "https://github.com/ansys/ansys-tools-common/discussions"
 urls.Documentation = "https://tools.docs.pyansys.com/"
@@ -61,6 +65,7 @@ doc = [
   "sphinx-gallery==0.20.0",
 ]
 tests = [
+  "cryptography==46.0.5",
   "grpcio==1.78.0",
   "grpcio-health-checking==1.78.0",
   "hypothesis==6.151.9",
