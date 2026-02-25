@@ -57,8 +57,8 @@ scripts.save-ansys-path = "ansys.tools.common.path.save:cli"
 doc = [
   "ansys-sphinx-theme[autoapi]==1.6.4",
   "example-httpserver-plugin",
-  "grpcio==1.78.0",
-  "grpcio-health-checking==1.78.0",
+  "grpcio==1.78.1",
+  "grpcio-health-checking==1.78.1",
   "matplotlib==3.10.8",
   "sphinx-click==6.2.0",
   "sphinx-copybutton==0.5.2",
@@ -66,8 +66,8 @@ doc = [
 ]
 tests = [
   "cryptography==46.0.5",
-  "grpcio==1.78.0",
-  "grpcio-health-checking==1.78.0",
+  "grpcio==1.78.1",
+  "grpcio-health-checking==1.78.1",
   "hypothesis==6.151.9",
   "mypy==1.19.1",
   "mypy-extensions==1.1.0",
