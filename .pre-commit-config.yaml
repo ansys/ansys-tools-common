@@ -9,7 +9,7 @@ repos:
           - "max_line_length=80,retain_line_breaks=true,retain_line_breaks_single=true"
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.16.0
+    rev: v2.16.2
     hooks:
       - id: pyproject-fmt
         args: [--keep-full-version]
@@ -48,7 +48,7 @@ repos:
       - id: check-github-workflows
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.1
+    rev: v0.15.2
     hooks:
       - id: ruff-check
       - id: ruff-format
