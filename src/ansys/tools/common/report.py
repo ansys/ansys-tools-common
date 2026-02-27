@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -70,8 +70,7 @@ __PYANSYS_LIBS__ = (
     "ansys.simai.core",
     "ansys.systemcoupling.core",
     "ansys.turbogrid.core",
-    "ansys.tools.report",
-    "ansys.tools.versioning",
+    "ansys.tools.common",
     "pyaedt",
     "pyedb",
     "pygranta",
@@ -119,7 +118,7 @@ class Report(scooby.Report):
         """Report class constructor."""
         # Mandatory packages
         core = [
-            "appdirs",
+            "platformdirs",
             "google.protobuf",  # protobuf library
             "grpc",  # grpcio
             "matplotlib",

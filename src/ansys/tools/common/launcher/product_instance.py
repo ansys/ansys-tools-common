@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,8 +25,7 @@
 from __future__ import annotations
 
 import time
-from types import MappingProxyType
-from typing import Any, Mapping
+from typing import Any
 import weakref
 
 import grpc
@@ -53,9 +52,9 @@ class ProductInstance:
 
     def __init__(self, *, launcher: LauncherProtocol[LAUNCHER_CONFIG_T]):
         self._launcher = launcher
-        self._finalizer: weakref.finalize[Any, Self] | None = None
-        self._urls: Mapping[str, str] | None = None
-        self._channels: Mapping[str, grpc.Channel] | None = None
+        self._finalizer: weakref.finalize[Any, Self]
+        self._urls: dict[str, str]
+        self._channels: dict[str, grpc.Channel]
         self.start()
 
     def __enter__(self) -> ProductInstance:
@@ -82,22 +81,22 @@ class ProductInstance:
 
         self._finalizer = weakref.finalize(self, self._launcher.stop, timeout=None)
         self._launcher.start()
+        self._channels = dict()
+        urls = self.urls
 
-        self._channels = {}
-        self._urls = MappingProxyType(self._launcher.urls)
-
-        if self._urls.keys() != self._launcher.SERVER_SPEC.keys():
-            raise ProductInstanceError(
-                f"The URL keys '{self._urls.keys()}' provided by the launcher "
-                f"do not match the SERVER_SPEC keys '{self._launcher.SERVER_SPEC.keys()}'"
-            )
-
+        transport_options_map = self._launcher.transport_options
         for key, server_type in self._launcher.SERVER_SPEC.items():
             if server_type == ServerType.GRPC:
-                self._channels[key] = grpc.insecure_channel(
-                    self._urls[key],
-                    options=[("grpc.max_receive_message_length", _GRPC_MAX_MESSAGE_LENGTH)],
+                self._channels[key] = transport_options_map[key].create_channel(
+                    grpc_options=[("grpc.max_receive_message_length", _GRPC_MAX_MESSAGE_LENGTH)],
                 )
+            elif server_type == ServerType.GENERIC:
+                if key not in urls:
+                    raise ProductInstanceError(
+                        f"The URL for the generic server with key '{key}' was not provided by the launcher."
+                    )
+            else:
+                raise ProductInstanceError(f"Unsupported server type: {server_type}")
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the product instance.
@@ -106,7 +105,8 @@ class ProductInstance:
         ----------
         timeout : float, default: None
             Time in seconds after which the instance is forcefully stopped.
-            Not all launch methods implement this parameter.
+            Not all launch methods implement this parameter. If the parameter
+            is not implemented, it is ignored.
 
         Raises
         ------
@@ -115,10 +115,8 @@ class ProductInstance:
         """
         if self.stopped:
             raise ProductInstanceError("Cannot stop the server. It has already been stopped.")
-
         self._launcher.stop(timeout=timeout)
-        if self._finalizer is not None:
-            self._finalizer.detach()
+        self._finalizer.detach()
 
     def restart(self, stop_timeout: float | None = None) -> None:
         """Stop and then start the product instance.
@@ -127,6 +125,8 @@ class ProductInstance:
         ----------
         stop_timeout : float, default: None
             Time in seconds after which the instance is forcefully stopped.
+            Not all launch methods implement this parameter. If the parameter
+            is not implemented, it is ignored.
 
         Raises
         ------
@@ -162,31 +162,39 @@ class ProductInstance:
         Raises
         ------
         ProductInstanceError
-            If the server still has not responded after `timeout` seconds.
+            If the server still has not responded after ``timeout`` seconds.
         """
         start_time = time.time()
         while time.time() - start_time <= timeout:
             if self.check(timeout=timeout / 3):
                 break
-            time.sleep(max(timeout / 100, 0.01))  # minimum sleep to avoid busy waiting
+            else:
+                # Try again until the timeout is reached. We add a small
+                # delay s.t. the server isn't bombarded with requests.
+                time.sleep(timeout / 100)
         else:
             raise ProductInstanceError(f"The product is not running after {timeout}s.")
 
     @property
-    def urls(self) -> Mapping[str, str]:
-        """Read-only mapping of server keys to their URLs."""
-        if self._urls is None:
-            return MappingProxyType({})
-        return self._urls
+    def urls(self) -> dict[str, str]:
+        """Read-only mapping of server keys to their URLs.
+
+        Only generic server types are listed, gRPC servers should be accessed
+        via the :attr:`.channels` property.
+        """
+        return self._launcher.urls
 
     @property
     def stopped(self) -> bool:
         """Flag indicating if the product instance is currently stopped."""
-        return self._finalizer is None or not self._finalizer.alive
+        try:
+            return not self._finalizer.alive
+        # If the server has never been started, the '_finalizer' attribute
+        # may not be defined.
+        except AttributeError:
+            return True
 
     @property
-    def channels(self) -> Mapping[str, grpc.Channel]:
+    def channels(self) -> dict[str, grpc.Channel]:
         """Read-only mapping of server keys to gRPC channels."""
-        if self._channels is None:
-            return MappingProxyType({})
-        return MappingProxyType(self._channels)
+        return self._channels

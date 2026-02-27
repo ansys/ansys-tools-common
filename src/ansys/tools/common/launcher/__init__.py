@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,13 +22,14 @@
 
 """Local product launcher."""
 
-from . import config, helpers, interface, product_instance
+from . import config, grpc_transport, helpers, interface, product_instance
 from .launch import launch_product
 
 __all__ = [
-    "interface",
-    "helpers",
     "config",
-    "product_instance",
+    "grpc_transport",
+    "helpers",
+    "interface",
     "launch_product",
+    "product_instance",
 ]

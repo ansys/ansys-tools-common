@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,15 +22,30 @@
 """Module for test server."""
 
 from concurrent import futures
+import pathlib
 import sys
 
 import grpc
 from grpc_health.v1 import health, health_pb2_grpc
 
-if __name__ == "__main__":
-    port = sys.argv[1]
+
+def main(uds_dir: str):
+    """Run the simple test server."""
+    uds_file = pathlib.Path(uds_dir) / "simple_test_service.sock"
+    if uds_file.exists():
+        print(f"UDS file {uds_file} already exists.")
+        sys.exit(1)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
     health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
-    server.add_insecure_port(f"[::]:{port}")
-    server.start()
-    server.wait_for_termination()
+    server.add_insecure_port(f"unix:{uds_file}")
+    print(f"Starting gRPC server with UDS file {uds_file}...")
+    try:
+        server.start()
+        server.wait_for_termination()
+    finally:
+        print("Shutting down gRPC server...")
+        uds_file.unlink(missing_ok=True)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1])

@@ -5,17 +5,11 @@ requires = [ "poetry-core>=1" ]
 [tool.poetry]
 name = "pkg_with_entrypoint"
 version = "0.1.0"
-
 description = "Test package with entrypoint for ansys-tools-local-product-launcher"
 authors = [ "Ansys, Inc." ]
-
 packages = [
   { include = "pkg_with_entrypoint", from = "src" },
 ]
-
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-
-[tool.poetry.plugins."ansys.tools.local_product_launcher.launcher"]
-"pkg_with_entrypoint.test_entry_point" = "pkg_with_entrypoint:Launcher"
-"pkg_with_entrypoint.__fallback__" = "pkg_with_entrypoint:Launcher"
+dependencies.python = ">=3.10,<4.0"
+plugins."ansys.tools.common.launcher"."pkg_with_entrypoint.test_entry_point" = "pkg_with_entrypoint:Launcher"
+plugins."ansys.tools.common.launcher"."pkg_with_entrypoint.__fallback__" = "pkg_with_entrypoint:Launcher"

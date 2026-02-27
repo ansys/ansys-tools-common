@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -21,7 +21,7 @@
 # SOFTWARE.
 """Module for entry point testing."""
 
-import pkg_with_entrypoint
+import pkg_with_entrypoint  # type: ignore[import-not-found]
 
 from ansys.tools.common.launcher._plugins import (
     get_all_plugins,

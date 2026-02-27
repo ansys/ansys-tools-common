@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -512,7 +512,7 @@ class VersionNumber:
 
     Examples
     --------
-    >>> from ansys.tools.versioning.utils import VersionNumber
+    >>> from ansys.tools.common.versioning import VersionNumber
     >>> VersionNumber(1)
     1
     >>> VersionNumber("dev")

@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,11 +22,11 @@
 """Test module for launcher."""
 
 from dataclasses import dataclass
+import pathlib
 
 import pytest
 
-from ansys.tools.common.launcher import config
-from ansys.tools.common.launcher.launch import launch_product
+from ansys.tools.common.launcher import config, launch_product
 
 from .simple_test_launcher import SimpleLauncher, SimpleLauncherConfig
 
@@ -47,6 +47,12 @@ def monkeypatch_entrypoints(monkeypatch_entrypoints_from_plugins):
     monkeypatch_entrypoints_from_plugins({PRODUCT_NAME: {"direct": SimpleLauncher}})
 
 
+def check_uds_file_removed(server):
+    """Check that the UDS file has been removed after stopping the server."""
+    uds_file = pathlib.Path(server._launcher.transport_options["main"].uds_dir) / "simple_test_service.sock"
+    assert not pathlib.Path(uds_file).exists()
+
+
 def test_default_config():
     """Test the default configuration."""
     config.set_config_for(product_name=PRODUCT_NAME, launch_mode=LAUNCH_MODE, config=SimpleLauncherConfig())
@@ -54,6 +60,7 @@ def test_default_config():
     server.wait(timeout=10)
     server.stop()
     assert not server.check()
+    check_uds_file_removed(server)
 
 
 def test_explicit_config():
@@ -62,6 +69,7 @@ def test_explicit_config():
     server.wait(timeout=10)
     server.stop()
     assert not server.check()
+    check_uds_file_removed(server)
 
 
 def test_stop_with_timeout():
@@ -70,6 +78,7 @@ def test_stop_with_timeout():
     server.wait(timeout=10)
     server.stop(timeout=1.0)
     assert not server.check()
+    check_uds_file_removed(server)
 
 
 def test_invalid_launch_mode_raises():
@@ -90,3 +99,4 @@ def test_contextmanager():
         server.wait(timeout=10)
         assert server.check()
     assert not server.check()
+    check_uds_file_removed(server)

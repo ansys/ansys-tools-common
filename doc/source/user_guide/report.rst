@@ -10,7 +10,7 @@ To use the tool, import it:
 
 .. code:: python
 
-    import ansys.tools.report as pyansys_report
+    import ansys.tools.common.report as pyansys_report
 
 Here is an example of how to use the tool to display Ansys variables and libraries:
 
@@ -62,7 +62,7 @@ The typical output of a report looks like this:
     >>>                        matplotlib : X.Y.Z
     >>>                             numpy : X.Y.Z
     >>>                           pyvista : X.Y.Z
-    >>>                           appdirs : X.Y.Z
+    >>>                      platformdirs : X.Y.Z
     >>>                              tqdm : X.Y.Z
     >>>                            pyiges : X.Y.Z
     >>>                             scipy : X.Y.Z
@@ -118,7 +118,7 @@ The report also includes several Python packages by default. These packages are 
 * ``matplotlib``
 * ``numpy``
 * ``pyvista``
-* ``appdirs``
+* ``platformdirs``
 * ``tqdm``
 * ``pyiges``
 * ``scipy``

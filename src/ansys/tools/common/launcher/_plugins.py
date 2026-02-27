@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -30,7 +30,8 @@ import warnings
 
 from .interface import FALLBACK_LAUNCH_MODE_NAME, DataclassProtocol, LauncherProtocol
 
-LAUNCHER_ENTRY_POINT = "ansys.tools.local_product_launcher.launcher"
+LAUNCHER_ENTRY_POINT = "ansys.tools.common.launcher"
+DEPRECATED_LAUNCHER_ENTRY_POINT = "ansys.tools.local_product_launcher.launcher"
 
 
 def get_launcher(*, product_name: str, launch_mode: str) -> type[LauncherProtocol[DataclassProtocol]]:
@@ -73,7 +74,7 @@ def get_all_plugins(hide_fallback: bool = True) -> dict[str, dict[str, type[Laun
             continue
 
         try:
-            launcher_class = entry_point.load()  # type: ignore
+            launcher_class = entry_point.load()
         except Exception as exception:
             message = f"Skipping broken plugin '{entry_point.name}': {exception}"
             warnings.warn(message)
@@ -110,6 +111,6 @@ def get_fallback_launcher(product_name: str) -> type[LauncherProtocol[DataclassP
 def _get_entry_points() -> tuple[importlib.metadata.EntryPoint, ...]:
     """Get all Local Product Launcher plugin entrypoints for launchers."""
     try:
-        return entry_points(group=LAUNCHER_ENTRY_POINT)  # type: ignore
+        return entry_points(group=LAUNCHER_ENTRY_POINT) + entry_points(group=DEPRECATED_LAUNCHER_ENTRY_POINT)  # type: ignore
     except KeyError:
         return tuple()

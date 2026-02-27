@@ -1,7 +1,7 @@
 repos:
 
   - repo: https://github.com/google/yamlfmt
-    rev: v0.20.0
+    rev: v0.21.0
     hooks:
       - id: yamlfmt
         args:
@@ -9,7 +9,7 @@ repos:
           - "max_line_length=80,retain_line_breaks=true,retain_line_breaks_single=true"
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.11.0
+    rev: v2.16.2
     hooks:
       - id: pyproject-fmt
         args: [--keep-full-version]
@@ -43,12 +43,32 @@ repos:
           - --start_year=2025
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.34.1
+    rev: 0.36.2
     hooks:
       - id: check-github-workflows
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.3
+    rev: v0.15.2
     hooks:
       - id: ruff-check
       - id: ruff-format
+
+# - repo: local
+#   hooks:
+#     - id: mypy-code
+#       name: "mypy: strict checks on code"
+#       entry: mypy
+#       language: python
+#       types: [python]
+#       require_serial: true
+#       files: "^(src/ansys/tools/common/launcher/)"
+#       args: ["--strict", "--namespace-packages", "--explicit-package-bases"]
+
+#     - id: mypy-tests
+#       name: "mypy: lenient checks on tests"
+#       entry: mypy
+#       language: python
+#       types: [python]
+#       require_serial: true
+#       files: "^(tests/launcher)|^(examples/)"
+#       args: ["--namespace-packages", "--explicit-package-bases"]

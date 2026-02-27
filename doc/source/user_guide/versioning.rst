@@ -3,7 +3,7 @@
 Ansys versioning tool
 =====================
 
-Use the Ansys versioning tool to enforce version requirements for methods in classes. The :meth:`requires_version <ansys.tools.versioning.requires_version>` decorator, available in the ``ansys.tools.versioning`` module, specifies the required version and version map. This decorator accepts the following:
+Use the Ansys versioning tool to enforce version requirements for methods in classes. The :meth:`requires_version <ansys.tools.common.versioning.requires_version>` decorator, available in the ``ansys.tools.common.versioning`` module, specifies the required version and version map. This decorator accepts the following:
 
 * The required version as a string (``"<Major>.<Minor>.<Patch>"``) or
   a tuple (``(<Major>, <Minor>, <Patch>)``).
@@ -65,4 +65,4 @@ However, when you run ``new_method``, the old server raises a
 
     >>> new_server.new_method()
     >>> old_server.new_method()
-    ansys.tools.versioning.exceptions.VersionError: Class method ``new_method`` requires server version >= 2022R1.
+    ansys.tools.common.exceptions.VersionError: Class method ``new_method`` requires server version >= 2022R1.

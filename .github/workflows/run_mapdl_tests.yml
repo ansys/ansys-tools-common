@@ -14,8 +14,8 @@ env:
   MAIN_PYTHON_VERSION: 3.13
 
 permissions:
-  contents: read
-  packages: read
+  contents: read # required to read files
+  packages: read # required to pull container images
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -37,12 +37,12 @@ jobs:
       ON_UBUNTU: true
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # 7.1.2
+        uses: astral-sh/setup-uv@eac588ad8def6316056a12d4907a9d4d84ff7a3b # 7.3.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           enable-cache: false

@@ -1,4 +1,4 @@
-# Copyright (C) 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -54,7 +54,7 @@ _DEFAULT_STR = "default"
 
 
 def get_subcommands_from_plugins(
-    *, plugins: dict[str, dict[str, LauncherProtocol[LAUNCHER_CONFIG_T]]]
+    *, plugins: dict[str, dict[str, type[LauncherProtocol[LAUNCHER_CONFIG_T]]]]
 ) -> Sequence[click.Command]:
     """Construct ``configure`` subcommands from the plugins."""
     all_product_commands: list[click.Group] = []
@@ -180,7 +180,7 @@ def config_writer_callback_factory(
     return _config_writer_callback
 
 
-def build_cli(plugins: dict[str, dict[str, LauncherProtocol[LAUNCHER_CONFIG_T]]]) -> click.Group:
+def build_cli(plugins: dict[str, dict[str, type[LauncherProtocol[LAUNCHER_CONFIG_T]]]]) -> click.Group:
     """Build the CLI from the plugins."""
     _cli = click.Group()
 
@@ -253,12 +253,15 @@ def build_cli(plugins: dict[str, dict[str, LauncherProtocol[LAUNCHER_CONFIG_T]]]
                         try:
                             config = get_config_for(product_name=product_name, launch_mode=launch_mode)
                             click.echo("        No configuration is set (uses defaults).")
-                        except KeyError:
+                        except (KeyError, RuntimeError):
                             click.echo("        No configuration is set (no defaults available).")
                             continue
-                    config = get_config_for(product_name=product_name, launch_mode=launch_mode)
-                    for field in dataclasses.fields(config):
-                        click.echo(f"        {field.name}: {getattr(config, field.name)}")
+                    try:
+                        config = get_config_for(product_name=product_name, launch_mode=launch_mode)
+                        for field in dataclasses.fields(config):
+                            click.echo(f"        {field.name}: {getattr(config, field.name)}")
+                    except TypeError:
+                        click.echo("        No configuration is set (invalid configuration).")
             except KeyError:
                 click.echo("    No configuration is set.")
             click.echo("")
