@@ -41,7 +41,6 @@ Linux with no extra configuration required.
 
 """
 
-# %%
 # Library integration pattern
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -51,7 +50,7 @@ Linux with no extra configuration required.
 
 import time
 
-from ansys.tools.common.notifications import AnsysNotifier, NotificationUrgency
+from ansys.tools.common.notifications import AnsysNotifier, NotificationType
 
 
 class Solver:
@@ -70,11 +69,14 @@ class Solver:
         results = {"iterations": iterations, "residual": residual, "status": "converged"}
         self.notifier.notify(
             f"Converged in {results['iterations']} iterations. Residual: {results['residual']:.2e}",
-            urgency=NotificationUrgency.SUCCESS,
+            notification_type=NotificationType.SUCCESS,
         )
         return results
 
 
+
+# Instantiate the solver
+# ~~~~~~~~~~~~~~~~~~~~~~
 # Instantiate the solver. By default it will send a desktop notification on
 # whatever OS the user is running.
 
@@ -103,7 +105,10 @@ from ansys.tools.common.notifications import notify
 
 notify("Simulation complete.")
 
-# %%
-# Pass a custom title or urgency level when needed.
 
-notify("Solve diverged — check boundary conditions.", urgency=NotificationUrgency.FAILURE)
+# Pass a custom
+# ~~~~~~~~~~~~~
+#
+# Pass a custom title or notification_type level when needed.
+
+notify("Solve diverged — check boundary conditions.", notification_type=NotificationType.FAILURE)

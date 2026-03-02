@@ -28,7 +28,7 @@ import pytest
 from ansys.tools.common.notifications import (
     AnsysNotifier,
     NotificationFormat,
-    NotificationUrgency,
+    NotificationType,
     _desktop_url,
     notify,
 )
@@ -50,10 +50,10 @@ def test_enum_values():
     assert NotificationFormat.TEXT == "text"
     assert NotificationFormat.HTML == "html"
     assert NotificationFormat.MARKDOWN == "markdown"
-    assert NotificationUrgency.INFO == "info"
-    assert NotificationUrgency.SUCCESS == "success"
-    assert NotificationUrgency.WARNING == "warning"
-    assert NotificationUrgency.FAILURE == "failure"
+    assert NotificationType.INFO == "info"
+    assert NotificationType.SUCCESS == "success"
+    assert NotificationType.WARNING == "warning"
+    assert NotificationType.FAILURE == "failure"
 
 
 @pytest.mark.parametrize(
@@ -67,11 +67,11 @@ def test_desktop_url(system, expected):
 
 
 def test_notifier_defaults(mock_apprise):
-    """AnsysNotifier has the expected default title, format and urgency."""
+    """AnsysNotifier has the expected default title, format and notification_type."""
     notifier = AnsysNotifier(channels=["windows://"])
     assert notifier.title == "PyAnsys"
     assert notifier.format is NotificationFormat.TEXT
-    assert notifier.urgency is NotificationUrgency.INFO
+    assert notifier.notification_type is NotificationType.INFO
 
 
 def test_notifier_auto_detects_desktop_channel(mock_apprise):
@@ -82,12 +82,12 @@ def test_notifier_auto_detects_desktop_channel(mock_apprise):
 
 
 def test_notifier_sends_correct_payload(mock_apprise):
-    """notify() forwards body, title, format and urgency to apprise."""
+    """notify() forwards body, title, format and notification_type to apprise."""
     notifier = AnsysNotifier(
         channels=["windows://"],
         title="PyMAPDL",
         format=NotificationFormat.HTML,
-        urgency=NotificationUrgency.SUCCESS,
+        notification_type=NotificationType.SUCCESS,
     )
     notifier.notify("Solve complete.")
     kwargs = mock_apprise.notify.call_args.kwargs
@@ -98,9 +98,11 @@ def test_notifier_sends_correct_payload(mock_apprise):
 
 
 def test_notifier_per_call_overrides(mock_apprise):
-    """Per-call title, format and urgency override the instance defaults."""
+    """Per-call title, format and notification_type override the instance defaults."""
     notifier = AnsysNotifier(channels=["windows://"])
-    notifier.notify("msg", title="Override", format=NotificationFormat.MARKDOWN, urgency=NotificationUrgency.FAILURE)
+    notifier.notify(
+        "msg", title="Override", format=NotificationFormat.MARKDOWN, notification_type=NotificationType.FAILURE
+    )
     kwargs = mock_apprise.notify.call_args.kwargs
     assert kwargs["title"] == "Override"
     assert kwargs["body_format"] == "markdown"
@@ -116,11 +118,11 @@ def test_notifier_returns_delivery_status(mock_apprise):
 
 
 def test_notifier_property_setters(mock_apprise):
-    """title, format and urgency can be changed after construction."""
+    """title, format and notification_type can be changed after construction."""
     notifier = AnsysNotifier(channels=["windows://"])
     notifier.title = "Updated"
     notifier.format = NotificationFormat.MARKDOWN
-    notifier.urgency = NotificationUrgency.WARNING
+    notifier.notification_type = NotificationType.WARNING
     notifier.notify("msg")
     kwargs = mock_apprise.notify.call_args.kwargs
     assert kwargs["title"] == "Updated"

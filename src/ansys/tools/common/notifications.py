@@ -31,9 +31,9 @@ Install the optional dependency before using this module::
 
 Quick start
 -----------
->>> from ansys.tools.common.notifications import notify, NotificationUrgency
+>>> from ansys.tools.common.notifications import notify, NotificationType
 >>> notify("Simulation complete.")
->>> notify("Solve diverged!", urgency=NotificationUrgency.FAILURE)
+>>> notify("Solve diverged!", notification_type=NotificationType.FAILURE)
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ except ImportError:
         'Install it with: pip install "ansys-tools-common[notifications]"'
     ) from None
 
-__all__ = ["AnsysNotifier", "NotificationFormat", "NotificationUrgency", "notify"]
+__all__ = ["AnsysNotifier", "NotificationFormat", "NotificationType", "notify"]
 
 
 class NotificationFormat(str, Enum):
@@ -71,8 +71,8 @@ class NotificationFormat(str, Enum):
     Discord, Telegram, Slack). Falls back to plain text elsewhere."""
 
 
-class NotificationUrgency(str, Enum):
-    """Urgency / type of the notification.
+class NotificationType(str, Enum):
+    """notification_type / type of the notification.
 
     Controls the visual appearance of the notification (colour, icon, sound)
     where the target channel supports it.
@@ -143,8 +143,8 @@ class AnsysNotifier:
         Default notification title, by default ``"PyAnsys"``.
     format : NotificationFormat, optional
         Default body format, by default :attr:`NotificationFormat.TEXT`.
-    urgency : NotificationUrgency, optional
-        Default urgency level, by default :attr:`NotificationUrgency.INFO`.
+    notification_type : NotificationType, optional
+        Default notification_type level, by default :attr:`NotificationType.INFO`.
 
     Examples
     --------
@@ -154,10 +154,10 @@ class AnsysNotifier:
     >>> notifier.notify("Simulation complete.")
 
     Integration inside a PyAnsys library, with a product-specific title and a
-    success urgency:
+    success notification_type:
 
-    >>> from ansys.tools.common.notifications import AnsysNotifier, NotificationUrgency
-    >>> _notifier = AnsysNotifier(title="PyMAPDL", urgency=NotificationUrgency.SUCCESS)
+    >>> from ansys.tools.common.notifications import AnsysNotifier, NotificationType
+    >>> _notifier = AnsysNotifier(title="PyMAPDL", notification_type=NotificationType.SUCCESS)
     >>> _notifier.notify("Solve finished in 42 iterations.")
 
     Multi-channel (desktop + email):
@@ -177,13 +177,13 @@ class AnsysNotifier:
         channels: list[str] | None = None,
         title: str = "PyAnsys",
         format: NotificationFormat = NotificationFormat.TEXT,  # noqa: A002
-        urgency: NotificationUrgency = NotificationUrgency.INFO,
+        notification_type: NotificationType = NotificationType.INFO,
     ) -> None:
         """Initialize the notifier and register notification channels."""
         self._ap = apprise.Apprise()
         self._title = title
         self._format = NotificationFormat(format)
-        self._urgency = NotificationUrgency(urgency)
+        self._notification_type = NotificationType(notification_type)
 
         for url in channels or [_desktop_url()]:
             self.add_channel(url)
@@ -207,13 +207,13 @@ class AnsysNotifier:
         self._format = NotificationFormat(value)
 
     @property
-    def urgency(self) -> NotificationUrgency:
-        """Default urgency applied to all notifications from this instance."""
-        return self._urgency
+    def notification_type(self) -> NotificationType:
+        """Default notification_type applied to all notifications from this instance."""
+        return self._notification_type
 
-    @urgency.setter
-    def urgency(self, value: NotificationUrgency) -> None:
-        self._urgency = NotificationUrgency(value)
+    @notification_type.setter
+    def notification_type(self, value: NotificationType) -> None:
+        self._notification_type = NotificationType(value)
 
     def add_channel(self, url: str) -> bool:
         """Add a notification channel.
@@ -242,7 +242,7 @@ class AnsysNotifier:
         message: str,
         title: str | None = None,
         format: NotificationFormat | None = None,  # noqa: A002
-        urgency: NotificationUrgency | None = None,
+        notification_type: NotificationType | None = None,
     ) -> bool:
         """Send a notification to all registered channels.
 
@@ -254,8 +254,8 @@ class AnsysNotifier:
             Overrides the instance-level :attr:`title` for this call only.
         format : NotificationFormat | None, optional
             Overrides the instance-level :attr:`format` for this call only.
-        urgency : NotificationUrgency | None, optional
-            Overrides the instance-level :attr:`urgency` for this call only.
+        notification_type : NotificationType | None, optional
+            Overrides the instance-level :attr:`notification_type` for this call only.
 
         Returns
         -------
@@ -269,19 +269,21 @@ class AnsysNotifier:
 
         >>> notifier.notify("Solve complete.")
 
-        Failure notification with a per-call urgency override:
+        Failure notification with a per-call notification_type override:
 
-        >>> notifier.notify("Divergence detected.", urgency=NotificationUrgency.FAILURE)
+        >>> notifier.notify("Divergence detected.", notification_type=NotificationType.FAILURE)
 
         Success notification with a per-call title override:
 
-        >>> notifier.notify("Converged in 42 steps.", title="MyApp", urgency=NotificationUrgency.SUCCESS)
+        >>> notifier.notify("Converged in 42 steps.", title="MyApp", notification_type=NotificationType.SUCCESS)
         """
         return self._ap.notify(
             title=title if title is not None else self._title,
             body=message,
             body_format=(NotificationFormat(format) if format is not None else self._format).value,
-            notify_type=(NotificationUrgency(urgency) if urgency is not None else self._urgency).value,
+            notify_type=(
+                NotificationType(notification_type) if notification_type is not None else self._notification_type
+            ).value,
         )
 
 
@@ -290,7 +292,7 @@ def notify(
     title: str = "PyAnsys",
     channels: list[str] | None = None,
     format: NotificationFormat = NotificationFormat.TEXT,  # noqa: A002
-    urgency: NotificationUrgency = NotificationUrgency.INFO,
+    notification_type: NotificationType = NotificationType.INFO,
 ) -> bool:
     """Send a one-shot notification without creating a persistent notifier.
 
@@ -308,8 +310,8 @@ def notify(
         service for the current OS is used.
     format : NotificationFormat, optional
         Body format, by default :attr:`NotificationFormat.TEXT`.
-    urgency : NotificationUrgency, optional
-        Urgency level, by default :attr:`NotificationUrgency.INFO`.
+    notification_type : NotificationType, optional
+        notification_type level, by default :attr:`NotificationType.INFO`.
 
     Returns
     -------
@@ -325,10 +327,12 @@ def notify(
 
     Failure notification:
 
-    >>> notify("Solve diverged!", urgency=NotificationUrgency.FAILURE)
+    >>> notify("Solve diverged!", notification_type=NotificationType.FAILURE)
 
     Multi-channel:
 
     >>> notify("Job done.", channels=["windows://", "slack://token/channel"])
     """
-    return AnsysNotifier(channels=channels, title=title, format=format, urgency=urgency).notify(message)
+    return AnsysNotifier(channels=channels, title=title, format=format, notification_type=notification_type).notify(
+        message
+    )
