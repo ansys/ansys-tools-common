@@ -49,7 +49,7 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          uv sync --group tests
+          uv sync --no-dev --group tests --frozen
 
       - name: Install test package containing entrypoint
         run: |
