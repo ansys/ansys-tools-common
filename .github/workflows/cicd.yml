@@ -135,7 +135,7 @@ jobs:
 
       - name: Run tests
         run: |
-          uv run pytest
+          uv run --no-sync pytest
 
   doc-build:
     name: Build documentation
