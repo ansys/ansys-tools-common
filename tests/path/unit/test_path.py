@@ -55,7 +55,7 @@ from ansys.tools.common.path import (
     save_mechanical_path,
     version_from_path,
 )
-from ansys.tools.common.path.path import _is_float
+from ansys.tools.common.path.path import _is_float, _version_from_release_string
 
 LOG.setLevel(logging.DEBUG)
 
@@ -621,3 +621,38 @@ values = [
 def test_is_float(values):
     """Test the is_float function."""
     assert _is_float(values[0]) == values[1]
+
+
+release_string_values = [
+    ("2025R1", 251),
+    ("2025R2", 252),
+    ("2024R1", 241),
+    ("2024R2", 242),
+    ("2026R1", 261),
+    ("2021R2", 212),
+    ("2020R1", 201),
+    ("2027R1", 271),
+    ("2025r1", 251),  # case-insensitive
+    ("invalid", None),
+    ("v251", None),
+    ("2025", None),
+    ("R1", None),
+    ("", None),
+    ("20251R1", None),  # too many digits
+]
+
+
+@pytest.mark.parametrize("release_string, expected", release_string_values)
+def test_version_from_release_string(release_string, expected):
+    """Test that _version_from_release_string converts YYYYRN strings correctly."""
+    assert _version_from_release_string(release_string) == expected
+
+
+def test_version_from_path_yyyyrn_format():
+    """Test version_from_path with YYYYRN-style paths (e.g. /ansys/2025R1/aisol/.workbench)."""
+    if sys.platform == "win32":
+        assert version_from_path("mechanical", "C:/apps/ansys/2025R1/aisol/bin/winx64/AnsysWBU.exe") == 251
+        assert version_from_path("mechanical", "C:/apps/ansys/2024R2/aisol/bin/winx64/AnsysWBU.exe") == 242
+    else:
+        assert version_from_path("mechanical", "/mnt/apps/prebuilt/ansys/2025R1/aisol/.workbench") == 251
+        assert version_from_path("mechanical", "/mnt/apps/prebuilt/ansys/2024R2/aisol/.workbench") == 242
