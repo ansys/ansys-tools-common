@@ -127,7 +127,7 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          uv sync --group tests
+          uv sync --no-dev --group tests --frozen
 
       - name: Install test package containing entrypoint
         run: |
@@ -135,7 +135,7 @@ jobs:
 
       - name: Run tests
         run: |
-          uv run pytest
+          uv run --no-sync pytest
 
   doc-build:
     name: Build documentation

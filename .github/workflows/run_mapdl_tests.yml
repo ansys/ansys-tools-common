@@ -49,7 +49,7 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          uv sync --group tests
+          uv sync --no-dev --group tests --frozen
 
       - name: Install test package containing entrypoint
         run: |
@@ -59,6 +59,6 @@ jobs:
         env:
           PACKAGE_NAMESPACE: ${{ env.PACKAGE_NAMESPACE }}
         run: |
-          uv run pytest \
+          uv run --no-sync pytest \
             -vx \
             --cov=${PACKAGE_NAMESPACE} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
