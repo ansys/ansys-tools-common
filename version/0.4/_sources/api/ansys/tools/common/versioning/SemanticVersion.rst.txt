@@ -1,0 +1,122 @@
+
+
+
+
+
+
+:class:`SemanticVersion`
+========================
+
+
+.. py:class:: ansys.tools.common.versioning.SemanticVersion
+
+   Bases: :py:obj:`tuple`
+
+
+   Provides a class for semantic versioning.
+
+   It is a subclass of a tuple and can be instantiated from a string or a tuple.
+
+   You can use ``dev`` in the patch version, but nowhere else.
+
+
+
+
+.. py:currentmodule:: SemanticVersion
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~as_string`
+            - Version as string.
+          * - :py:attr:`~as_tuple`
+            - Version as tuple.
+          * - :py:attr:`~as_list`
+            - Version as list.
+          * - :py:attr:`~as_dict`
+            - Version as dictionary.
+
+
+   .. tab-item:: Properties
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~major`
+            - Major version number.
+          * - :py:attr:`~minor`
+            - Minor version number.
+          * - :py:attr:`~patch`
+            - Patch version number.
+
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.versioning import SemanticVersion
+
+Property detail
+---------------
+
+.. py:property:: major
+
+   Major version number.
+
+
+.. py:property:: minor
+
+   Minor version number.
+
+
+.. py:property:: patch
+
+   Patch version number.
+
+
+
+
+
+Method detail
+-------------
+
+.. py:method:: as_string()
+
+   Version as string.
+
+
+.. py:method:: as_tuple()
+
+   Version as tuple.
+
+
+.. py:method:: as_list()
+
+   Version as list.
+
+
+.. py:method:: as_dict()
+
+   Version as dictionary.
+
+
+
+
+

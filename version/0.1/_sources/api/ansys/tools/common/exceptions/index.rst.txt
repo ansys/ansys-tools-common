@@ -1,0 +1,96 @@
+
+
+
+
+
+
+The ``exceptions.py`` module
+============================
+
+.. py:module:: ansys.tools.common.exceptions
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: exceptions
+.. tab-set::
+
+
+
+
+
+
+    .. tab-item:: Exceptions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.exceptions.AnsysError`
+            - Base class for all exceptions raised by the Ansys API.
+
+
+          * - :py:obj:`~ansys.tools.common.exceptions.AnsysTypeError`
+            - Error raised when an argument is of the wrong type.
+
+
+          * - :py:obj:`~ansys.tools.common.exceptions.AnsysLogicError`
+            - Exception raised when an unexpected logical condition occurs.
+
+
+          * - :py:obj:`~ansys.tools.common.exceptions.VersionSyntaxError`
+            - An exception to be raised when an invalid version syntax is found.
+
+
+          * - :py:obj:`~ansys.tools.common.exceptions.VersionError`
+            - An exception to be raised when a version is not valid.
+
+
+
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-md-lightning_bolt"></span> AnsysError</api/ansys/tools/common/exceptions/AnsysError>
+    <span class="nf nf-md-lightning_bolt"></span> AnsysTypeError</api/ansys/tools/common/exceptions/AnsysTypeError>
+    <span class="nf nf-md-lightning_bolt"></span> AnsysLogicError</api/ansys/tools/common/exceptions/AnsysLogicError>
+    <span class="nf nf-md-lightning_bolt"></span> VersionSyntaxError</api/ansys/tools/common/exceptions/VersionSyntaxError>
+    <span class="nf nf-md-lightning_bolt"></span> VersionError</api/ansys/tools/common/exceptions/VersionError>
+
+
+
+
+
+
+
+Description
+-----------
+
+Exceptions module.
+
+
+
+
+
+
+
+

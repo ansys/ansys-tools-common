@@ -1,0 +1,82 @@
+
+
+
+
+
+
+The ``save.py`` module
+======================
+
+.. py:module:: ansys.tools.common.path.save
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: save
+.. tab-set::
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~cli`
+            - Use the CLI tool to store the path of an Ansys product.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Convenience CLI to save the path for an Ansys application in the configuration.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: cli(name: str, location: str, allow_prompt: bool)
+
+   Use the CLI tool to store the path of an Ansys product.
+
+   This example demonstrates the main use of this tool::
+
+       $ save-ansys-path --name dyna /path/to/dyna
+
+
+
+

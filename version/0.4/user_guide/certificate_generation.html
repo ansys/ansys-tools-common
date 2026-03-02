@@ -1,0 +1,995 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Certificate generation utilities &#8212; Ansys tools common</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../_static/documentation_options.js?v=dca52136"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/certificate_generation';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://tools.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API reference" href="../api/index.html" />
+    <link rel="prev" title="Securing gRPC connections" href="secure_grpc.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.4.4" />
+  <link rel="canonical" href="https://tools.docs.pyansys.com/version/stable/user_guide/certificate_generation.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="https://docs.pyansys.com/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="Ansys tools common - Home"/>
+    <img src="../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="Ansys tools common - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html" title="Ansys tools common home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../contributing.html">
+    Contribute
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/ansys-tools-common" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/ansys-tools-common/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tools.docs.pyansys.com/version/0.4/_static/assets/download/ansys-tools-common.pdf" title="Download documentation in PDF" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-file-pdf fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Download documentation in PDF</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html" title="Ansys tools common home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing.html">
+    Contribute
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/ansys-tools-common" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/ansys-tools-common/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tools.docs.pyansys.com/version/0.4/_static/assets/download/ansys-tools-common.pdf" title="Download documentation in PDF" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-file-pdf fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Download documentation in PDF</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ansys_tools_path.html">Ansys path tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ansys_downloader.html">Ansys example downloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ansys_exceptions.html">Ansys exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning.html">Ansys versioning tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">Ansys report tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launcher/index.html">Local product launcher</a></li>
+<li class="toctree-l1"><a class="reference internal" href="secure_grpc.html">Securing gRPC connections</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Certificate generation utilities</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">User guide</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Certificate generation utilities</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="certificate-generation-utilities">
+<span id="ref-certificate-generation"></span><h1>Certificate generation utilities<a class="headerlink" href="#certificate-generation-utilities" title="Link to this heading">#</a></h1>
+<p>The certificate generation utilities provide a convenient way to generate
+self-signed certificates suitable for testing gRPC applications with mutual TLS
+authentication. These utilities are particularly useful for pytest fixtures and
+local development environments.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>These certificates are for <strong>testing purposes only</strong>. Do not use them in
+production environments. For production deployments, always use certificates
+from a trusted Certificate Authority. For guidance on how to generate certificates
+for local development, see the <a class="reference internal" href="secure_grpc.html"><span class="doc">Securing gRPC connections</span></a> documentation.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, generated certificates are valid for only 24 hours. This short
+validity period is intentional for testing environments to encourage
+certificate regeneration and avoid stale credentials. You can customize
+this using the <code class="docutils literal notranslate"><span class="pre">validity_days</span></code> parameter if needed.</p>
+</div>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<p>Install Ansys Common Tools with the <code class="docutils literal notranslate"><span class="pre">other</span></code> optional dependency group to
+enable certificate generation:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+pip</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ansys-tools-common<span class="o">[</span>other<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+uv</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>other
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<p>The simplest way to generate certificates is using the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">generate_test_certificates()</span></code>
+function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ansys.tools.common.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_test_certificates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Generate certificates for localhost</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">generate_test_certificates</span><span class="p">(</span><span class="n">output_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;certs&quot;</span><span class="p">))</span>
+
+<span class="c1"># The following files are created:</span>
+<span class="c1"># - ca.key, ca.crt (Certificate Authority)</span>
+<span class="c1"># - server.key, server.crt (Server certificate)</span>
+<span class="c1"># - client.key, client.crt (Client certificate)</span>
+</pre></div>
+</div>
+</section>
+<section id="pytest-integration">
+<h2>Pytest integration<a class="headerlink" href="#pytest-integration" title="Link to this heading">#</a></h2>
+<p>The utilities are designed to integrate seamlessly with pytest fixtures,
+making it easy to set up secure testing environments:</p>
+<section id="basic-fixture">
+<h3>Basic fixture<a class="headerlink" href="#basic-fixture" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.tools.common.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_test_certificates</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tls_certificates</span><span class="p">(</span><span class="n">tmp_path_factory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate TLS certificates for testing.&quot;&quot;&quot;</span>
+    <span class="n">cert_dir</span> <span class="o">=</span> <span class="n">tmp_path_factory</span><span class="o">.</span><span class="n">mktemp</span><span class="p">(</span><span class="s2">&quot;certs&quot;</span><span class="p">)</span>
+    <span class="n">generate_test_certificates</span><span class="p">(</span><span class="n">output_dir</span><span class="o">=</span><span class="n">cert_dir</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;ca_cert&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;ca.crt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ca_key&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;ca.key&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;server_cert&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;server.crt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;server_key&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;server.key&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_cert&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;client.crt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_key&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;client.key&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_grpc_with_mtls</span><span class="p">(</span><span class="n">tls_certificates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test gRPC server with mutual TLS.&quot;&quot;&quot;</span>
+    <span class="c1"># Use the certificates in your test</span>
+    <span class="n">server_cert</span> <span class="o">=</span> <span class="n">tls_certificates</span><span class="p">[</span><span class="s2">&quot;server_cert&quot;</span><span class="p">]</span>
+    <span class="n">server_key</span> <span class="o">=</span> <span class="n">tls_certificates</span><span class="p">[</span><span class="s2">&quot;server_key&quot;</span><span class="p">]</span>
+    <span class="n">ca_cert</span> <span class="o">=</span> <span class="n">tls_certificates</span><span class="p">[</span><span class="s2">&quot;ca_cert&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Set up your gRPC server with these certificates</span>
+    <span class="c1"># ...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-usage">
+<h2>Advanced usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">#</a></h2>
+<section id="hpc-deployment-with-multiple-servers">
+<h3>HPC deployment with multiple servers<a class="headerlink" href="#hpc-deployment-with-multiple-servers" title="Link to this heading">#</a></h3>
+<p>For HPC environments where you need certificates for multiple nodes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ansys.tools.common.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_test_certificates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="n">generate_test_certificates</span><span class="p">(</span>
+    <span class="n">servers</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;node01,192.0.2.1&quot;</span><span class="p">,</span>  <span class="c1"># Primary hostname + IP SAN</span>
+        <span class="s2">&quot;node02,192.0.2.2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;node03,192.0.2.3&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;hpc_certs&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># This creates:</span>
+<span class="c1"># - ca.key, ca.crt</span>
+<span class="c1"># - node01.key, node01.crt (with SAN: 192.0.2.1)</span>
+<span class="c1"># - node02.key, node02.crt (with SAN: 192.0.2.2)</span>
+<span class="c1"># - node03.key, node03.crt (with SAN: 192.0.2.3)</span>
+<span class="c1"># - client.key, client.crt</span>
+</pre></div>
+</div>
+<section id="hpc-fixture-example">
+<h4>HPC fixture example<a class="headerlink" href="#hpc-fixture-example" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.tools.common.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_test_certificates</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hpc_tls_certificates</span><span class="p">(</span><span class="n">tmp_path_factory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate TLS certificates for HPC deployment.&quot;&quot;&quot;</span>
+    <span class="n">cert_dir</span> <span class="o">=</span> <span class="n">tmp_path_factory</span><span class="o">.</span><span class="n">mktemp</span><span class="p">(</span><span class="s2">&quot;hpc_certs&quot;</span><span class="p">)</span>
+    <span class="n">server_specs</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;node01,192.0.2.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;node02,192.0.2.2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;node03,192.0.2.3&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">generate_test_certificates</span><span class="p">(</span><span class="n">servers</span><span class="o">=</span><span class="n">server_specs</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">cert_dir</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ca_cert&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;ca.crt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ca_key&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;ca.key&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_cert&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;client.crt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client_key&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="s2">&quot;client.key&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cert_dir&quot;</span><span class="p">:</span> <span class="n">cert_dir</span><span class="p">,</span>
+        <span class="s2">&quot;servers&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Add server-specific certificates</span>
+    <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">server_specs</span><span class="p">:</span>
+        <span class="n">server_name</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;servers&quot;</span><span class="p">][</span><span class="n">server_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;cert&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">server_name</span><span class="si">}</span><span class="s2">.crt&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">cert_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">server_name</span><span class="si">}</span><span class="s2">.key&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="custom-validity-period">
+<h3>Custom validity period<a class="headerlink" href="#custom-validity-period" title="Link to this heading">#</a></h3>
+<p>By default, certificates are valid for 24 hours (1 day). This short validity
+period is intentional for testing to ensure certificates are regenerated
+frequently. You can customize this if needed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ansys.tools.common.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_test_certificates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Generate certificates valid for 3 days</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">generate_test_certificates</span><span class="p">(</span><span class="n">output_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;certs&quot;</span><span class="p">),</span> <span class="n">validity_days</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-the-certificategenerator-class">
+<h3>Using the <code class="docutils literal notranslate"><span class="pre">CertificateGenerator</span></code> class<a class="headerlink" href="#using-the-certificategenerator-class" title="Link to this heading">#</a></h3>
+<p>For more control over certificate generation, use the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">CertificateGenerator</span></code>
+class directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ansys.tools.common.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">CertificateGenerator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Initialize generator with custom parameters</span>
+<span class="n">generator</span> <span class="o">=</span> <span class="n">CertificateGenerator</span><span class="p">(</span><span class="n">key_size</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">validity_days</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Generate CA certificate</span>
+<span class="n">ca_key</span><span class="p">,</span> <span class="n">ca_cert</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">create_ca_certificate</span><span class="p">(</span><span class="s2">&quot;My Test CA&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate server certificate with SANs</span>
+<span class="n">server_key</span><span class="p">,</span> <span class="n">server_cert</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">create_server_certificate</span><span class="p">(</span>
+    <span class="n">ca_cert</span><span class="p">,</span> <span class="n">ca_key</span><span class="p">,</span> <span class="s2">&quot;myserver.local&quot;</span><span class="p">,</span> <span class="n">san_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;192.168.1.100&quot;</span><span class="p">,</span> <span class="s2">&quot;myserver&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Generate client certificate</span>
+<span class="n">client_key</span><span class="p">,</span> <span class="n">client_cert</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">create_client_certificate</span><span class="p">(</span>
+    <span class="n">ca_cert</span><span class="p">,</span> <span class="n">ca_key</span><span class="p">,</span> <span class="s2">&quot;Test Client&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Save certificates</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;custom_certs&quot;</span><span class="p">)</span>
+<span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">generator</span><span class="o">.</span><span class="n">save_private_key</span><span class="p">(</span><span class="n">server_key</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;server.key&quot;</span><span class="p">)</span>
+<span class="n">generator</span><span class="o">.</span><span class="n">save_certificate</span><span class="p">(</span><span class="n">server_cert</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;server.crt&quot;</span><span class="p">)</span>
+<span class="c1"># ... save other certificates</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="security-considerations">
+<h2>Security considerations<a class="headerlink" href="#security-considerations" title="Link to this heading">#</a></h2>
+<p>The generated certificates have the following characteristics:</p>
+<ul class="simple">
+<li><p><strong>Self-signed:</strong> Not validated by any certificate authority</p></li>
+<li><p><strong>Predictable parameters:</strong> Generated with standard key sizes and algorithms</p></li>
+<li><p><strong>No revocation support:</strong> No certificate revocation lists (CRLs) or OCSP</p></li>
+<li><p><strong>Testing only:</strong> Intended only for local development and testing</p></li>
+</ul>
+<p>For production deployments:</p>
+<ul class="simple">
+<li><p>Use certificates from a trusted Certificate Authority (CA)</p></li>
+<li><p>Implement proper certificate rotation and expiration policies</p></li>
+<li><p>Use hardware security modules (HSMs) for key management when appropriate</p></li>
+<li><p>Follow your organization’s security policies and compliance requirements</p></li>
+</ul>
+</section>
+<section id="use-cases">
+<h2>Use cases<a class="headerlink" href="#use-cases" title="Link to this heading">#</a></h2>
+<p>Common use cases for these certificate utilities include:</p>
+<ul class="simple">
+<li><p><strong>Unit and integration tests:</strong> Set up secure gRPC connections in test suites</p></li>
+<li><p><strong>Local development:</strong> Test TLS-enabled features without external dependencies</p></li>
+<li><p><strong>CI/CD pipelines:</strong> Generate ephemeral certificates for test environments</p></li>
+<li><p><strong>HPC testing:</strong> Simulate multi-node secure communication</p></li>
+<li><p><strong>Documentation examples:</strong> Provide working security examples without sharing real credentials</p></li>
+</ul>
+</section>
+<section id="related-topics">
+<h2>Related topics<a class="headerlink" href="#related-topics" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="secure_grpc.html"><span class="doc">Securing gRPC connections</span></a> - Learn about securing gRPC connections in PyAnsys</p></li>
+<li><p><a class="reference internal" href="index.html#ref-user-guide"><span class="std std-ref">User guide</span></a> - Return to the user guide index</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-integration">Pytest integration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-fixture">Basic fixture</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-usage">Advanced usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hpc-deployment-with-multiple-servers">HPC deployment with multiple servers</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#hpc-fixture-example">HPC fixture example</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-validity-period">Custom validity period</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-certificategenerator-class">Using the <code class="docutils literal notranslate"><span class="pre">CertificateGenerator</span></code> class</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-considerations">Security considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases">Use cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related topics</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item"> 
+<div class="tocsection editthispage">
+  <a href="https://github.com/ansys/ansys-tools-common/edit/main/doc/source/user_guide/certificate_generation.rst">
+    <i class="fa-solid fa-pencil"></i>
+       Edit
+    on GitHub  
+  </a>
+</div>
+
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user_guide/certificate_generation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"ignoreLocation": true, "keys": ["title", "text", "objectID"], "limit": 10, "minMatchCharLength": 2, "threshold": 0.5}');
+const SEARCH_FILE = "../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.4. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
