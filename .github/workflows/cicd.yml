@@ -11,7 +11,7 @@ on:
 
 env:
   PACKAGE_NAME: ansys-tools-common
-  MAIN_PYTHON_VERSION: 3.13
+  MAIN_PYTHON_VERSION: 3.14
   DOCUMENTATION_CNAME: tools.docs.pyansys.com
 
 permissions:
@@ -92,7 +92,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ['3.10', '3.11', '3.12', '3.13']
+        python: ['3.10', '3.11', '3.12', '3.13', '3.14']
     steps:
       - uses: ansys/actions/build-wheelhouse@3931ac9351b13ae11b1203c2ef6b51e5c75502ea # v10.2.5
         with:
@@ -109,7 +109,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ['3.10', '3.11', '3.12', '3.13']
+        python: ['3.10', '3.11', '3.12', '3.13', '3.14']
     env:
       ANSYS_LOCAL: false
       ON_UBUNTU: true
