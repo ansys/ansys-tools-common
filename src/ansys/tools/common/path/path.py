@@ -209,6 +209,28 @@ def _is_float(input_string: str) -> bool:
         return False
 
 
+def _version_from_release_string(release_string: str) -> Optional[int]:
+    """Convert a release string like '2025R1' to a 3-digit version integer like 251.
+
+    Parameters
+    ----------
+    release_string : str
+        A release string in the format ``YYYYRN`` (e.g. ``2025R1``, ``2024R2``).
+
+    Returns
+    -------
+    Optional[int]
+        The 3-digit version number (e.g. ``251``), or ``None`` if the string
+        does not match the expected format.
+    """
+    match = re.match(r"^(\d{4})R(\d)$", release_string, re.IGNORECASE)
+    if not match:
+        return None
+    year = int(match.group(1))
+    release = int(match.group(2))
+    return (year % 100) * 10 + release
+
+
 def _expand_base_path(base_path: Optional[str]) -> Dict[int, str]:
     """Expand the base path to all possible ansys Unified installations contained within.
 
@@ -234,6 +256,13 @@ def _expand_base_path(base_path: Optional[str]) -> Dict[int, str]:
         ver_str = path.name[-3:]
         if _is_float(ver_str):
             ansys_paths[int(ver_str)] = str(path)
+
+    # Search for versions like /base_path/YYYRN
+    for path in base.iterdir():
+        if path.is_dir():
+            ver = _version_from_release_string(path.name)
+            if ver is not None:
+                ansys_paths[ver] = str(path)
 
     # Search for ANSYS STUDENT versions like /base_path/ANSYS*/vXXX
     # student_base_pattern = base / "ANSYS*"
@@ -1260,12 +1289,22 @@ def _version_from_path(path: str, product_name: str, path_version_regex: str) ->
     """
     error_message = f"Unable to extract {product_name} version from {path}."
     if path:
-        # expect v<ver>/ansys
         # replace \\ with / to account for possible Windows path
-        matches = re.findall(rf"{path_version_regex}", path.replace("\\", "/"), re.IGNORECASE)
-        if not matches:
-            raise RuntimeError(error_message)
-        return int(matches[-1])
+        normalized = path.replace("\\", "/")
+
+        # First try the standard vXXX pattern
+        matches = re.findall(rf"{path_version_regex}", normalized, re.IGNORECASE)
+        if matches:
+            return int(matches[-1])
+
+        # Fallback: try YYYYRN pattern (e.g. /2025R1/ in path)
+        release_matches = re.findall(r"(?:^|/)(\d{4}R\d)(?=/|$)", normalized, re.IGNORECASE)
+        if release_matches:
+            ver = _version_from_release_string(release_matches[-1])
+            if ver is not None:
+                return ver
+
+        raise RuntimeError(error_message)
     else:
         raise RuntimeError(error_message)
 
