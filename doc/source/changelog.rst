@@ -8,6 +8,22 @@ project.
 
 .. towncrier release notes start
 
+`0.4.5 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.5>`_ - March 03, 2026
+===========================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Feat: update extracting version from path
+          - `#201 <https://github.com/ansys/ansys-tools-common/pull/201>`_
+
+
 `0.4.4 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.4>`_ - February 23, 2026
 ==============================================================================================
 
