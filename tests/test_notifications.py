@@ -27,6 +27,7 @@ import pytest
 
 from ansys.tools.common.notifications import (
     AnsysNotifier,
+    NotificationChannel,
     NotificationFormat,
     NotificationType,
     _desktop_url,
@@ -54,14 +55,26 @@ def test_enum_values():
     assert NotificationType.SUCCESS == "success"
     assert NotificationType.WARNING == "warning"
     assert NotificationType.FAILURE == "failure"
+    assert NotificationChannel.WINDOWS == "windows://"
+    assert NotificationChannel.MACOS == "macosx://"
+    assert NotificationChannel.DBUS == "dbus://"
+    assert NotificationChannel.MAILTO == "mailto://"
+    assert NotificationChannel.MAILTOS == "mailtos://"
+    assert NotificationChannel.SLACK == "slack://"
+    assert NotificationChannel.MSTEAMS == "msteams://"
 
 
 @pytest.mark.parametrize(
     ("system", "expected"),
-    [("Windows", "windows://"), ("Darwin", "macosx://"), ("Linux", "dbus://"), ("FreeBSD", "dbus://")],
+    [
+        ("Windows", NotificationChannel.WINDOWS),
+        ("Darwin", NotificationChannel.MACOS),
+        ("Linux", NotificationChannel.DBUS),
+        ("FreeBSD", NotificationChannel.DBUS),
+    ],
 )
 def test_desktop_url(system, expected):
-    """_desktop_url returns the correct apprise scheme for each OS."""
+    """_desktop_url returns the correct NotificationChannel for each OS."""
     with patch("platform.system", return_value=system):
         assert _desktop_url() == expected
 
@@ -78,7 +91,7 @@ def test_notifier_auto_detects_desktop_channel(mock_apprise):
     """When no channels are given the OS-appropriate URL is added."""
     with patch("platform.system", return_value="Windows"):
         AnsysNotifier()
-    mock_apprise.add.assert_called_once_with("windows://")
+    mock_apprise.add.assert_called_once_with(NotificationChannel.WINDOWS)
 
 
 def test_notifier_sends_correct_payload(mock_apprise):

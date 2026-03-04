@@ -34,6 +34,8 @@ Quick start
 >>> from ansys.tools.common.notifications import notify, NotificationType
 >>> notify("Simulation complete.")
 >>> notify("Solve diverged!", notification_type=NotificationType.FAILURE)
+>>> from ansys.tools.common.notifications import NotificationChannel
+>>> notify("Job done.", channels=[NotificationChannel.WINDOWS])
 """
 
 from __future__ import annotations
@@ -49,9 +51,49 @@ except ImportError:
         'Install it with: pip install "ansys-tools-common[notifications]"'
     ) from None
 
-__all__ = ["AnsysNotifier", "NotificationFormat", "NotificationType", "notify"]
+__all__ = ["AnsysNotifier", "NotificationChannel", "NotificationFormat", "NotificationType", "notify"]
 
 
+# TODO: Use StrEnum after dropping Python 3.10 support.
+class NotificationChannel(str, Enum):
+    """Well-known apprise notification channel URL schemes.
+
+    Each member's value is the scheme prefix of the apprise URL for that
+    channel.  Members with self-contained URLs (:attr:`WINDOWS`,
+    :attr:`MACOS`, :attr:`DBUS`) can be used directly.  Members that require
+    credentials or IDs (:attr:`SLACK`, :attr:`MSTEAMS`, :attr:`MAILTO`,
+    :attr:`MAILTOS`) serve as the scheme prefix — concatenate your tokens to
+    form the full URL::
+
+        NotificationChannel.SLACK + "token/channel"
+        NotificationChannel.MAILTO + "user:pass@gmail.com"
+
+    A plain :class:`str` is always accepted wherever a channel is expected.
+    """
+
+    WINDOWS = "windows://"
+    """Windows 10/11 native toast notification."""
+
+    MACOS = "macosx://"
+    """macOS Notification Center."""
+
+    DBUS = "dbus://"
+    """Linux desktop notification via D-Bus (GNOME, KDE, etc.)."""
+
+    MAILTO = "mailto://"
+    """Gmail or other IMAP provider. Append ``user:pass@gmail.com``."""
+
+    MAILTOS = "mailtos://"
+    """Corporate SMTP with TLS. Append ``user:pass@smtp.corp.com``."""
+
+    SLACK = "slack://"
+    """Slack channel. Append ``token/channel``."""
+
+    MSTEAMS = "msteams://"
+    """Microsoft Teams incoming webhook. Append ``A/B/C/D``."""
+
+
+# TODO: Use StrEnum after dropping Python 3.10 support.
 class NotificationFormat(str, Enum):
     """Body format of the notification.
 
@@ -94,21 +136,22 @@ class NotificationType(str, Enum):
     """An error or critical problem. Typically shown in red."""
 
 
-def _desktop_url() -> str:
+def _desktop_url() -> NotificationChannel:
     """Return the apprise desktop notification URL for the current OS.
 
     Returns
     -------
-    str
-        ``"windows://"`` on Windows, ``"macosx://"`` on macOS, ``"dbus://"``
-        on Linux and other POSIX systems.
+    NotificationChannel
+        :attr:`NotificationChannel.WINDOWS` on Windows,
+        :attr:`NotificationChannel.MACOS` on macOS,
+        :attr:`NotificationChannel.DBUS` on Linux and other POSIX systems.
     """
     system = platform.system()
     if system == "Windows":
-        return "windows://"
+        return NotificationChannel.WINDOWS
     if system == "Darwin":
-        return "macosx://"
-    return "dbus://"
+        return NotificationChannel.MACOS
+    return NotificationChannel.DBUS
 
 
 class AnsysNotifier:
@@ -121,22 +164,22 @@ class AnsysNotifier:
 
     Parameters
     ----------
-    channels : list[str] | None, optional
+    channels : list[NotificationChannel | str] | None, optional
         List of apprise-compatible channel URLs.  When ``None`` or empty the
         native desktop notification service for the current OS is used
         automatically (Windows toast, macOS Notification Center, Linux D-Bus).
 
-        Common URL patterns::
+        Use :class:`NotificationChannel` members for the common schemes, or
+        pass a plain :class:`str` for any URL supported by apprise::
 
-            "windows://"  # Windows 10/11 toast
-
-            "dbus://"  # Linux (GNOME / KDE)
-            "macosx://"  # macOS Notification Center
-            "mailto://user:pass@gmail.com"  # Gmail (App Password)
-            "mailtos://user:pass@smtp.corp.com"  # Corporate SMTP / TLS
-            "slack://token/channel"  # Slack
-            "msteams://A/B/C/D"  # Microsoft Teams webhook
-            "tgram://bot_token/chat_id"  # Telegram
+            NotificationChannel.WINDOWS  # Windows 10/11 toast
+            NotificationChannel.DBUS  # Linux (GNOME / KDE)
+            NotificationChannel.MACOS  # macOS Notification Center
+            NotificationChannel.MAILTO + "user:pass@gmail.com"  # Gmail
+            NotificationChannel.MAILTOS + "user:pass@smtp.corp.com"  # SMTP/TLS
+            NotificationChannel.SLACK + "token/channel"  # Slack
+            NotificationChannel.MSTEAMS + "A/B/C/D"  # MS Teams
+            "tgram://bot_token/chat_id"  # Telegram (plain str)
 
         See https://appriseit.com/ for the full list.
     title : str, optional
@@ -162,7 +205,9 @@ class AnsysNotifier:
 
     Multi-channel (desktop + email):
 
-    >>> notifier = AnsysNotifier(channels=["windows://", "mailtos://user:pass@smtp.company.com"])
+    >>> notifier = AnsysNotifier(
+    ...     channels=[NotificationChannel.WINDOWS, NotificationChannel.MAILTOS + "user:pass@smtp.company.com"]
+    ... )
     >>> notifier.notify("Job converged.")
 
     HTML-formatted notification:
@@ -174,7 +219,7 @@ class AnsysNotifier:
 
     def __init__(
         self,
-        channels: list[str] | None = None,
+        channels: list[NotificationChannel | str] | None = None,
         title: str = "PyAnsys",
         format: NotificationFormat = NotificationFormat.TEXT,  # noqa: A002
         notification_type: NotificationType = NotificationType.INFO,
@@ -232,7 +277,7 @@ class AnsysNotifier:
         Examples
         --------
         >>> notifier = AnsysNotifier(channels=[])
-        >>> notifier.add_channel("slack://token/channel")
+        >>> notifier.add_channel(NotificationChannel.SLACK + "token/channel")
         True
         """
         return self._ap.add(url)
@@ -290,7 +335,7 @@ class AnsysNotifier:
 def notify(
     message: str,
     title: str = "PyAnsys",
-    channels: list[str] | None = None,
+    channels: list[NotificationChannel | str] | None = None,
     format: NotificationFormat = NotificationFormat.TEXT,  # noqa: A002
     notification_type: NotificationType = NotificationType.INFO,
 ) -> bool:
@@ -305,7 +350,7 @@ def notify(
         Body of the notification.
     title : str, optional
         Notification title, by default ``"PyAnsys"``.
-    channels : list[str] | None, optional
+    channels : list[NotificationChannel | str] | None, optional
         Apprise channel URLs. When ``None``, the native desktop notification
         service for the current OS is used.
     format : NotificationFormat, optional
@@ -331,7 +376,7 @@ def notify(
 
     Multi-channel:
 
-    >>> notify("Job done.", channels=["windows://", "slack://token/channel"])
+    >>> notify("Job done.", channels=[NotificationChannel.WINDOWS, NotificationChannel.SLACK + "token/channel"])
     """
     return AnsysNotifier(channels=channels, title=title, format=format, notification_type=notification_type).notify(
         message

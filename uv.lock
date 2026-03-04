@@ -185,7 +185,7 @@ wheels = [
 
 [[package]]
 name = "ansys-sphinx-theme"
-version = "1.7.0"
+version = "1.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "importlib-metadata", marker = "python_full_version >= '3.11'" },
@@ -195,9 +195,9 @@ dependencies = [
     { name = "pyyaml", marker = "python_full_version >= '3.11'" },
     { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/79/82/f5a9e546d9602b55166dda1951229a1294c81d640be9df62a58741ef7fae/ansys_sphinx_theme-1.7.0.tar.gz", hash = "sha256:8ff959f9af58e39f81bdf5311e1c22f20688e951803e68664fa9b3dc0fda169b", size = 1010556, upload-time = "2026-01-28T08:25:18.886Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/9c/80952d288a00f40fbfa2e73f9c4e8d5041cc953f604b08ab515991cba9c6/ansys_sphinx_theme-1.7.1.tar.gz", hash = "sha256:e0e120d57918633bf20b60270be195bef63dfea2ada3f844b3b0ae1e6e8a5046", size = 1010747, upload-time = "2026-02-25T11:09:32.133Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/87/e7/752ed2191ffc98835ba45504d7562ff8df3fccb51033b8b84b6f1582543d/ansys_sphinx_theme-1.7.0-py3-none-any.whl", hash = "sha256:e346943742f16a1e74b2d9f4d29e0c984c6a47b1c4229ac8909a88c0202e7ae9", size = 1606268, upload-time = "2026-01-28T08:25:17.418Z" },
+    { url = "https://files.pythonhosted.org/packages/5a/6b/1ae89f97114896daf1f758ad089140009bdecf97e214751621da2fb73d83/ansys_sphinx_theme-1.7.1-py3-none-any.whl", hash = "sha256:43c88dd8ad4ba13a82b632070fea04a92bc19687eec99ac93c144e1bb02de6f9", size = 1606489, upload-time = "2026-02-25T11:09:30.341Z" },
 ]
 
 [package.optional-dependencies]
@@ -283,7 +283,7 @@ provides-extras = ["all", "filetransfer", "graphics", "notifications", "other"]
 
 [package.metadata.requires-dev]
 doc = [
-    { name = "ansys-sphinx-theme", extras = ["autoapi"], marker = "python_full_version >= '3.11'", specifier = "==1.7.0" },
+    { name = "ansys-sphinx-theme", extras = ["autoapi"], marker = "python_full_version >= '3.11'", specifier = "==1.7.1" },
     { name = "example-httpserver-plugin", directory = "examples/local_launcher/example_httpserver_plugin" },
     { name = "grpcio", specifier = "==1.78.1" },
     { name = "grpcio-health-checking", specifier = "==1.78.1" },
@@ -2712,7 +2712,7 @@ wheels = [
 
 [[package]]
 name = "sphinx-autoapi"
-version = "3.6.1"
+version = "3.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "astroid", version = "3.3.11", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
@@ -2721,9 +2721,9 @@ dependencies = [
     { name = "pyyaml", marker = "python_full_version >= '3.11'" },
     { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/ad/c627976d5f4d812b203ef1136108bbd81ef9bbbfd3f700f1295c322c22e6/sphinx_autoapi-3.6.1.tar.gz", hash = "sha256:1ff2992b7d5e39ccf92413098a376e0f91e7b4ca532c4f3e71298dbc8a4a9900", size = 55456, upload-time = "2025-10-06T16:21:22.888Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/47/22/7ea4b660e98ffa271dbec5847b64738127955746d887f9596940279d30bf/sphinx_autoapi-3.7.0.tar.gz", hash = "sha256:5c8a934d788f00d11b8c8092536c7373592cce986820de8dd7daf6dfd79afd91", size = 58136, upload-time = "2026-02-11T05:24:29.86Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ca/89/aea2f346fcdb44eb72464842e106b6291b2687feec2dd8b2de920ab89f28/sphinx_autoapi-3.6.1-py3-none-any.whl", hash = "sha256:6b7af0d5650f6eac1f4b85c1eb9f9a4911160ec7138bdc4451c77a5e94d5832c", size = 35334, upload-time = "2025-10-06T16:21:21.33Z" },
+    { url = "https://files.pythonhosted.org/packages/d8/11/9825443890d3ef6b6a0db938054e7c806e9911509e0315fe984d00a090c1/sphinx_autoapi-3.7.0-py3-none-any.whl", hash = "sha256:5ea37271b50de08538cf6e33044ef4fb6e981ddb693060ec84f297005014fdfd", size = 36021, upload-time = "2026-02-11T05:24:28.657Z" },
 ]
 
 [[package]]

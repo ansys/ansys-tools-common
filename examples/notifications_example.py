@@ -50,7 +50,7 @@ Linux with no extra configuration required.
 
 import time
 
-from ansys.tools.common.notifications import AnsysNotifier, NotificationType
+from ansys.tools.common.notifications import AnsysNotifier, NotificationChannel, NotificationType
 
 
 class Solver:
@@ -90,8 +90,8 @@ print(results)
 # to add an extra channel such as email or Microsoft Teams. Check available services
 # at https://appriseit.com/services/
 
-# solver.notifier.add_channel("mailtos://user:pass@smtp.company.com")
-# solver.notifier.add_channel("msteams://{team}/{tokenA}/{tokenB}/{tokenC}/")
+# solver.notifier.add_channel(NotificationChannel.MAILTOS + "user:pass@smtp.company.com")
+# solver.notifier.add_channel(NotificationChannel.MSTEAMS + "{team}/{tokenA}/{tokenB}/{tokenC}/")
 
 
 # Convenience function
