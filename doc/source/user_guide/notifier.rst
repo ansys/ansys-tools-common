@@ -63,16 +63,16 @@ concatenate with your specific tokens.
      - Linux desktop via D-Bus (GNOME, KDE, …)
    * - ``NotificationChannel.MAILTO``
      - ``mailto://``
-     - Gmail with App Password — append ``user:pass@gmail.com``
+     - Gmail with App Password; append ``user:pass@gmail.com``
    * - ``NotificationChannel.MAILTOS``
      - ``mailtos://``
-     - Corporate SMTP/TLS — append ``user:pass@smtp.corp.com``
+     - Corporate SMTP/TLS; append ``user:pass@smtp.corp.com``
    * - ``NotificationChannel.SLACK``
      - ``slack://``
-     - Slack — append ``token/channel``
+     - Slack; append ``token/channel``
    * - ``NotificationChannel.MSTEAMS``
      - ``msteams://``
-     - Microsoft Teams webhook — append ``A/B/C/D``
+     - Microsoft Teams webhook; append ``A/B/C/D``
 
 .. code-block:: python
 
