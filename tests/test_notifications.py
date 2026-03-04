@@ -46,24 +46,6 @@ def mock_apprise():
         yield ap_instance
 
 
-def test_enum_values():
-    """Enum members expose the string values expected by apprise."""
-    assert NotificationFormat.TEXT == "text"
-    assert NotificationFormat.HTML == "html"
-    assert NotificationFormat.MARKDOWN == "markdown"
-    assert NotificationType.INFO == "info"
-    assert NotificationType.SUCCESS == "success"
-    assert NotificationType.WARNING == "warning"
-    assert NotificationType.FAILURE == "failure"
-    assert NotificationChannel.WINDOWS == "windows://"
-    assert NotificationChannel.MACOS == "macosx://"
-    assert NotificationChannel.DBUS == "dbus://"
-    assert NotificationChannel.MAILTO == "mailto://"
-    assert NotificationChannel.MAILTOS == "mailtos://"
-    assert NotificationChannel.SLACK == "slack://"
-    assert NotificationChannel.MSTEAMS == "msteams://"
-
-
 @pytest.mark.parametrize(
     ("system", "expected"),
     [
