@@ -21,7 +21,9 @@
 # SOFTWARE.
 """Tests for example downloads."""
 
+from fileinput import filename
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 import requests
@@ -87,3 +89,24 @@ def test_destination_directory():
     # Test directory gets created
     result = download_manager.download_file(filename, directory, destination="not_a_dir")
     assert result is not None
+
+
+def test_download_directory():
+    """Test downloading a directory from the example repository."""
+    # Directory containing other directories
+    directory = "pyadditive"
+
+    # Download the directory
+    local_path_str = download_manager.download_directory(directory)
+    local_path = Path(local_path_str)
+    assert local_path.is_dir()
+
+    # Assert that write_bytes was not called, meaning the directory was not re-downloaded
+    with patch.object(Path, "write_bytes") as mock_write:
+        local_path2 = download_manager.download_directory(directory)
+        mock_write.assert_not_called()
+        assert local_path2 == local_path_str
+        
+    download_manager.clear_download_cache()
+    assert not Path.is_file(local_path)
+
