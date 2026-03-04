@@ -91,10 +91,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         Returns
         -------
-        tuple[str, str]
-            Tuple containing the filepath to use and the local
-            filepath of the downloaded directory. The two are
-            different in case of containers.
+        str
+            Local path of the downloaded example file.
         """
         # Convert to Path object
         destination_path = Path(destination) if destination is not None else None
@@ -112,6 +110,40 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         # add path to downloaded files
         self._add_file(local_path)
+        return local_path
+
+    def download_directory(
+        self, directory: str, destination: Optional[str] = None, force: bool = False
+    ) -> str:
+        """Download an example directory from the ``example-data`` repository.
+
+        Parameters
+        ----------
+        directory : str
+            Path under the ``example-data`` repository.
+        destination : str, default: None
+            Path to download the example file to. The default
+            is ``None``, in which case the default path for app data
+            is used.
+        force : bool, default: False
+            Whether to always download the example file. The default is
+            ``False``, in which case if the example file is cached, it
+            is reused.
+
+        Returns
+        -------
+        str
+            Local path of the downloaded example file.
+        """
+        if destination is None:
+            destination = tempfile.gettempdir()
+        local_path = Path(destination) / Path(directory)
+
+        files = self._list_files(directory)
+        for file in files:
+            file_path = Path(file)
+            self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force)
+
         return local_path
 
     def _add_file(self, file_path: str):
@@ -207,6 +239,35 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         Path(local_path).write_bytes(response.content)
 
         return str(local_path)
+
+    def _list_files(self, folder: str) -> list:
+        """List all files in a folder of the example-data repository.
+        
+        Parameters
+        ----------
+        folder : str
+            The folder in the GitHub repository to list files from, e.g., "pyaedt/sbr/".
+
+        Returns
+        -------
+        list
+            A list of file paths in the specified folder.
+        """
+        # Adding a trailing slash to ensure we only match files in the specified folder
+        # Otherwise an input of "project/folder" would also match "project/folder_diff"
+        folder_prefix = folder if folder.endswith("/") else folder + "/"
+
+        # URL to fetch the full repo tree recursively
+        url = f"https://api.github.com/repos/ansys/example-data/git/trees/main?recursive=1"
+        response = requests.get(url, timeout=60)
+        response.raise_for_status()
+        tree = response.json()["tree"]
+
+        files = []
+        for item in tree:
+            if item["type"] == "blob" and item["path"].startswith(folder_prefix):
+                files.append(item["path"])
+        return files
 
 
 # Create a singleton instance of DownloadManager
