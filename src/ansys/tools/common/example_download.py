@@ -142,7 +142,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             file_path = Path(file)
             self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force)
 
-        return local_path
+        return str(local_path)
 
     def _add_file(self, file_path: str):
         """Add the path for a downloaded example file to a list.
