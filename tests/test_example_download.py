@@ -41,10 +41,11 @@ def test_download():
     local_path = Path(local_path_str)
     assert local_path.is_file()
 
-    # Check that file is cached
-    local_path2 = download_manager.download_file(filename, directory)
-
-    assert local_path2 == local_path_str
+    # Assert that write_bytes was not called, meaning the file was not re-downloaded
+    with patch.object(Path, "write_bytes") as mock_write:
+        local_path2 = download_manager.download_file(filename, directory)
+        mock_write.assert_not_called()
+        assert local_path2 == local_path_str
 
     download_manager.clear_download_cache()
 
