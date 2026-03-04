@@ -21,7 +21,6 @@
 # SOFTWARE.
 """Tests for example downloads."""
 
-from fileinput import filename
 from pathlib import Path
 from unittest.mock import patch
 
@@ -107,7 +106,6 @@ def test_download_directory():
         local_path2 = download_manager.download_directory(directory)
         mock_write.assert_not_called()
         assert local_path2 == local_path_str
-        
+
     download_manager.clear_download_cache()
     assert not Path.is_file(local_path)
-

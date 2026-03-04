@@ -112,9 +112,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         self._add_file(local_path)
         return local_path
 
-    def download_directory(
-        self, directory: str, destination: Optional[str] = None, force: bool = False
-    ) -> str:
+    def download_directory(self, directory: str, destination: Optional[str] = None, force: bool = False) -> str:
         """Download an example directory from the ``example-data`` repository.
 
         Parameters
@@ -242,7 +240,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
     def _list_files(self, folder: str) -> list:
         """List all files in a folder of the example-data repository.
-        
+
         Parameters
         ----------
         folder : str
@@ -258,7 +256,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         folder_prefix = folder if folder.endswith("/") else folder + "/"
 
         # URL to fetch the full repo tree recursively
-        url = f"https://api.github.com/repos/ansys/example-data/git/trees/main?recursive=1"
+        url = "https://api.github.com/repos/ansys/example-data/git/trees/main?recursive=1"
         response = requests.get(url, timeout=60)
         response.raise_for_status()
         tree = response.json()["tree"]
