@@ -129,6 +129,7 @@ class AnsysNotifier:
         Common URL patterns::
 
             "windows://"  # Windows 10/11 toast
+
             "dbus://"  # Linux (GNOME / KDE)
             "macosx://"  # macOS Notification Center
             "mailto://user:pass@gmail.com"  # Gmail (App Password)
