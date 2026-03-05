@@ -114,7 +114,7 @@ class NotificationFormat(str, Enum):
 
 
 class NotificationType(str, Enum):
-    """notification_type / type of the notification.
+    """Notification type / type of the notification.
 
     Controls the visual appearance of the notification (colour, icon, sound)
     where the target channel supports it.
