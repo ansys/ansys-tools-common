@@ -95,7 +95,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Local path of the downloaded example file.
         """
         # Convert to Path object
-        destination_path = Path(destination) if destination is not None else None
+        destination_path = Path(destination).resolve() if destination is not None else None
 
         # If destination is not a dir, create it
         if destination_path is not None and not destination_path.exists():
@@ -105,8 +105,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         if destination_path is not None and not destination_path.is_dir():
             raise ValueError("Destination directory provided does not exist.")  # pragma: no cover
 
-        url = self._get_filepath_on_default_server(filename, directory)
-        local_path = self._retrieve_data(url, filename, dest=destination, force=force)
+        # Try Git sparse checkout first, fallback to HTTP if it fails
+        try:
+            local_path = self._download_file_git_based(filename, directory, destination_path, force)
+        except Exception:
+            url = self._get_filepath_on_default_server(filename, directory)
+            local_path = self._retrieve_data(url, filename, dest=destination_path, force=force)
 
         # add path to downloaded files
         self._add_file(local_path)
@@ -114,6 +118,9 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
     def download_directory(self, directory: str, destination: str | Path | None = None, force: bool = False) -> str:
         """Download an example directory from the ``example-data`` repository.
+
+        This method first tries to use Git sparse checkout for efficient downloading.
+        If Git is not available or the operation fails, it falls back to HTTP download.
 
         .. warning::
 
@@ -212,6 +219,122 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             src_path = temp_clone / directory
             if src_path.exists():
                 shutil.copytree(src_path, local_path, dirs_exist_ok=True)
+        finally:
+            shutil.rmtree(temp_clone, ignore_errors=True)
+
+        return str(local_path)
+
+    def _download_file_git_based(
+        self, filename: str, directory: str, destination: str | Path | None = None, force: bool = False
+    ) -> str:
+        """Download a single file using Git sparse checkout.
+
+        .. warning::
+
+            Do not execute this function with untrusted function arguments.
+
+        Parameters
+        ----------
+        filename : str
+            Name of the file to download.
+        directory : str
+            Path under the ``example-data`` repository.
+        destination : str | Path | None, default: None
+            Path to download the file to. The default
+            is ``None``, in which case the default path for app data
+            is used.
+        force : bool, default: False
+            Whether to always download the file. The default is
+            ``False``, in which case if the file is cached, it
+            is reused.
+
+        Returns
+        -------
+        str
+            Local path of the downloaded file.
+        """
+        import re
+        import shutil
+        import subprocess  # nosec B404
+
+        # Validate filename to prevent command injection
+        # Only allow alphanumeric, hyphens, underscores, dots, spaces, and parentheses
+        if not re.match(r"^[a-zA-Z0-9_\-.\s()]+$", filename):
+            raise ValueError(f"Invalid filename: {filename}")
+
+        # Validate directory to prevent command injection
+        # Only allow alphanumeric, hyphens, underscores, dots, forward slashes, and spaces
+        if not re.match(r"^[a-zA-Z0-9_\-./\s]+$", directory):
+            raise ValueError(f"Invalid directory name: {directory}")
+
+        if destination is None:
+            destination = tempfile.gettempdir()
+        else:
+            destination = Path(destination).resolve()
+
+        local_path = Path(destination) / filename
+
+        if not force and local_path.is_file():
+            return str(local_path)
+
+        # Build the file path in the repository
+        file_path_in_repo = f"{directory}/{filename}" if directory else filename
+
+        temp_clone = Path(tempfile.mkdtemp())
+        # NOTE: The following workflow does not use sparse-checkout, for more information
+        # see https://github.com/ansys/ansys-tools-common/pull/210#discussion_r2888952765
+        try:
+            # Initialize a new git repo
+            subprocess.run(
+                ["git", "init"], cwd=str(temp_clone), check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )  # nosec B603, B607
+
+            # Add remote origin
+            subprocess.run(
+                ["git", "remote", "add", "origin", GIT_URL],
+                cwd=str(temp_clone),
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )  # nosec B603, B607
+
+            # Enable sparse checkout
+            subprocess.run(
+                ["git", "config", "core.sparseCheckout", "true"],
+                cwd=str(temp_clone),
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )  # nosec B603, B607
+
+            # Write sparse-checkout pattern to .git/info/sparse-checkout
+            sparse_checkout_file = temp_clone / ".git" / "info" / "sparse-checkout"
+            sparse_checkout_file.parent.mkdir(parents=True, exist_ok=True)
+            sparse_checkout_file.write_text(file_path_in_repo + "\n")
+
+            # Fetch with blob filter and depth=1 (only downloads requested file)
+            subprocess.run(
+                ["git", "fetch", "--filter=blob:none", "--depth=1", "origin", "main"],
+                cwd=str(temp_clone),
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )  # nosec B603, B607
+            subprocess.run(
+                ["git", "checkout", "main"],
+                cwd=str(temp_clone),
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )  # nosec B603, B607
+
+            # Copy the file to destination
+            src_file = temp_clone / file_path_in_repo
+            if src_file.exists():
+                Path(destination).mkdir(parents=True, exist_ok=True)
+                shutil.copy2(src_file, local_path)
+            else:
+                raise FileNotFoundError(f"File not found in repository: {file_path_in_repo}")
         finally:
             shutil.rmtree(temp_clone, ignore_errors=True)
 
