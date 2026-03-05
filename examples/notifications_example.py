@@ -160,7 +160,7 @@ export_report()
 # By default ``notify_on_failure=True``, so a :attr:`NotificationType.FAILURE`
 # toast is sent automatically before the exception propagates.
 
-@notify_on_completion("Mesh generation failed.", notify_on_failure=True)
+@notify_on_completion("Mesh generated.", notify_on_failure=True, failure_message="Mesh generation failed.")
 def mesh(bad: bool = False) -> None:
     """Generate a mesh (or fail for demonstration purposes)."""
     if bad:

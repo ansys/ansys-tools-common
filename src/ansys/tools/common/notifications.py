@@ -401,6 +401,7 @@ def notify_on_completion(
     notification_type: NotificationType = NotificationType.INFO,
     notify_on_failure: bool = True,
     failure_notification_type: NotificationType = NotificationType.FAILURE,
+    failure_message: str | None = None,
 ) -> Callable:
     """Send a notification when the decorated function finishes.
 
@@ -411,9 +412,8 @@ def notify_on_completion(
     Parameters
     ----------
     message : str | None, optional
-        Notification body.  When ``None`` a default message is built from the
-        wrapped function's name: ``"<func_name> completed."`` on success and
-        ``"<func_name> failed: <exception>"`` on failure.
+        Body of the notification.  When ``None`` a default message is
+        built from the wrapped function's name: ``"<func_name> completed."``.
     title : str, optional
         Notification title, by default ``"PyAnsys"``.
     channels : list[NotificationChannel | str] | None, optional
@@ -422,14 +422,18 @@ def notify_on_completion(
     format : NotificationFormat, optional
         Body format, by default :attr:`NotificationFormat.TEXT`.
     notification_type : NotificationType, optional
-        Notification type used for the *success* notification, by default
+        Notification type used for the notification, by default
         :attr:`NotificationType.INFO`.
     notify_on_failure : bool, optional
         When ``True`` (default) a notification is also sent if the wrapped
         function raises an exception.  The exception is always re-raised.
     failure_notification_type : NotificationType, optional
-        Notification type used for the *failure* notification, by default
+        Notification type used for the failure notification, by default
         :attr:`NotificationType.FAILURE`.
+    failure_message : str | None, optional
+        Body of the failure notification.  When ``None`` a default message is
+        built from the wrapped function's name and the exception:
+        ``"<func_name> failed: <exception>"``.
 
     Returns
     -------
@@ -468,7 +472,7 @@ def notify_on_completion(
                 result = func(*args, **kwargs)
             except Exception as exc:
                 if notify_on_failure:
-                    failure_msg = message or f"{func.__name__} failed: {exc}"
+                    failure_msg = failure_message or f"{func.__name__} failed: {exc}"
                     notify(
                         failure_msg,
                         title=title,

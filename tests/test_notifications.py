@@ -168,18 +168,50 @@ def test_notify_on_completion_default_message(mock_apprise):
 
 
 def test_notify_on_completion_sends_failure_notification(mock_apprise):
-    """notify_on_completion sends a failure notification and re-raises the exception."""
+    """notify_on_completion sends an auto-generated failure notification and re-raises."""
     with patch("platform.system", return_value="Windows"):
 
         @notify_on_completion()
         def bad_job():
-            raise ValueError("oops")
+            raise ValueError("fail")
 
-        with pytest.raises(ValueError, match="oops"):
+        with pytest.raises(ValueError, match="fail"):
             bad_job()
 
     kwargs = mock_apprise.notify.call_args.kwargs
-    assert "bad_job failed" in kwargs["body"]
+    assert kwargs["body"] == "bad_job failed: fail"
+    assert kwargs["notify_type"] == "failure"
+
+
+def test_notify_on_completion_explicit_failure_message(mock_apprise):
+    """failure_message is used as the failure notification body instead of auto-generating one."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion("Job done.", failure_message="fail")
+        def bad_job():
+            raise RuntimeError("fail")
+
+        with pytest.raises(RuntimeError):
+            bad_job()
+
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "fail"
+    assert kwargs["notify_type"] == "failure"
+
+
+def test_notify_on_completion_message_not_used_for_failure(mock_apprise):
+    """Message only controls the success body; failure falls back to auto-generated text."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion("Success message.")
+        def bad_job():
+            raise RuntimeError("fail")
+
+        with pytest.raises(RuntimeError):
+            bad_job()
+
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "bad_job failed: fail"
     assert kwargs["notify_type"] == "failure"
 
 
