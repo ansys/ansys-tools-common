@@ -115,6 +115,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
     def download_directory(self, directory: str, destination: str | Path | None = None, force: bool = False) -> str:
         """Download an example directory from the ``example-data`` repository.
 
+        .. warning::
+
+            Do not execute this function with untrusted function argument.
+            Download directory tries to use Git sparse checkout, which involves
+            executing Git commands with the directory and destination as arguments.
+
         Parameters
         ----------
         directory : str
@@ -152,6 +158,10 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         self, directory: str, destination: str | Path | None = None, force: bool = False
     ) -> str:
         """Download an example directory using Git sparse checkout.
+
+        .. warning::
+
+            Do not execute this function with untrusted function argument.
 
         Parameters
         ----------
