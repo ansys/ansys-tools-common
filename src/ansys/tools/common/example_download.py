@@ -24,7 +24,6 @@
 from pathlib import Path
 import tempfile
 from threading import Lock
-from typing import Optional
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -71,7 +70,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         self._downloads_list.clear()
 
     def download_file(
-        self, filename: str, directory: str, destination: Optional[str] = None, force: bool = False
+        self, filename: str, directory: str, destination: str | Path | None = None, force: bool = False
     ) -> str:
         """Download an example file from the ``example-data`` repository.
 
@@ -81,7 +80,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Name of the example file to download.
         directory : str
             Path under the ``example-data`` repository.
-        destination : str, default: None
+        destination : str | Path | None, default: None
             Path to download the example file to. The default
             is ``None``, in which case the default path for app data
             is used.
@@ -113,14 +112,14 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         self._add_file(local_path)
         return local_path
 
-    def download_directory(self, directory: str, destination: Optional[str] = None, force: bool = False) -> str:
+    def download_directory(self, directory: str, destination: str | Path | None = None, force: bool = False) -> str:
         """Download an example directory from the ``example-data`` repository.
 
         Parameters
         ----------
         directory : str
             Path under the ``example-data`` repository.
-        destination : str, default: None
+        destination : str | Path | None, default: None
             Path to download the example file to. The default
             is ``None``, in which case the default path for app data
             is used.
@@ -262,7 +261,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         else:
             return self._joinurl(BASE_URL, filename)
 
-    def _retrieve_data(self, url: str, filename: str, dest: str = None, force: bool = False) -> str:
+    def _retrieve_data(self, url: str, filename: str, dest: str | Path | None = None, force: bool = False) -> str:
         """Retrieve data from a URL and save it to a local file.
 
         Parameters
@@ -271,8 +270,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             URL to download the file from.
         filename : str
             Name of the file to save the downloaded content as.
-        dest : str, default: None
-            Destination path of the file.
+        dest : str | Path | None, default: None
+            Destination path of the file. If ``None``, a temporary directory is used.
         force : bool, default: False
             Whether to force downloading to avoid cached examples.
 
