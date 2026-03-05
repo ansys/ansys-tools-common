@@ -21,6 +21,7 @@
 # SOFTWARE.
 """Module for downloading examples from the PyAnsys Github ``example-data`` repository."""
 
+import os
 from pathlib import Path
 import tempfile
 from threading import Lock
@@ -81,9 +82,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         directory : str
             Path under the ``example-data`` repository.
         destination : str | Path | None, default: None
-            Path to download the example file to. The default
-            is ``None``, in which case the default path for app data
-            is used.
+            Path to download the example file to.
+            The default is ``None``, in which case the default path for app data is used.
         force : bool, default: False
             Whether to always download the example file. The default is
             ``False``, in which case if the example file is cached, it
@@ -105,18 +105,26 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         if destination_path is not None and not destination_path.is_dir():
             raise ValueError("Destination directory provided does not exist.")  # pragma: no cover
 
+        if destination_path is None:
+            destination_path = Path(tempfile.gettempdir()).resolve()
+
         # Try Git sparse checkout first, fallback to HTTP if it fails
         try:
             local_path = self._download_file_git_based(filename, directory, destination_path, force)
         except Exception:
-            url = self._get_filepath_on_default_server(filename, directory)
-            local_path = self._retrieve_data(url, filename, dest=destination_path, force=force)
+            local_path = self._download_file_http_based(filename, directory, destination_path, force)
 
-        # add path to downloaded files
+        # Add path to downloaded files
         self._add_file(local_path)
         return local_path
 
-    def download_directory(self, directory: str, destination: str | Path | None = None, force: bool = False) -> str:
+    def download_directory(
+        self,
+        directory: str,
+        destination: str | Path | None = None,
+        force: bool = False,
+        github_token: str | None = None,
+    ) -> str:
         """Download an example directory from the ``example-data`` repository.
 
         This method first tries to use Git sparse checkout for efficient downloading.
@@ -140,26 +148,25 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Whether to always download the example file. The default is
             ``False``, in which case if the example file is cached, it
             is reused.
+        github_token : str | None, default: None
+            GitHub personal access token for API authentication (used by HTTP fallback).
+            When ``None``, falls back to ``GITHUB_TOKEN`` or ``GH_TOKEN`` environment
+            variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
 
         Returns
         -------
         str
             Local path of the downloaded example file.
         """
-        if destination is None:
-            destination = tempfile.gettempdir()
-        local_path = Path(destination) / Path(directory)
-
         # Try using Git sparse checkout first and fallback to individual file download if it fails.
         try:
-            return self._download_directory_git_based(directory, destination, force)
+            local_path = self._download_directory_git_based(directory, destination, force)
         except Exception:
-            files = self._list_files(directory)
-            for file in files:
-                file_path = Path(file)
-                self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force)
+            local_path = self._download_directory_http_based(directory, destination, force, github_token)
 
-        return str(local_path)
+        # Add path to downloaded file(s)
+        self._add_directory(local_path)
+        return local_path
 
     def _download_directory_git_based(
         self, directory: str, destination: str | Path | None = None, force: bool = False
@@ -224,8 +231,56 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         return str(local_path)
 
+    def _download_directory_http_based(
+        self,
+        directory: str,
+        destination: str | Path | None = None,
+        force: bool = False,
+        github_token: str | None = None,
+    ) -> str:
+        """Download an example directory using HTTP.
+
+        Parameters
+        ----------
+        directory : str
+            Path under the ``example-data`` repository.
+        destination : str | Path | None, default: None
+            Path to download the example directory to. The default
+            is ``None``, in which case the default path for app data
+            is used.
+        force : bool, default: False
+            Whether to always download the example directory. The default is
+            ``False``, in which case if the example directory is cached, it
+            is reused.
+        github_token : str | None, default: None
+            GitHub personal access token for API authentication.
+            When ``None``, falls back to ``GITHUB_TOKEN`` or ``GH_TOKEN`` environment
+            variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
+
+        Returns
+        -------
+        str
+            Local path of the downloaded example directory.
+        """
+        if destination is None:
+            destination = tempfile.gettempdir()
+        else:
+            destination = Path(destination).resolve()
+
+        local_path = Path(destination) / Path(directory)
+
+        if not force and local_path.is_dir() and any(local_path.iterdir()):
+            return str(local_path)
+
+        files = self._list_files(directory, github_token)
+        for file in files:
+            file_path = Path(file)
+            self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force)
+
+        return str(local_path)
+
     def _download_file_git_based(
-        self, filename: str, directory: str, destination: str | Path | None = None, force: bool = False
+        self, filename: str, directory: str, destination: str | Path, force: bool = False
     ) -> str:
         """Download a single file using Git sparse checkout.
 
@@ -239,10 +294,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Name of the file to download.
         directory : str
             Path under the ``example-data`` repository.
-        destination : str | Path | None, default: None
-            Path to download the file to. The default
-            is ``None``, in which case the default path for app data
-            is used.
+        destination : str | Path
+            Path to download the file to.
         force : bool, default: False
             Whether to always download the file. The default is
             ``False``, in which case if the file is cached, it
@@ -266,11 +319,6 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         # Only allow alphanumeric, hyphens, underscores, dots, forward slashes, and spaces
         if not re.match(r"^[a-zA-Z0-9_\-./\s]+$", directory):
             raise ValueError(f"Invalid directory name: {directory}")
-
-        if destination is None:
-            destination = tempfile.gettempdir()
-        else:
-            destination = Path(destination).resolve()
 
         local_path = Path(destination) / filename
 
@@ -340,6 +388,26 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         return str(local_path)
 
+    def _download_file_http_based(
+        self, filename: str, directory: str, destination: str | Path, force: bool = False
+    ) -> str:
+        """Download a single file using HTTP.
+
+        Parameters
+        ----------
+        filename : str
+            Name of the file to download.
+        directory : str
+            Directory path under the default server.
+        destination : str | Path
+            Destination path to save the downloaded file.
+        force : bool, default: False
+            Whether to force downloading to avoid cached examples.
+        """
+        url = self._get_filepath_on_default_server(filename, directory)
+        local_path = self._retrieve_data(url, filename, destination, force=force)
+        return local_path
+
     def _add_file(self, file_path: str):
         """Add the path for a downloaded example file to a list.
 
@@ -354,6 +422,21 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         """
         if file_path not in self._downloads_list:
             self._downloads_list.append(file_path)
+
+    def _add_directory(self, directory_path: str):
+        """Add the path of the file(s) for a downloaded example directory to a list.
+
+        This list keeps track of where example directories are downloaded so that a
+        global cleanup of these directories can be performed when the client is closed.
+
+        Parameters
+        ----------
+        directory_path : str
+            Local path of the downloaded example directory.
+        """
+        for file in Path(directory_path).rglob("*"):
+            if str(file) not in self._downloads_list:
+                self._downloads_list.append(str(file))
 
     def _joinurl(self, base: str, directory: str) -> str:
         """Join multiple paths to a base URL.
@@ -397,7 +480,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         else:
             return self._joinurl(BASE_URL, filename)
 
-    def _retrieve_data(self, url: str, filename: str, dest: str | Path | None = None, force: bool = False) -> str:
+    def _retrieve_data(self, url: str, filename: str, destination: str | Path, force: bool = False) -> str:
         """Retrieve data from a URL and save it to a local file.
 
         Parameters
@@ -406,8 +489,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             URL to download the file from.
         filename : str
             Name of the file to save the downloaded content as.
-        dest : str | Path | None, default: None
-            Destination path of the file. If ``None``, a temporary directory is used.
+        destination : str | Path
+            Destination path of the file.
         force : bool, default: False
             Whether to force downloading to avoid cached examples.
 
@@ -416,9 +499,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         str
             Local path where the file was saved.
         """
-        if dest is None:
-            dest = tempfile.gettempdir()
-        local_path = Path(dest) / Path(filename).name
+        local_path = Path(destination) / Path(filename).name
 
         if not force and local_path.is_file():
             return str(local_path)
@@ -434,13 +515,18 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         return str(local_path)
 
-    def _list_files(self, folder: str) -> list:
+    def _list_files(self, folder: str, github_token: str | None = None) -> list:
         """List all files in a folder of the example-data repository.
 
         Parameters
         ----------
         folder : str
             The folder in the GitHub repository to list files from, e.g., "pyaedt/sbr/".
+        github_token : str | None, optional
+            GitHub personal access token for API authentication.
+            When ``None`` (default), falls back to ``GITHUB_TOKEN`` or ``GH_TOKEN``
+            environment variables. Using a token increases the rate limit from
+            60 req/h (unauthenticated) to 5000 req/h (authenticated).
 
         Returns
         -------
@@ -453,7 +539,14 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         # URL to fetch the full repo tree recursively
         url = "https://api.github.com/repos/ansys/example-data/git/trees/main?recursive=1"
-        response = requests.get(url, timeout=60)
+
+        # Use provided token, or fall back to environment variables
+        headers = {}
+        token = github_token or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+        if token:
+            headers["Authorization"] = f"token {token}"
+
+        response = requests.get(url, headers=headers, timeout=60)
         response.raise_for_status()
         tree = response.json()["tree"]
 
