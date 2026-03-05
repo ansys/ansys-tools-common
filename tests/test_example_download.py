@@ -30,19 +30,19 @@ import requests
 from ansys.tools.common.example_download import download_manager
 
 
-def test_download():
+def test_download(tmp_path):
     """Test downloading a file from the example repository."""
     filename = "11_blades_mode_1_ND_0.csv"
     directory = "pymapdl/cfx_mapping"
 
     # Download the file
-    local_path_str = download_manager.download_file(filename, directory)
+    local_path_str = download_manager.download_file(filename, directory, destination=str(tmp_path))
     local_path = Path(local_path_str)
     assert local_path.is_file()
 
     # Assert that write_bytes was not called, meaning the file was not re-downloaded
     with patch.object(Path, "write_bytes") as mock_write:
-        local_path2 = download_manager.download_file(filename, directory)
+        local_path2 = download_manager.download_file(filename, directory, destination=str(tmp_path))
         mock_write.assert_not_called()
         assert local_path2 == local_path_str
 
@@ -91,19 +91,19 @@ def test_destination_directory():
     assert result is not None
 
 
-def test_download_directory():
+def test_download_directory(tmp_path):
     """Test downloading a directory from the example repository."""
     # Directory containing other directories
     directory = "pyadditive"
 
     # Download the directory
-    local_path_str = download_manager.download_directory(directory)
+    local_path_str = download_manager.download_directory(directory, destination=str(tmp_path))
     local_path = Path(local_path_str)
     assert local_path.is_dir()
 
     # Assert that write_bytes was not called, meaning the directory was not re-downloaded
     with patch.object(Path, "write_bytes") as mock_write:
-        local_path2 = download_manager.download_directory(directory)
+        local_path2 = download_manager.download_directory(directory, destination=str(tmp_path))
         mock_write.assert_not_called()
         assert local_path2 == local_path_str
 
