@@ -183,7 +183,6 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         if destination is None:
             destination = tempfile.gettempdir()
         else:
-            # Resolve destination to absolute path to prevent path traversal
             destination = Path(destination).resolve()
 
         local_path = Path(destination) / Path(directory)
