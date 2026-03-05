@@ -36,6 +36,7 @@ optional-dependencies.all = [
   "ansys-tools-visualization-interface>=0.9.2",
   "apprise>=1.9.7",
   "cryptography>=43.0",
+  "pywin32>=311; sys_platform=='win32'",
 ]
 optional-dependencies.filetransfer = [
   "ansys-tools-filetransfer>=0.1.1",
@@ -44,7 +45,8 @@ optional-dependencies.graphics = [
   "ansys-tools-visualization-interface>=0.9.2",
 ]
 optional-dependencies.notifications = [
-  "apprise>=1.9.7",
+  "apprise>=1.9.7; sys_platform!='win32'",
+  "apprise[windows]>=1.9.7; sys_platform=='win32'",
 ]
 optional-dependencies.other = [
   "cryptography>=43.0",

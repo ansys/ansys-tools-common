@@ -112,3 +112,62 @@ notify("Simulation complete.")
 # Pass a custom title or notification_type level when needed.
 
 notify("Solve diverged — check boundary conditions.", notification_type=NotificationType.FAILURE)
+
+
+# Decorator usage
+# ~~~~~~~~~~~~~~~
+#
+# Use :func:`~ansys.tools.common.notifications.notify_on_completion` to
+# automatically send a notification whenever a function finishes — no extra
+# code needed at each call site.
+#
+# A success notification is sent when the function returns normally; a failure
+# notification is sent (and the exception re-raised) when it raises.
+
+from ansys.tools.common.notifications import NotificationFormat, notify_on_completion
+
+
+@notify_on_completion("Batch post-processing complete.", notification_type=NotificationType.SUCCESS)
+def post_process(results: dict) -> None:
+    """Post-process solver results."""
+    time.sleep(0.05)
+    print(f"Post-processing: residual={results['residual']:.2e}")
+
+
+post_process(results)
+
+
+# Auto-generated message
+# ~~~~~~~~~~~~~~~~~~~~~~
+#
+# When no message is provided, the decorator builds one from the function name:
+# ``"<func_name> completed."`` on success or ``"<func_name> failed: <exc>"`` on
+# failure.
+
+@notify_on_completion()
+def export_report() -> None:
+    """Export a results report."""
+    time.sleep(0.05)
+    print("Report exported.")
+
+
+export_report()
+
+
+# Failure notifications
+# ~~~~~~~~~~~~~~~~~~~~~
+#
+# By default ``notify_on_failure=True``, so a :attr:`NotificationType.FAILURE`
+# toast is sent automatically before the exception propagates.
+
+@notify_on_completion("Mesh generation failed.", notify_on_failure=True)
+def mesh(bad: bool = False) -> None:
+    """Generate a mesh (or fail for demonstration purposes)."""
+    if bad:
+        raise RuntimeError("Invalid geometry")
+
+
+try:
+    mesh(bad=True)
+except RuntimeError:
+    pass  # Exception is re-raised after the failure notification is sent.

@@ -40,7 +40,9 @@ Quick start
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from enum import Enum
+import functools
 import platform
 
 try:
@@ -51,7 +53,14 @@ except ImportError:
         'Install it with: pip install "ansys-tools-common[notifications]"'
     ) from None
 
-__all__ = ["AnsysNotifier", "NotificationChannel", "NotificationFormat", "NotificationType", "notify"]
+__all__ = [
+    "AnsysNotifier",
+    "NotificationChannel",
+    "NotificationFormat",
+    "NotificationType",
+    "notify",
+    "notify_on_completion",
+]
 
 
 # TODO: Use StrEnum after dropping Python 3.10 support.
@@ -381,3 +390,97 @@ def notify(
     return AnsysNotifier(channels=channels, title=title, format=format, notification_type=notification_type).notify(
         message
     )
+
+
+def notify_on_completion(
+    message: str | None = None,
+    *,
+    title: str = "PyAnsys",
+    channels: list[NotificationChannel | str] | None = None,
+    format: NotificationFormat = NotificationFormat.TEXT,  # noqa: A002
+    notification_type: NotificationType = NotificationType.INFO,
+    notify_on_failure: bool = True,
+    failure_notification_type: NotificationType = NotificationType.FAILURE,
+) -> Callable:
+    """Send a notification when the decorated function finishes.
+
+    Wraps a callable so that a notification is dispatched automatically on
+    success (and optionally on failure) without any extra code at each call
+    site.
+
+    Parameters
+    ----------
+    message : str | None, optional
+        Notification body.  When ``None`` a default message is built from the
+        wrapped function's name: ``"<func_name> completed."`` on success and
+        ``"<func_name> failed: <exception>"`` on failure.
+    title : str, optional
+        Notification title, by default ``"PyAnsys"``.
+    channels : list[NotificationChannel | str] | None, optional
+        Apprise channel URLs.  When ``None`` the native desktop notification
+        service for the current OS is used.
+    format : NotificationFormat, optional
+        Body format, by default :attr:`NotificationFormat.TEXT`.
+    notification_type : NotificationType, optional
+        Notification type used for the *success* notification, by default
+        :attr:`NotificationType.INFO`.
+    notify_on_failure : bool, optional
+        When ``True`` (default) a notification is also sent if the wrapped
+        function raises an exception.  The exception is always re-raised.
+    failure_notification_type : NotificationType, optional
+        Notification type used for the *failure* notification, by default
+        :attr:`NotificationType.FAILURE`.
+
+    Returns
+    -------
+    Callable
+        A decorator that wraps the target function.
+
+    Examples
+    --------
+    Send a desktop notification when the function returns:
+
+    >>> from ansys.tools.common.notifications import notify_on_completion
+    >>> @notify_on_completion("Simulation complete.")
+    ... def run_simulation():
+    ...     pass
+
+    Auto-generate the message from the function name:
+
+    >>> @notify_on_completion()
+    ... def solve():
+    ...     pass
+
+    Custom channels and failure notification:
+
+    >>> @notify_on_completion(
+    ...     channels=[NotificationChannel.SLACK + "token/channel"],
+    ...     notify_on_failure=True,
+    ... )
+    ... def long_running_job():
+    ...     pass
+    """
+
+    def decorator(func: Callable) -> Callable:
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                result = func(*args, **kwargs)
+            except Exception as exc:
+                if notify_on_failure:
+                    failure_msg = message or f"{func.__name__} failed: {exc}"
+                    notify(
+                        failure_msg,
+                        title=title,
+                        channels=channels,
+                        format=format,
+                        notification_type=failure_notification_type,
+                    )
+                raise
+            success_msg = message or f"{func.__name__} completed."
+            notify(success_msg, title=title, channels=channels, format=format, notification_type=notification_type)
+            return result
+
+        return wrapper
+
+    return decorator

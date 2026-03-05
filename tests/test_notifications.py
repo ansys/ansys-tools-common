@@ -32,6 +32,7 @@ from ansys.tools.common.notifications import (
     NotificationType,
     _desktop_url,
     notify,
+    notify_on_completion,
 )
 
 
@@ -135,3 +136,75 @@ def test_notify_convenience_function(mock_apprise):
     assert kwargs["title"] == "PyAnsys"
     assert kwargs["body_format"] == "text"
     assert kwargs["notify_type"] == "info"
+
+
+def test_notify_on_completion_sends_success_notification(mock_apprise):
+    """notify_on_completion sends a success notification when the function returns."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion("Done.")
+        def job():
+            return 42
+
+        result = job()
+
+    assert result == 42
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "Done."
+    assert kwargs["notify_type"] == "info"
+
+
+def test_notify_on_completion_default_message(mock_apprise):
+    """notify_on_completion generates a message from the function name when none is given."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion()
+        def my_solver():
+            pass
+
+        my_solver()
+
+    assert mock_apprise.notify.call_args.kwargs["body"] == "my_solver completed."
+
+
+def test_notify_on_completion_sends_failure_notification(mock_apprise):
+    """notify_on_completion sends a failure notification and re-raises the exception."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion()
+        def bad_job():
+            raise ValueError("oops")
+
+        with pytest.raises(ValueError, match="oops"):
+            bad_job()
+
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert "bad_job failed" in kwargs["body"]
+    assert kwargs["notify_type"] == "failure"
+
+
+def test_notify_on_completion_no_failure_notification(mock_apprise):
+    """notify_on_completion skips the failure notification when notify_on_failure=False."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion(notify_on_failure=False)
+        def bad_job():
+            raise RuntimeError("boom")
+
+        with pytest.raises(RuntimeError):
+            bad_job()
+
+    mock_apprise.notify.assert_not_called()
+
+
+def test_notify_on_completion_custom_channels(mock_apprise):
+    """notify_on_completion passes custom channels to apprise."""
+
+    @notify_on_completion(channels=["windows://"], notification_type=NotificationType.SUCCESS)
+    def job():
+        pass
+
+    job()
+
+    mock_apprise.add.assert_called_with("windows://")
+    assert mock_apprise.notify.call_args.kwargs["notify_type"] == "success"
