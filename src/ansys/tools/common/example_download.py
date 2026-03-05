@@ -32,6 +32,7 @@ import requests
 __all__ = ["DownloadManager"]
 
 BASE_URL = "https://github.com/ansys/example-data/raw/main"
+GIT_URL = "https://github.com/ansys/example-data.git"
 
 
 class DownloadManagerMeta(type):
@@ -137,10 +138,70 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             destination = tempfile.gettempdir()
         local_path = Path(destination) / Path(directory)
 
-        files = self._list_files(directory)
-        for file in files:
-            file_path = Path(file)
-            self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force)
+        # Try using Git sparse checkout first and fallback to individual file download if it fails.
+        try:
+            return self._download_directory_git_based(directory, destination, force)
+        except Exception:
+            files = self._list_files(directory)
+            for file in files:
+                file_path = Path(file)
+                self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force)
+
+        return str(local_path)
+
+    def _download_directory_git_based(
+        self, directory: str, destination: str | Path | None = None, force: bool = False
+    ) -> str:
+        """Download an example directory using Git sparse checkout.
+
+        Parameters
+        ----------
+        directory : str
+            Path under the ``example-data`` repository.
+        destination : str | Path | None, default: None
+            Path to download the example directory to. The default
+            is ``None``, in which case the default path for app data
+            is used.
+        force : bool, default: False
+            Whether to always download the example directory. The default is
+            ``False``, in which case if the example directory is cached, it
+            is reused.
+
+        Returns
+        -------
+        str
+            Local path of the downloaded example directory.
+        """
+        import re
+        import shutil
+        import subprocess  # nosec B404
+
+        # Validate directory to prevent command injection
+        # Only allow alphanumeric, hyphens, underscores, dots, forward slashes, and spaces
+        if not re.match(r"^[a-zA-Z0-9_\-./\s]+$", directory):
+            raise ValueError(f"Invalid directory name: {directory}")
+
+        if destination is None:
+            destination = tempfile.gettempdir()
+        local_path = Path(destination) / Path(directory)
+
+        if not force and local_path.is_dir() and any(local_path.iterdir()):
+            return str(local_path)
+
+        # Clone with sparse checkout
+        temp_clone = Path(tempfile.mkdtemp())
+        try:
+            cmd = ["git", "clone", "--depth=1", "--filter=blob:none", "--sparse", GIT_URL, str(temp_clone)]
+            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B603
+            cmd = ["git", "-C", str(temp_clone), "sparse-checkout", "set", directory]
+            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B603
+
+            # Move the directory to destination
+            src_path = temp_clone / directory
+            if src_path.exists():
+                shutil.copytree(src_path, local_path, dirs_exist_ok=True)
+        finally:
+            shutil.rmtree(temp_clone, ignore_errors=True)
 
         return str(local_path)
 
