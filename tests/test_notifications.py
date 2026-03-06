@@ -47,12 +47,10 @@ from ansys.tools.common.notifications import (
 @pytest.fixture(autouse=True)
 def reset_globals():
     """Reset module-level globals before each test to avoid cross-test pollution."""
-    import ansys.tools.common.notifications as _mod
-
-    _mod.__default_channels = None
-    _mod.__default_notification_level = NotificationType.INFO
-    _mod.__default_notify_on_failure = True
-    _mod.__default_failure_notification_level = NotificationType.FAILURE
+    set_notification_channels(None)
+    set_notification_level(NotificationType.INFO)
+    set_notify_on_failure(True)
+    set_failure_notification_level(NotificationType.FAILURE)
     yield
 
 
