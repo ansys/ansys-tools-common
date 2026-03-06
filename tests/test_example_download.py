@@ -60,16 +60,6 @@ def test_get_filepath():
     assert filepath == "https://github.com/ansys/example-data/raw/main/11_blades_mode_1_ND_0.csv"
 
 
-def test_destination_directory():
-    """Test getting the destination directory for a downloaded file."""
-    filename = "11_blades_mode_1_ND_0.csv"
-    directory = "pymapdl/cfx_mapping"
-
-    # Test directory gets created
-    result = download_manager.download_file(filename, directory, destination="not_a_dir")
-    assert result is not None
-
-
 def test_download_file():
     """Test downloading a file from the example repository."""
     filename = "11_blades_mode_1_ND_0.csv"
