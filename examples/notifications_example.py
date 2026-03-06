@@ -171,3 +171,40 @@ try:
     mesh(bad=True)
 except RuntimeError:
     pass  # Exception is re-raised after the failure notification is sent.
+
+
+# Global configuration
+# ~~~~~~~~~~~~~~~~~~~~
+#
+# Process-wide defaults can be set once so that every subsequent call to
+# :func:`~ansys.tools.common.notifications.notify` and
+# :func:`~ansys.tools.common.notifications.notify_on_completion` picks them up
+# automatically.  Per-call arguments always take priority over the globals.
+
+from ansys.tools.common.notifications import (
+    set_failure_notification_level,
+    set_notification_channels,
+    set_notification_level,
+    set_notify_on_failure,
+)
+
+set_notification_channels([NotificationChannel.WINDOWS])
+set_notification_level(NotificationType.SUCCESS)
+set_notify_on_failure(True)
+set_failure_notification_level(NotificationType.FAILURE)
+
+# All calls below use the global defaults — no need to repeat arguments.
+notify("Global config applied.")
+
+
+@notify_on_completion("Batch job complete.")
+def batch_job() -> None:
+    """Run a batch job using the global notification defaults."""
+    time.sleep(0.05)
+    print("Batch job done.")
+
+
+batch_job()
+
+# Reset to desktop default channel when done.
+set_notification_channels(None)

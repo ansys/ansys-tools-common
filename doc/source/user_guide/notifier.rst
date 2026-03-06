@@ -94,3 +94,69 @@ A plain :class:`str` is always accepted, so existing code using raw URL strings 
 to work unchanged.  For channels not listed above, pass a plain string with any URL
 supported by Apprise.  The full list of services is available at
 `<https://appriseit.com/services/>`_.
+
+Global configuration
+--------------------
+
+Process-wide defaults can be set once — for example at application start-up —
+so that every subsequent call to :func:`~ansys.tools.common.notifications.notify`
+and :func:`~ansys.tools.common.notifications.notify_on_completion` picks them up
+automatically without repeating the same arguments everywhere.
+
+Four settings are available, each controlled by a getter/setter pair:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Setter / Getter
+     - Description
+   * - ``set_notification_channels`` / ``get_notification_channels``
+     - Default channels used when no *channels* argument is passed. ``None``
+       restores the auto-detected desktop channel.
+   * - ``set_notification_level`` / ``get_notification_level``
+     - Default :class:`~ansys.tools.common.notifications.NotificationType` for
+       success notifications (initial value: ``INFO``).
+   * - ``set_notify_on_failure`` / ``get_notify_on_failure``
+     - Whether a failure notification is sent when a decorated function raises
+       (initial value: ``True``).
+   * - ``set_failure_notification_level`` / ``get_failure_notification_level``
+     - Default :class:`~ansys.tools.common.notifications.NotificationType` for
+       failure notifications (initial value: ``FAILURE``).
+
+.. code-block:: python
+
+    from ansys.tools.common.notifications import (
+        set_notification_channels,
+        set_notification_level,
+        set_notify_on_failure,
+        set_failure_notification_level,
+        get_notification_channels,
+        get_notification_level,
+        NotificationChannel,
+        NotificationType,
+        notify,
+        notify_on_completion,
+    )
+
+    # Configure once at start-up
+    set_notification_channels([NotificationChannel.SLACK + "mytoken/mychannel"])
+    set_notification_level(NotificationType.SUCCESS)
+    set_notify_on_failure(True)
+    set_failure_notification_level(NotificationType.FAILURE)
+
+    # All subsequent calls use the defaults above — no need to repeat them
+    notify("Simulation complete.")
+
+
+    @notify_on_completion("Solve finished.")
+    def solve():
+        ...
+
+Per-call arguments always take priority over the global defaults, so individual
+calls can still override any setting when needed:
+
+.. code-block:: python
+
+    # Override the global channel for this call only
+    notify("Done.", channels=[NotificationChannel.WINDOWS])
