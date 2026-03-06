@@ -60,6 +60,10 @@ __all__ = [
     "NotificationType",
     "notify",
     "notify_on_completion",
+    "get_notification_channels",
+    "get_notification_level",
+    "get_notify_on_failure",
+    "get_failure_notification_level",
     "set_notification_channels",
     "set_notification_level",
     "set_notify_on_failure",
@@ -152,10 +156,55 @@ class NotificationType(str, Enum):
 # ---------------------------------------------------------------------------
 # Module-level global configuration
 # ---------------------------------------------------------------------------
-_default_channels: list[str] | None = None
-_default_notification_level: NotificationType = NotificationType.INFO
-_default_notify_on_failure: bool = True
-_default_failure_notification_level: NotificationType = NotificationType.FAILURE
+__default_channels: list[str] | None = None
+__default_notification_level: NotificationType = NotificationType.INFO
+__default_notify_on_failure: bool = True
+__default_failure_notification_level: NotificationType = NotificationType.FAILURE
+
+
+def get_notification_channels() -> list[str] | None:
+    """Return the global default notification channels.
+
+    Returns
+    -------
+    list[str] | None
+        The channels set by :func:`set_notification_channels`, or ``None``
+        if no global default is set (desktop channel will be used).
+    """
+    return __default_channels
+
+
+def get_notification_level() -> NotificationType:
+    """Return the global default notification level.
+
+    Returns
+    -------
+    NotificationType
+        The level set by :func:`set_notification_level`.
+    """
+    return __default_notification_level
+
+
+def get_notify_on_failure() -> bool:
+    """Return the global default for whether failure notifications are sent.
+
+    Returns
+    -------
+    bool
+        The value set by :func:`set_notify_on_failure`.
+    """
+    return __default_notify_on_failure
+
+
+def get_failure_notification_level() -> NotificationType:
+    """Return the global default notification level used on failure.
+
+    Returns
+    -------
+    NotificationType
+        The level set by :func:`set_failure_notification_level`.
+    """
+    return __default_failure_notification_level
 
 
 def set_notification_channels(channels: list[NotificationChannel | str] | None) -> None:
@@ -177,8 +226,8 @@ def set_notification_channels(channels: list[NotificationChannel | str] | None) 
     >>> set_notification_channels(["myfancychannel", "anotherchannel"])
     >>> set_notification_channels(None)  # reset to desktop default
     """
-    global _default_channels
-    _default_channels = [str(c) for c in channels] if channels is not None else None
+    global __default_channels
+    __default_channels = [str(c) for c in channels] if channels is not None else None
 
 
 def set_notification_level(level: NotificationType | str) -> None:
@@ -199,8 +248,8 @@ def set_notification_level(level: NotificationType | str) -> None:
     >>> set_notification_level("warning")
     >>> set_notification_level(NotificationType.FAILURE)
     """
-    global _default_notification_level
-    _default_notification_level = NotificationType(level)
+    global __default_notification_level
+    __default_notification_level = NotificationType(level)
 
 
 def set_notify_on_failure(enabled: bool) -> None:
@@ -218,8 +267,8 @@ def set_notify_on_failure(enabled: bool) -> None:
     --------
     >>> set_notify_on_failure(False)
     """
-    global _default_notify_on_failure
-    _default_notify_on_failure = bool(enabled)
+    global __default_notify_on_failure
+    __default_notify_on_failure = bool(enabled)
 
 
 def set_failure_notification_level(level: NotificationType | str) -> None:
@@ -239,8 +288,8 @@ def set_failure_notification_level(level: NotificationType | str) -> None:
     >>> set_failure_notification_level("warning")
     >>> set_failure_notification_level(NotificationType.FAILURE)
     """
-    global _default_failure_notification_level
-    _default_failure_notification_level = NotificationType(level)
+    global __default_failure_notification_level
+    __default_failure_notification_level = NotificationType(level)
 
 
 def _desktop_url() -> NotificationChannel:
@@ -488,8 +537,8 @@ def notify(
 
     >>> notify("Job done.", channels=[NotificationChannel.WINDOWS, NotificationChannel.SLACK + "token/channel"])
     """
-    resolved_channels = channels if channels is not None else _default_channels
-    resolved_type = notification_type if notification_type is not None else _default_notification_level
+    resolved_channels = channels if channels is not None else __default_channels
+    resolved_type = notification_type if notification_type is not None else __default_notification_level
     return AnsysNotifier(
         channels=resolved_channels, title=title, format=format, notification_type=resolved_type
     ).notify(message)
@@ -576,14 +625,14 @@ def notify_on_completion(
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            resolved_type = notification_type if notification_type is not None else _default_notification_level
+            resolved_type = notification_type if notification_type is not None else __default_notification_level
             resolved_notify_on_failure = (
-                notify_on_failure if notify_on_failure is not None else _default_notify_on_failure
+                notify_on_failure if notify_on_failure is not None else __default_notify_on_failure
             )
             resolved_failure_type = (
                 failure_notification_type
                 if failure_notification_type is not None
-                else _default_failure_notification_level
+                else __default_failure_notification_level
             )
             try:
                 result = func(*args, **kwargs)

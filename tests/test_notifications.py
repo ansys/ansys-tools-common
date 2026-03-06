@@ -31,6 +31,10 @@ from ansys.tools.common.notifications import (
     NotificationFormat,
     NotificationType,
     _desktop_url,
+    get_failure_notification_level,
+    get_notification_channels,
+    get_notification_level,
+    get_notify_on_failure,
     notify,
     notify_on_completion,
     set_failure_notification_level,
@@ -45,10 +49,10 @@ def reset_globals():
     """Reset module-level globals before each test to avoid cross-test pollution."""
     import ansys.tools.common.notifications as _mod
 
-    _mod._default_channels = None
-    _mod._default_notification_level = NotificationType.INFO
-    _mod._default_notify_on_failure = True
-    _mod._default_failure_notification_level = NotificationType.FAILURE
+    _mod.__default_channels = None
+    _mod.__default_notification_level = NotificationType.INFO
+    _mod.__default_notify_on_failure = True
+    _mod.__default_failure_notification_level = NotificationType.FAILURE
     yield
 
 
@@ -311,3 +315,18 @@ def test_set_level_invalid_raises(setter):
     """Level setters raise ValueError for unknown strings."""
     with pytest.raises(ValueError):
         setter("critical")
+
+
+@pytest.mark.parametrize(
+    "setter,getter,value,expected",
+    [
+        (set_notification_channels, get_notification_channels, ["chan1"], ["chan1"]),
+        (set_notification_level, get_notification_level, "warning", NotificationType.WARNING),
+        (set_notify_on_failure, get_notify_on_failure, False, False),
+        (set_failure_notification_level, get_failure_notification_level, "warning", NotificationType.WARNING),
+    ],
+)
+def test_getters_reflect_setters(setter, getter, value, expected):
+    """Each getter returns the value previously set by its corresponding setter."""
+    setter(value)
+    assert getter() == expected
