@@ -212,7 +212,8 @@ def set_notification_channels(channels: list[NotificationChannel | str] | None) 
 
     Affects all subsequent calls to :func:`notify` and
     :func:`notify_on_completion` that do not supply an explicit *channels*
-    argument.  Pass ``None`` to restore the auto-detected desktop channel.
+    argument. Setting *channels* to ``None`` reverts to the
+    automatically detected desktop channel.
 
     Parameters
     ----------
