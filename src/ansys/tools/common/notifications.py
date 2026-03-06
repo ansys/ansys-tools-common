@@ -60,6 +60,10 @@ __all__ = [
     "NotificationType",
     "notify",
     "notify_on_completion",
+    "set_notification_channels",
+    "set_notification_level",
+    "set_notify_on_failure",
+    "set_failure_notification_level",
 ]
 
 
@@ -143,6 +147,100 @@ class NotificationType(str, Enum):
 
     FAILURE = "failure"
     """An error or critical problem. Typically shown in red."""
+
+
+# ---------------------------------------------------------------------------
+# Module-level global configuration
+# ---------------------------------------------------------------------------
+_default_channels: list[str] | None = None
+_default_notification_level: NotificationType = NotificationType.INFO
+_default_notify_on_failure: bool = True
+_default_failure_notification_level: NotificationType = NotificationType.FAILURE
+
+
+def set_notification_channels(channels: list[NotificationChannel | str] | None) -> None:
+    """Set the global default notification channels.
+
+    Affects all subsequent calls to :func:`notify` and
+    :func:`notify_on_completion` that do not supply an explicit *channels*
+    argument.  Pass ``None`` to restore the auto-detected desktop channel.
+
+    Parameters
+    ----------
+    channels : list[NotificationChannel | str] | None
+        A list of apprise-compatible channel URLs or :class:`NotificationChannel`
+        members, or ``None`` to reset to the OS desktop default.
+
+    Examples
+    --------
+    >>> set_notification_channels([NotificationChannel.SLACK + "token/channel"])
+    >>> set_notification_channels(["myfancychannel", "anotherchannel"])
+    >>> set_notification_channels(None)  # reset to desktop default
+    """
+    global _default_channels
+    _default_channels = [str(c) for c in channels] if channels is not None else None
+
+
+def set_notification_level(level: NotificationType | str) -> None:
+    """Set the global default notification level.
+
+    Affects all subsequent calls to :func:`notify` and
+    :func:`notify_on_completion` that do not supply an explicit
+    *notification_type* argument.
+
+    Parameters
+    ----------
+    level : NotificationType | str
+        A :class:`NotificationType` member or its string value
+        (``"info"``, ``"success"``, ``"warning"``, ``"failure"``).
+
+    Examples
+    --------
+    >>> set_notification_level("warning")
+    >>> set_notification_level(NotificationType.FAILURE)
+    """
+    global _default_notification_level
+    _default_notification_level = NotificationType(level)
+
+
+def set_notify_on_failure(enabled: bool) -> None:
+    """Set whether a notification is sent globally when a decorated function fails.
+
+    Affects all subsequent calls to :func:`notify_on_completion` that do not
+    supply an explicit *notify_on_failure* argument.
+
+    Parameters
+    ----------
+    enabled : bool
+        ``True`` to send a failure notification (default), ``False`` to suppress it.
+
+    Examples
+    --------
+    >>> set_notify_on_failure(False)
+    """
+    global _default_notify_on_failure
+    _default_notify_on_failure = bool(enabled)
+
+
+def set_failure_notification_level(level: NotificationType | str) -> None:
+    """Set the global default notification level used when a decorated function fails.
+
+    Affects all subsequent calls to :func:`notify_on_completion` that do not
+    supply an explicit *failure_notification_type* argument.
+
+    Parameters
+    ----------
+    level : NotificationType | str
+        A :class:`NotificationType` member or its string value
+        (``"info"``, ``"success"``, ``"warning"``, ``"failure"``).
+
+    Examples
+    --------
+    >>> set_failure_notification_level("warning")
+    >>> set_failure_notification_level(NotificationType.FAILURE)
+    """
+    global _default_failure_notification_level
+    _default_failure_notification_level = NotificationType(level)
 
 
 def _desktop_url() -> NotificationChannel:
@@ -346,7 +444,7 @@ def notify(
     title: str = "PyAnsys",
     channels: list[NotificationChannel | str] | None = None,
     format: NotificationFormat = NotificationFormat.TEXT,  # noqa: A002
-    notification_type: NotificationType = NotificationType.INFO,
+    notification_type: NotificationType | None = None,
 ) -> bool:
     """Send a one-shot notification without creating a persistent notifier.
 
@@ -360,12 +458,15 @@ def notify(
     title : str, optional
         Notification title, by default ``"PyAnsys"``.
     channels : list[NotificationChannel | str] | None, optional
-        Apprise channel URLs. When ``None``, the native desktop notification
-        service for the current OS is used.
+        Apprise channel URLs. When ``None``, the global default set by
+        :func:`set_notification_channel` is used; if that is also ``None``,
+        the native desktop notification service for the current OS is used.
     format : NotificationFormat, optional
         Body format, by default :attr:`NotificationFormat.TEXT`.
-    notification_type : NotificationType, optional
-        notification_type level, by default :attr:`NotificationType.INFO`.
+    notification_type : NotificationType | None, optional
+        notification_type level.  When ``None``, the global default set by
+        :func:`set_notification_level` is used (initially
+        :attr:`NotificationType.INFO`).
 
     Returns
     -------
@@ -387,9 +488,11 @@ def notify(
 
     >>> notify("Job done.", channels=[NotificationChannel.WINDOWS, NotificationChannel.SLACK + "token/channel"])
     """
-    return AnsysNotifier(channels=channels, title=title, format=format, notification_type=notification_type).notify(
-        message
-    )
+    resolved_channels = channels if channels is not None else _default_channels
+    resolved_type = notification_type if notification_type is not None else _default_notification_level
+    return AnsysNotifier(
+        channels=resolved_channels, title=title, format=format, notification_type=resolved_type
+    ).notify(message)
 
 
 def notify_on_completion(
@@ -398,9 +501,9 @@ def notify_on_completion(
     title: str = "PyAnsys",
     channels: list[NotificationChannel | str] | None = None,
     format: NotificationFormat = NotificationFormat.TEXT,  # noqa: A002
-    notification_type: NotificationType = NotificationType.INFO,
-    notify_on_failure: bool = True,
-    failure_notification_type: NotificationType = NotificationType.FAILURE,
+    notification_type: NotificationType | None = None,
+    notify_on_failure: bool | None = None,
+    failure_notification_type: NotificationType | None = None,
     failure_message: str | None = None,
 ) -> Callable:
     """Send a notification when the decorated function finishes.
@@ -417,19 +520,24 @@ def notify_on_completion(
     title : str, optional
         Notification title, by default ``"PyAnsys"``.
     channels : list[NotificationChannel | str] | None, optional
-        Apprise channel URLs.  When ``None`` the native desktop notification
-        service for the current OS is used.
+        Apprise channel URLs.  When ``None``, the global default set by
+        :func:`set_notification_channel` is used; if that is also ``None``,
+        the native desktop notification service for the current OS is used.
     format : NotificationFormat, optional
         Body format, by default :attr:`NotificationFormat.TEXT`.
-    notification_type : NotificationType, optional
-        Notification type used for the notification, by default
-        :attr:`NotificationType.INFO`.
-    notify_on_failure : bool, optional
-        When ``True`` (default) a notification is also sent if the wrapped
-        function raises an exception.  The exception is always re-raised.
-    failure_notification_type : NotificationType, optional
-        Notification type used for the failure notification, by default
-        :attr:`NotificationType.FAILURE`.
+    notification_type : NotificationType | None, optional
+        Notification type used for the notification.  When ``None``, the
+        global default set by :func:`set_notification_level` is used
+        (initially :attr:`NotificationType.INFO`).
+    notify_on_failure : bool | None, optional
+        When ``True`` a notification is also sent if the wrapped function
+        raises an exception.  The exception is always re-raised.  When
+        ``None``, the global default set by :func:`set_notify_on_failure`
+        is used (initially ``True``).
+    failure_notification_type : NotificationType | None, optional
+        Notification type used for the failure notification.  When ``None``,
+        the global default set by :func:`set_failure_notification_level` is
+        used (initially :attr:`NotificationType.FAILURE`).
     failure_message : str | None, optional
         Body of the failure notification.  When ``None`` a default message is
         built from the wrapped function's name and the exception:
@@ -468,21 +576,30 @@ def notify_on_completion(
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            resolved_type = notification_type if notification_type is not None else _default_notification_level
+            resolved_notify_on_failure = (
+                notify_on_failure if notify_on_failure is not None else _default_notify_on_failure
+            )
+            resolved_failure_type = (
+                failure_notification_type
+                if failure_notification_type is not None
+                else _default_failure_notification_level
+            )
             try:
                 result = func(*args, **kwargs)
             except Exception as exc:
-                if notify_on_failure:
+                if resolved_notify_on_failure:
                     failure_msg = failure_message or f"{func.__name__} failed: {exc}"
                     notify(
                         failure_msg,
                         title=title,
                         channels=channels,
                         format=format,
-                        notification_type=failure_notification_type,
+                        notification_type=resolved_failure_type,
                     )
                 raise
             success_msg = message or f"{func.__name__} completed."
-            notify(success_msg, title=title, channels=channels, format=format, notification_type=notification_type)
+            notify(success_msg, title=title, channels=channels, format=format, notification_type=resolved_type)
             return result
 
         return wrapper

@@ -33,7 +33,23 @@ from ansys.tools.common.notifications import (
     _desktop_url,
     notify,
     notify_on_completion,
+    set_failure_notification_level,
+    set_notification_channels,
+    set_notification_level,
+    set_notify_on_failure,
 )
+
+
+@pytest.fixture(autouse=True)
+def reset_globals():
+    """Reset module-level globals before each test to avoid cross-test pollution."""
+    import ansys.tools.common.notifications as _mod
+
+    _mod._default_channels = None
+    _mod._default_notification_level = NotificationType.INFO
+    _mod._default_notify_on_failure = True
+    _mod._default_failure_notification_level = NotificationType.FAILURE
+    yield
 
 
 @pytest.fixture()
@@ -240,3 +256,58 @@ def test_notify_on_completion_custom_channels(mock_apprise):
 
     mock_apprise.add.assert_called_with("windows://")
     assert mock_apprise.notify.call_args.kwargs["notify_type"] == "success"
+
+
+def test_set_notification_channels(mock_apprise):
+    """set_notification_channels is used by notify; None resets to desktop default."""
+    set_notification_channels(["chan1", "chan2"])
+    notify("msg")
+    mock_apprise.add.assert_any_call("chan1")
+    mock_apprise.add.assert_any_call("chan2")
+
+    set_notification_channels(None)
+    with patch("platform.system", return_value="Windows"):
+        notify("msg")
+    mock_apprise.add.assert_called_with(NotificationChannel.WINDOWS)
+
+
+@pytest.mark.parametrize("level,expected", [("warning", "warning"), (NotificationType.FAILURE, "failure")])
+def test_set_notification_level(mock_apprise, level, expected):
+    """set_notification_level accepts both strings and NotificationType members."""
+    set_notification_level(level)
+    notify("msg", channels=["windows://"])
+    assert mock_apprise.notify.call_args.kwargs["notify_type"] == expected
+
+
+@pytest.fixture()
+def bad_job():
+    """Return a callable that always raises RuntimeError."""
+
+    def _job():
+        raise RuntimeError("boom")
+
+    return _job
+
+
+@pytest.mark.parametrize("kwargs,expect_called", [({}, False), ({"notify_on_failure": True}, True)])
+def test_set_notify_on_failure(mock_apprise, bad_job, kwargs, expect_called):
+    """set_notify_on_failure(False) suppresses; explicit arg takes priority."""
+    set_notify_on_failure(False)
+    with pytest.raises(RuntimeError):
+        notify_on_completion(channels=["windows://"], **kwargs)(bad_job)()
+    assert mock_apprise.notify.called is expect_called
+
+
+def test_set_failure_notification_level(mock_apprise, bad_job):
+    """set_failure_notification_level is used for failure notifications."""
+    set_failure_notification_level("warning")
+    with pytest.raises(RuntimeError):
+        notify_on_completion(channels=["windows://"])(bad_job)()
+    assert mock_apprise.notify.call_args.kwargs["notify_type"] == "warning"
+
+
+@pytest.mark.parametrize("setter", [set_notification_level, set_failure_notification_level])
+def test_set_level_invalid_raises(setter):
+    """Level setters raise ValueError for unknown strings."""
+    with pytest.raises(ValueError):
+        setter("critical")
