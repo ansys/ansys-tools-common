@@ -98,7 +98,7 @@ supported by Apprise.  The full list of services is available at
 Global configuration
 --------------------
 
-Process-wide defaults can be set once — for example at application start-up —
+Process-wide defaults can be set once, for example at app start-up,
 so that every subsequent call to :func:`~ansys.tools.common.notifications.notify`
 and :func:`~ansys.tools.common.notifications.notify_on_completion` picks them up
 automatically without repeating the same arguments everywhere.
