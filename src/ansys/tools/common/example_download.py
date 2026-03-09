@@ -286,7 +286,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         .. warning::
 
-            Do not execute this function with untrusted function arguments.
+            Do not execute this function with untrusted ``filename`` and ``directory`` arguments.
 
         Parameters
         ----------
