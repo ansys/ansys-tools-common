@@ -69,6 +69,13 @@ This section explains key concepts for implementing the tools in Ansys Common To
 
         Learn how to generate test certificates for secure connections.
 
+    .. grid-item-card:: Ansys Notifier
+        :padding: 2 2 2 2
+        :link: notifier
+        :link-type: doc
+
+        Learn how to use the Ansys Notifier to send notifications to various channels.
+
 .. toctree::
     :hidden:
     :maxdepth: 3
@@ -81,3 +88,4 @@ This section explains key concepts for implementing the tools in Ansys Common To
     launcher/index
     secure_grpc
     certificate_generation
+    notifier

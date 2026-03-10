@@ -132,9 +132,9 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         .. warning::
 
-            Do not execute this function with untrusted function argument.
+            Do not execute this function with untrusted ``directory`` argument.
             Download directory tries to use Git sparse checkout, which involves
-            executing Git commands with the directory and destination as arguments.
+            executing Git commands with the directory as argument.
 
         Parameters
         ----------
@@ -175,7 +175,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         .. warning::
 
-            Do not execute this function with untrusted function argument.
+            Do not execute this function with untrusted ``directory`` argument.
 
         Parameters
         ----------
@@ -274,7 +274,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         .. warning::
 
-            Do not execute this function with untrusted function arguments.
+            Do not execute this function with untrusted ``filename`` and ``directory`` arguments.
 
         Parameters
         ----------
