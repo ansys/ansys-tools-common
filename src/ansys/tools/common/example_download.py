@@ -204,13 +204,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         if not re.match(r"^[a-zA-Z0-9_\-./\s]+$", directory):
             raise ValueError(f"Invalid directory name: {directory}")
 
-        if destination is None:
-            destination = tempfile.gettempdir()
-        else:
-            destination = Path(destination).resolve()
-
-        local_path = Path(destination) / Path(directory)
-
+        local_path = self._resolve_directory_destination(directory, destination)
         if not force and local_path.is_dir() and any(local_path.iterdir()):
             return str(local_path)
 
@@ -262,13 +256,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         str
             Local path of the downloaded example directory.
         """
-        if destination is None:
-            destination = tempfile.gettempdir()
-        else:
-            destination = Path(destination).resolve()
-
-        local_path = Path(destination) / Path(directory)
-
+        local_path = self._resolve_directory_destination(directory, destination)
         if not force and local_path.is_dir() and any(local_path.iterdir()):
             return str(local_path)
 
@@ -407,6 +395,29 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         url = self._get_filepath_on_default_server(filename, directory)
         local_path = self._retrieve_data(url, filename, destination, force=force)
         return local_path
+
+    def _resolve_directory_destination(self, directory: str, destination: str | Path | None) -> Path:
+        """Resolve destination path for directory downloads.
+
+        Parameters
+        ----------
+        directory : str
+            Path under the ``example-data`` repository.
+        destination : str | Path | None
+            Path to download the example directory to. When ``None``,
+            the default temporary directory is used.
+
+        Returns
+        -------
+        Path
+            The resolved local path for the directory.
+        """
+        if destination is None:
+            destination = Path(tempfile.gettempdir()).resolve()
+        else:
+            destination = Path(destination).resolve()
+
+        return Path(destination) / Path(directory)
 
     def _add_file(self, file_path: str):
         """Add the path for a downloaded example file to a list.
