@@ -25,6 +25,7 @@ import os
 from pathlib import Path
 import tempfile
 from threading import Lock
+import time
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -491,7 +492,9 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         else:
             return self._joinurl(BASE_URL, filename)
 
-    def _retrieve_data(self, url: str, filename: str, destination: str | Path, force: bool = False) -> str:
+    def _retrieve_data(
+        self, url: str, filename: str, destination: str | Path, force: bool = False, max_retries: int = 3
+    ) -> str:
         """Retrieve data from a URL and save it to a local file.
 
         Parameters
@@ -504,6 +507,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Destination path of the file.
         force : bool, default: False
             Whether to force downloading to avoid cached examples.
+        max_retries : int, default: 3
+            Maximum number of retry attempts for failed downloads.
 
         Returns
         -------
@@ -519,12 +524,27 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         if parsed_url.scheme not in ("http", "https"):
             raise ValueError(f"Unsafe URL scheme: {parsed_url.scheme}")
 
-        response = requests.get(url, timeout=60)
-        response.raise_for_status()
+        last_exception = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.get(url, timeout=60)
+                response.raise_for_status()
 
-        Path(local_path).write_bytes(response.content)
+                Path(local_path).write_bytes(response.content)
 
-        return str(local_path)
+                return str(local_path)
+            except requests.RequestException as e:
+                last_exception = e
+                if attempt < max_retries - 1:
+                    # Exponential backoff: wait 1s, 2s, 4s, etc.
+                    wait_time = 2**attempt
+                    time.sleep(wait_time)
+                else:
+                    # Final attempt failed
+                    raise RuntimeError(f"Failed to download file from {url} after {max_retries} attempts: {e}") from e
+
+        # This should never be reached, but just in case
+        raise RuntimeError(f"Failed to download file from {url}: {last_exception}") from last_exception
 
     def _list_files(self, folder: str, github_token: str | None = None) -> list:
         """List all files in a folder of the example-data repository.

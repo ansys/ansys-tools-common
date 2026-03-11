@@ -36,8 +36,13 @@ def test_non_existent_file():
     directory = "pymapdl/cfx_mapping"
 
     # Attempt to download the non-existent file
-    with pytest.raises(requests.exceptions.HTTPError):
+    # With retry logic, it now raises RuntimeError after retrying
+    with pytest.raises(RuntimeError) as exc_info:
         download_manager.download_file(filename, directory)
+
+    # Verify the error message indicates retry attempts
+    assert "Failed to download file from" in str(exc_info.value)
+    assert "after 3 attempts" in str(exc_info.value)
 
 
 def test_get_filepath():
@@ -170,3 +175,26 @@ def test_download_directory_http_based(tmp_path):
         local_path2 = download_manager._download_directory_http_based(directory, destination=str(tmp_path))
         mock_write.assert_not_called()
         assert local_path2 == local_path_str
+
+
+def test_retrieve_data_retry_logic(tmp_path):
+    """Test that _retrieve_data fails after 3 retries by default."""
+    filename = "test_file.csv"
+    url = "https://example.com/test_file.csv"
+
+    with patch("requests.get") as mock_get, patch("time.sleep") as mock_sleep:
+        # Mock all requests to fail
+        mock_get.side_effect = requests.exceptions.ConnectionError("Connection failed")
+
+        # Verify it raises RuntimeError after 3 attempts
+        with pytest.raises(RuntimeError) as exc_info:
+            download_manager._retrieve_data(url, filename, tmp_path, force=True)
+
+        # Verify the error message
+        assert "Failed to download file from" in str(exc_info.value)
+        assert "after 3 attempts" in str(exc_info.value)
+
+        # Verify retry behavior: 3 attempts total
+        assert mock_get.call_count == 3
+        # Sleep between attempts 1-2 and 2-3, but not after the last attempt
+        assert mock_sleep.call_count == 2
