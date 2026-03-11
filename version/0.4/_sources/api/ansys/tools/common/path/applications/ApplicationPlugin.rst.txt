@@ -1,0 +1,71 @@
+
+
+
+
+
+
+:class:`ApplicationPlugin`
+==========================
+
+
+.. py:class:: ansys.tools.common.path.applications.ApplicationPlugin
+
+   Provides for application plugins.
+
+
+
+.. py:currentmodule:: ApplicationPlugin
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~is_valid_executable_path`
+            - Check if the executable path is valid for the application.
+
+
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.path.applications import ApplicationPlugin
+
+
+
+Method detail
+-------------
+
+.. py:method:: is_valid_executable_path(exe_loc: str) -> bool
+
+   Check if the executable path is valid for the application.
+
+   Parameters
+   ----------
+   exe_loc : str
+       Path to the executable file.
+
+   Returns
+   -------
+   bool
+       ``True`` if the path is valid for the application, ``False`` otherwise.
+
+
+
+
+
