@@ -584,8 +584,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         filename: str,
         destination: str | Path,
         force: bool = False,
-        max_retries: int = 3,
         timeout: float = 60.0,
+        max_retries: int = 3,
     ) -> str:
         """Retrieve data from a URL and save it to a local file.
 
