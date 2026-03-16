@@ -15,3 +15,4 @@
 * [Maxime Rey](https://github.com/MaxJPRey)
 * [Revathy Venugopal](https://github.com/Revathyvenugopal162)
 * [Roberto Pastor Muela](https://github.com/RobPasMue)
+* [Sébastien Morais](https://github.com/SMoraisAnsys)
