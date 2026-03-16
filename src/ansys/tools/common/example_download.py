@@ -599,10 +599,10 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Destination path of the file.
         force : bool, default: False
             Whether to force downloading to avoid cached examples.
-        max_retries : int, default: 3
-            Maximum number of retry attempts for failed downloads.
         timeout : float , default: 60.0
             Timeout in seconds for the download operation. The default is 60 seconds.
+        max_retries : int, default: 3
+            Maximum number of retry attempts for failed downloads.
 
         Returns
         -------
