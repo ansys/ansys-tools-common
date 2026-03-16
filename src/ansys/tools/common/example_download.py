@@ -118,7 +118,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         # Try Git sparse checkout first, fallback to HTTP if it fails
         try:
-            local_path = self._download_file_git_based(filename, directory, destination_path, force)
+            local_path = self._download_file_git_based(filename, directory, destination_path, force, timeout)
         except Exception:
             local_path = self._download_file_http_based(filename, directory, destination_path, force, timeout)
 
@@ -171,7 +171,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         """
         # Try using Git sparse checkout first and fallback to individual file download if it fails.
         try:
-            local_path = self._download_directory_git_based(directory, destination, force)
+            local_path = self._download_directory_git_based(directory, destination, force, timeout)
         except Exception:
             local_path = self._download_directory_http_based(directory, destination, force, github_token, timeout)
 
@@ -180,7 +180,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         return local_path
 
     def _download_directory_git_based(
-        self, directory: str, destination: str | Path | None = None, force: bool = False
+        self,
+        directory: str,
+        destination: str | Path | None = None,
+        force: bool = False,
+        timeout: float = 60.0,
+        max_retries: int = 3,
     ) -> str:
         """Download an example directory using Git sparse checkout.
 
@@ -200,6 +205,10 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Whether to always download the example directory. The default is
             ``False``, in which case if the example directory is cached, it
             is reused.
+        timeout : float, default: 60.0
+            Timeout in seconds for each git operation.
+        max_retries : int, default: 3
+            Maximum number of retry attempts for failed git operations.
 
         Returns
         -------
@@ -219,22 +228,30 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         if not force and local_path.is_dir() and any(local_path.iterdir()):
             return str(local_path)
 
-        # Clone with sparse checkout
-        temp_clone = Path(tempfile.mkdtemp())
-        try:
-            cmd = ["git", "clone", "--depth=1", "--filter=blob:none", "--sparse", GIT_URL, str(temp_clone)]
-            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B603
-            cmd = ["git", "-C", str(temp_clone), "sparse-checkout", "set", directory]
-            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B603
+        # Clone with sparse checkout, with retry logic
+        for attempt in range(max_retries):
+            temp_clone = Path(tempfile.mkdtemp())
+            try:
+                cmd = ["git", "clone", "--depth=1", "--filter=blob:none", "--sparse", GIT_URL, str(temp_clone)]
+                subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=timeout)  # nosec B603
+                cmd = ["git", "-C", str(temp_clone), "sparse-checkout", "set", directory]
+                subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=timeout)  # nosec B603
 
-            # Move the directory to destination
-            src_path = temp_clone / directory
-            if src_path.exists():
-                shutil.copytree(src_path, local_path, dirs_exist_ok=True)
-        finally:
-            shutil.rmtree(temp_clone, ignore_errors=True)
+                # Move the directory to destination
+                src_path = temp_clone / directory
+                if src_path.exists():
+                    shutil.copytree(src_path, local_path, dirs_exist_ok=True)
+                return str(local_path)
+            except (subprocess.TimeoutExpired, Exception) as e:
+                if attempt < max_retries - 1:
+                    wait_time = 2**attempt
+                    time.sleep(wait_time)
+                else:
+                    raise RuntimeError(f"Git operation failed after {max_retries} attempts: {e}") from e
+            finally:
+                shutil.rmtree(temp_clone, ignore_errors=True)
 
-        return str(local_path)
+        raise RuntimeError("Git operation failed after all retry attempts.")
 
     def _download_directory_http_based(
         self,
@@ -282,7 +299,13 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         return str(local_path)
 
     def _download_file_git_based(
-        self, filename: str, directory: str, destination: str | Path, force: bool = False
+        self,
+        filename: str,
+        directory: str,
+        destination: str | Path,
+        force: bool = False,
+        timeout: float = 60.0,
+        max_retries: int = 3,
     ) -> str:
         """Download a single file using Git sparse checkout.
 
@@ -302,6 +325,10 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Whether to always download the file. The default is
             ``False``, in which case if the file is cached, it
             is reused.
+        timeout : float, default: 60.0
+            Timeout in seconds for each git operation.
+        max_retries : int, default: 3
+            Maximum number of retry attempts for failed git operations.
 
         Returns
         -------
@@ -330,65 +357,82 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         # Build the file path in the repository
         file_path_in_repo = f"{directory}/{filename}" if directory else filename
 
-        temp_clone = Path(tempfile.mkdtemp())
         # NOTE: The following workflow does not use sparse-checkout, for more information
         # see https://github.com/ansys/ansys-tools-common/pull/210#discussion_r2888952765
-        try:
-            # Initialize a new git repo
-            subprocess.run(
-                ["git", "init"], cwd=str(temp_clone), check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-            )  # nosec B603, B607
+        for attempt in range(max_retries):
+            temp_clone = Path(tempfile.mkdtemp())
+            try:
+                # Initialize a new git repo
+                subprocess.run(
+                    ["git", "init"],
+                    cwd=str(temp_clone),
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=timeout,
+                )  # nosec B603, B607
 
-            # Add remote origin
-            subprocess.run(
-                ["git", "remote", "add", "origin", GIT_URL],
-                cwd=str(temp_clone),
-                check=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )  # nosec B603, B607
+                # Add remote origin
+                subprocess.run(
+                    ["git", "remote", "add", "origin", GIT_URL],
+                    cwd=str(temp_clone),
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=timeout,
+                )  # nosec B603, B607
 
-            # Enable sparse checkout
-            subprocess.run(
-                ["git", "config", "core.sparseCheckout", "true"],
-                cwd=str(temp_clone),
-                check=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )  # nosec B603, B607
+                # Enable sparse checkout
+                subprocess.run(
+                    ["git", "config", "core.sparseCheckout", "true"],
+                    cwd=str(temp_clone),
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=timeout,
+                )  # nosec B603, B607
 
-            # Write sparse-checkout pattern to .git/info/sparse-checkout
-            sparse_checkout_file = temp_clone / ".git" / "info" / "sparse-checkout"
-            sparse_checkout_file.parent.mkdir(parents=True, exist_ok=True)
-            sparse_checkout_file.write_text(file_path_in_repo + "\n")
+                # Write sparse-checkout pattern to .git/info/sparse-checkout
+                sparse_checkout_file = temp_clone / ".git" / "info" / "sparse-checkout"
+                sparse_checkout_file.parent.mkdir(parents=True, exist_ok=True)
+                sparse_checkout_file.write_text(file_path_in_repo + "\n")
 
-            # Fetch with blob filter and depth=1 (only downloads requested file)
-            subprocess.run(
-                ["git", "fetch", "--filter=blob:none", "--depth=1", "origin", "main"],
-                cwd=str(temp_clone),
-                check=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )  # nosec B603, B607
-            subprocess.run(
-                ["git", "checkout", "main"],
-                cwd=str(temp_clone),
-                check=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )  # nosec B603, B607
+                # Fetch with blob filter and depth=1 (only downloads requested file)
+                subprocess.run(
+                    ["git", "fetch", "--filter=blob:none", "--depth=1", "origin", "main"],
+                    cwd=str(temp_clone),
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=timeout,
+                )  # nosec B603, B607
+                subprocess.run(
+                    ["git", "checkout", "main"],
+                    cwd=str(temp_clone),
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=timeout,
+                )  # nosec B603, B607
 
-            # Copy the file to destination
-            src_file = temp_clone / file_path_in_repo
-            if src_file.exists():
-                Path(destination).mkdir(parents=True, exist_ok=True)
-                shutil.copy2(src_file, local_path)
-            else:
-                raise FileNotFoundError(f"File not found in repository: {file_path_in_repo}")
-        finally:
-            shutil.rmtree(temp_clone, ignore_errors=True)
+                # Copy the file to destination
+                src_file = temp_clone / file_path_in_repo
+                if src_file.exists():
+                    Path(destination).mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(src_file, local_path)
+                    return str(local_path)
+                else:
+                    raise FileNotFoundError(f"File not found in repository: {file_path_in_repo}")
+            except (subprocess.TimeoutExpired, Exception) as e:
+                if attempt < max_retries - 1:
+                    wait_time = 2**attempt
+                    time.sleep(wait_time)
+                else:
+                    raise RuntimeError(f"Git operation failed after {max_retries} attempts: {e}") from e
+            finally:
+                shutil.rmtree(temp_clone, ignore_errors=True)
 
-        return str(local_path)
+        raise RuntimeError("Git operation failed after all retry attempts.")
 
     def _download_file_http_based(
         self, filename: str, directory: str, destination: str | Path, force: bool = False, timeout: float = 60.0
