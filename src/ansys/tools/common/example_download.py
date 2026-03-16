@@ -72,7 +72,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         self._downloads_list.clear()
 
     def download_file(
-        self, filename: str, directory: str, destination: str | Path | None = None, force: bool = False
+        self,
+        filename: str,
+        directory: str,
+        destination: str | Path | None = None,
+        force: bool = False,
+        timeout: float = 60.0,
     ) -> str:
         """Download an example file from the ``example-data`` repository.
 
@@ -89,6 +94,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Whether to always download the example file. The default is
             ``False``, in which case if the example file is cached, it
             is reused.
+        timeout : float, default: 60.0
+            Timeout in seconds for the download operation. The default is 60 seconds.
 
         Returns
         -------
@@ -113,7 +120,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         try:
             local_path = self._download_file_git_based(filename, directory, destination_path, force)
         except Exception:
-            local_path = self._download_file_http_based(filename, directory, destination_path, force)
+            local_path = self._download_file_http_based(filename, directory, destination_path, force, timeout)
 
         # Add path to downloaded files
         self._add_file(local_path)
@@ -125,6 +132,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         destination: str | Path | None = None,
         force: bool = False,
         github_token: str | None = None,
+        timeout: float = 60.0,
     ) -> str:
         """Download an example directory from the ``example-data`` repository.
 
@@ -153,6 +161,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             GitHub personal access token for API authentication (used by HTTP fallback).
             When ``None``, falls back to ``GITHUB_TOKEN`` or ``GH_TOKEN`` environment
             variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
+        timeout : float, default: 60.0
+            Timeout in seconds for the download operation (used by HTTP fallback). The default is 60 seconds.
 
         Returns
         -------
@@ -163,7 +173,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         try:
             local_path = self._download_directory_git_based(directory, destination, force)
         except Exception:
-            local_path = self._download_directory_http_based(directory, destination, force, github_token)
+            local_path = self._download_directory_http_based(directory, destination, force, github_token, timeout)
 
         # Add path to downloaded file(s)
         self._add_directory(local_path)
@@ -232,6 +242,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         destination: str | Path | None = None,
         force: bool = False,
         github_token: str | None = None,
+        timeout: float = 60.0,
     ) -> str:
         """Download an example directory using HTTP.
 
@@ -251,6 +262,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             GitHub personal access token for API authentication.
             When ``None``, falls back to ``GITHUB_TOKEN`` or ``GH_TOKEN`` environment
             variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
+        timeout : float, default: 60.0
+            Timeout in seconds for the download operation. The default is 60 seconds.
 
         Returns
         -------
@@ -264,7 +277,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         files = self._list_files(directory, github_token)
         for file in files:
             file_path = Path(file)
-            self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force)
+            self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force, timeout)
 
         return str(local_path)
 
@@ -378,7 +391,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         return str(local_path)
 
     def _download_file_http_based(
-        self, filename: str, directory: str, destination: str | Path, force: bool = False
+        self, filename: str, directory: str, destination: str | Path, force: bool = False, timeout: float = 60.0
     ) -> str:
         """Download a single file using HTTP.
 
@@ -392,9 +405,11 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Destination path to save the downloaded file.
         force : bool, default: False
             Whether to force downloading to avoid cached examples.
+        timeout : float, default: 60.0
+            Timeout in seconds for the download operation. The default is 60 seconds.
         """
         url = self._get_filepath_on_default_server(filename, directory)
-        local_path = self._retrieve_data(url, filename, destination, force=force)
+        local_path = self._retrieve_data(url, filename, destination, force=force, timeout=timeout)
         return local_path
 
     def _resolve_directory_destination(self, directory: str, destination: str | Path | None) -> Path:
