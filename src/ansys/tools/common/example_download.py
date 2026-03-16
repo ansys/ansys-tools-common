@@ -78,6 +78,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         destination: str | Path | None = None,
         force: bool = False,
         timeout: float = 60.0,
+        max_retries: int = 3,
     ) -> str:
         """Download an example file from the ``example-data`` repository.
 
@@ -96,6 +97,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             is reused.
         timeout : float, default: 60.0
             Timeout in seconds for the download operation. The default is 60 seconds.
+        max_retries : int, default: 3
+            Maximum number of retry attempts for failed downloads.
 
         Returns
         -------
@@ -118,9 +121,13 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         # Try Git sparse checkout first, fallback to HTTP if it fails
         try:
-            local_path = self._download_file_git_based(filename, directory, destination_path, force, timeout)
+            local_path = self._download_file_git_based(
+                filename, directory, destination_path, force, timeout, max_retries
+            )
         except Exception:
-            local_path = self._download_file_http_based(filename, directory, destination_path, force, timeout)
+            local_path = self._download_file_http_based(
+                filename, directory, destination_path, force, timeout, max_retries
+            )
 
         # Add path to downloaded files
         self._add_file(local_path)
@@ -133,6 +140,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         force: bool = False,
         github_token: str | None = None,
         timeout: float = 60.0,
+        max_retries: int = 3,
     ) -> str:
         """Download an example directory from the ``example-data`` repository.
 
@@ -163,6 +171,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
         timeout : float, default: 60.0
             Timeout in seconds for the download operation (used by HTTP fallback). The default is 60 seconds.
+        max_retries : int, default: 3
+            Maximum number of retry attempts for failed downloads.
 
         Returns
         -------
@@ -171,9 +181,11 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         """
         # Try using Git sparse checkout first and fallback to individual file download if it fails.
         try:
-            local_path = self._download_directory_git_based(directory, destination, force, timeout)
+            local_path = self._download_directory_git_based(directory, destination, force, timeout, max_retries)
         except Exception:
-            local_path = self._download_directory_http_based(directory, destination, force, github_token, timeout)
+            local_path = self._download_directory_http_based(
+                directory, destination, force, github_token, timeout, max_retries
+            )
 
         # Add path to downloaded file(s)
         self._add_directory(local_path)
@@ -260,6 +272,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         force: bool = False,
         github_token: str | None = None,
         timeout: float = 60.0,
+        max_retries: int = 3,
     ) -> str:
         """Download an example directory using HTTP.
 
@@ -281,6 +294,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
         timeout : float, default: 60.0
             Timeout in seconds for the download operation. The default is 60 seconds.
+        max_retries : int, default: 3
+            Maximum number of retry attempts for failed downloads.
 
         Returns
         -------
@@ -294,7 +309,9 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         files = self._list_files(directory, github_token)
         for file in files:
             file_path = Path(file)
-            self.download_file(str(file_path.name), file_path.parent.as_posix(), local_path, force, timeout)
+            self.download_file(
+                str(file_path.name), file_path.parent.as_posix(), local_path, force, timeout, max_retries
+            )
 
         return str(local_path)
 
@@ -435,7 +452,13 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         raise RuntimeError("Git operation failed after all retry attempts.")
 
     def _download_file_http_based(
-        self, filename: str, directory: str, destination: str | Path, force: bool = False, timeout: float = 60.0
+        self,
+        filename: str,
+        directory: str,
+        destination: str | Path,
+        force: bool = False,
+        timeout: float = 60.0,
+        max_retries: int = 3,
     ) -> str:
         """Download a single file using HTTP.
 
@@ -451,9 +474,13 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             Whether to force downloading to avoid cached examples.
         timeout : float, default: 60.0
             Timeout in seconds for the download operation. The default is 60 seconds.
+        max_retries : int, default: 3
+            Maximum number of retry attempts for failed downloads.
         """
         url = self._get_filepath_on_default_server(filename, directory)
-        local_path = self._retrieve_data(url, filename, destination, force=force, timeout=timeout)
+        local_path = self._retrieve_data(
+            url, filename, destination, force=force, timeout=timeout, max_retries=max_retries
+        )
         return local_path
 
     def _resolve_directory_destination(self, directory: str, destination: str | Path | None) -> Path:
