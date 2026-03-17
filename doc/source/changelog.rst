@@ -8,6 +8,106 @@ project.
 
 .. towncrier release notes start
 
+`0.5.0 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.5.0>`_ - March 17, 2026
+===========================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Feat: Add AnsysNotification
+          - `#204 <https://github.com/ansys/ansys-tools-common/pull/204>`_
+
+        * - Feat: download directory
+          - `#210 <https://github.com/ansys/ansys-tools-common/pull/210>`_
+
+        * - Feat: Add retry on download fail
+          - `#217 <https://github.com/ansys/ansys-tools-common/pull/217>`_
+
+        * - Feat: Add PyAnsys warnings
+          - `#219 <https://github.com/ansys/ansys-tools-common/pull/219>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Build: bump ansys-sphinx-theme[autoapi] from 1.6.4 to 1.7.0
+          - `#179 <https://github.com/ansys/ansys-tools-common/pull/179>`_
+
+        * - Ci: bump actions/download-artifact from 7.0.0 to 8.0.0
+          - `#202 <https://github.com/ansys/ansys-tools-common/pull/202>`_
+
+        * - Ci: bump ansys/actions from 10.2.5 to 10.2.7
+          - `#212 <https://github.com/ansys/ansys-tools-common/pull/212>`_
+
+        * - Build: bump ansys-sphinx-theme[autoapi] from 1.7.1 to 1.7.2
+          - `#213 <https://github.com/ansys/ansys-tools-common/pull/213>`_
+
+        * - Build: bump pyfakefs from 6.1.3 to 6.1.4
+          - `#216 <https://github.com/ansys/ansys-tools-common/pull/216>`_
+
+        * - Ci: bump actions/download-artifact from 8.0.0 to 8.0.1
+          - `#221 <https://github.com/ansys/ansys-tools-common/pull/221>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Chore: update CHANGELOG for v0.4.4
+          - `#195 <https://github.com/ansys/ansys-tools-common/pull/195>`_
+
+        * - [pre-commit.ci] pre-commit autoupdate
+          - `#196 <https://github.com/ansys/ansys-tools-common/pull/196>`_, `#205 <https://github.com/ansys/ansys-tools-common/pull/205>`_, `#215 <https://github.com/ansys/ansys-tools-common/pull/215>`_
+
+        * - Build: bump the grpc-deps group with 2 updates
+          - `#198 <https://github.com/ansys/ansys-tools-common/pull/198>`_
+
+        * - Chore: Add support for 3.14
+          - `#200 <https://github.com/ansys/ansys-tools-common/pull/200>`_
+
+        * - Build: bump pyfakefs from 6.1.1 to 6.1.2
+          - `#203 <https://github.com/ansys/ansys-tools-common/pull/203>`_
+
+        * - Build: bump ansys-sphinx-theme[autoapi] from 1.7.0 to 1.7.1
+          - `#206 <https://github.com/ansys/ansys-tools-common/pull/206>`_
+
+        * - Chore: update CHANGELOG for v0.4.5
+          - `#207 <https://github.com/ansys/ansys-tools-common/pull/207>`_
+
+        * - Docs: Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#218 <https://github.com/ansys/ansys-tools-common/pull/218>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Ci: bump astral-sh/setup-uv from 7.3.0 to 7.3.1
+          - `#211 <https://github.com/ansys/ansys-tools-common/pull/211>`_
+
+        * - Build: bump pyfakefs from 6.1.2 to 6.1.3
+          - `#214 <https://github.com/ansys/ansys-tools-common/pull/214>`_
+
+        * - [pre-commit.ci] pre-commit autoupdate
+          - `#220 <https://github.com/ansys/ansys-tools-common/pull/220>`_
+
+        * - Ci: bump ansys/actions from 10.2.7 to 10.2.8
+          - `#222 <https://github.com/ansys/ansys-tools-common/pull/222>`_
+
+
 `0.4.5 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.4.5>`_ - March 03, 2026
 ===========================================================================================
 
