@@ -31,7 +31,6 @@ class AnsysWarning(Warning):
     def __init__(self, message: str) -> None:
         """Initialize the warning with a message."""
         super().__init__(message)
-        self.message = message
 
 
 class DataNotAvailableWarning(AnsysWarning):

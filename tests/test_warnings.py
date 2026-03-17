@@ -42,13 +42,6 @@ def test_ansys_warning():
         warnings.warn(AnsysWarning("Base warning test"))
 
 
-def test_ansys_warning_message_attribute():
-    """Test that AnsysWarning stores the message attribute."""
-    w = AnsysWarning("some message")
-    assert w.message == "some message"
-    assert str(w) == "some message"
-
-
 def test_data_not_available_warning():
     """Test the DataNotAvailableWarning warning."""
     with pytest.warns(DataNotAvailableWarning, match="Data not available"):
