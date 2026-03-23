@@ -1,0 +1,412 @@
+
+
+
+
+
+
+The ``notifications.py`` module
+===============================
+
+.. py:module:: ansys.tools.common.notifications
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: notifications
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.notifications.AnsysNotifier`
+            - Desktop and multi-channel notifier for PyAnsys job-completion events.
+
+
+
+    .. tab-item:: Enums
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.notifications.NotificationChannel`
+            - Well-known apprise notification channel URL schemes.
+
+
+          * - :py:obj:`~ansys.tools.common.notifications.NotificationFormat`
+            - Body format of the notification.
+
+
+          * - :py:obj:`~ansys.tools.common.notifications.NotificationType`
+            - Notification type / type of the notification.
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~get_notification_channels`
+            - Return the global default notification channels.
+
+
+          * - :py:obj:`~get_notification_level`
+            - Return the global default notification level.
+
+
+          * - :py:obj:`~get_notify_on_failure`
+            - Return the global default for whether failure notifications are sent.
+
+
+          * - :py:obj:`~get_failure_notification_level`
+            - Return the global default notification level used on failure.
+
+
+          * - :py:obj:`~set_notification_channels`
+            - Set the global default notification channels.
+
+
+          * - :py:obj:`~set_notification_level`
+            - Set the global default notification level.
+
+
+          * - :py:obj:`~set_notify_on_failure`
+            - Set whether a notification is sent globally when a decorated function fails.
+
+
+          * - :py:obj:`~set_failure_notification_level`
+            - Set the global default notification level used when a decorated function fails.
+
+
+          * - :py:obj:`~notify`
+            - Send a one-shot notification without creating a persistent notifier.
+
+
+          * - :py:obj:`~notify_on_completion`
+            - Send a notification when the decorated function finishes.
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> AnsysNotifier</api/ansys/tools/common/notifications/AnsysNotifier>
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_enum"></span> NotificationChannel</api/ansys/tools/common/notifications/NotificationChannel>
+    <span class="nf nf-cod-symbol_enum"></span> NotificationFormat</api/ansys/tools/common/notifications/NotificationFormat>
+    <span class="nf nf-cod-symbol_enum"></span> NotificationType</api/ansys/tools/common/notifications/NotificationType>
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Desktop and multi-channel notification support for PyAnsys libraries.
+
+This module exposes :class:`AnsysNotifier` for persistent use inside PyAnsys
+library workflows and the convenience function :func:`notify` for one-shot
+script usage.
+
+Install the optional dependency before using this module::
+
+    pip install "ansys-tools-common[notifications]"
+
+Quick start
+-----------
+>>> from ansys.tools.common.notifications import notify, NotificationType
+>>> notify("Simulation complete.")
+>>> notify("Solve diverged!", notification_type=NotificationType.FAILURE)
+>>> from ansys.tools.common.notifications import NotificationChannel
+>>> notify("Job done.", channels=[NotificationChannel.WINDOWS])
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: get_notification_channels() -> list[str] | None
+
+   Return the global default notification channels.
+
+   Returns
+   -------
+   list[str] | None
+       The channels set by :func:`set_notification_channels`, or ``None``
+       if no global default is set (desktop channel will be used).
+
+
+.. py:function:: get_notification_level() -> NotificationType
+
+   Return the global default notification level.
+
+   Returns
+   -------
+   NotificationType
+       The level set by :func:`set_notification_level`.
+
+
+.. py:function:: get_notify_on_failure() -> bool
+
+   Return the global default for whether failure notifications are sent.
+
+   Returns
+   -------
+   bool
+       The value set by :func:`set_notify_on_failure`.
+
+
+.. py:function:: get_failure_notification_level() -> NotificationType
+
+   Return the global default notification level used on failure.
+
+   Returns
+   -------
+   NotificationType
+       The level set by :func:`set_failure_notification_level`.
+
+
+.. py:function:: set_notification_channels(channels: list[NotificationChannel | str] | None) -> None
+
+   Set the global default notification channels.
+
+   Affects all subsequent calls to :func:`notify` and
+   :func:`notify_on_completion` that do not supply an explicit *channels*
+   argument. Setting *channels* to ``None`` reverts to the
+   automatically detected desktop channel.
+
+   Parameters
+   ----------
+   channels : list[NotificationChannel | str] | None
+       A list of apprise-compatible channel URLs or :class:`NotificationChannel`
+       members, or ``None`` to reset to the OS desktop default.
+
+   Examples
+   --------
+   >>> set_notification_channels([NotificationChannel.SLACK + "token/channel"])
+   >>> set_notification_channels(["myfancychannel", "anotherchannel"])
+   >>> set_notification_channels(None)  # reset to desktop default
+
+
+.. py:function:: set_notification_level(level: NotificationType | str) -> None
+
+   Set the global default notification level.
+
+   Affects all subsequent calls to :func:`notify` and
+   :func:`notify_on_completion` that do not supply an explicit
+   *notification_type* argument.
+
+   Parameters
+   ----------
+   level : NotificationType | str
+       A :class:`NotificationType` member or its string value
+       (``"info"``, ``"success"``, ``"warning"``, ``"failure"``).
+
+   Examples
+   --------
+   >>> set_notification_level("warning")
+   >>> set_notification_level(NotificationType.FAILURE)
+
+
+.. py:function:: set_notify_on_failure(enabled: bool) -> None
+
+   Set whether a notification is sent globally when a decorated function fails.
+
+   Affects all subsequent calls to :func:`notify_on_completion` that do not
+   supply an explicit *notify_on_failure* argument.
+
+   Parameters
+   ----------
+   enabled : bool
+       ``True`` to send a failure notification (default), ``False`` to suppress it.
+
+   Examples
+   --------
+   >>> set_notify_on_failure(False)
+
+
+.. py:function:: set_failure_notification_level(level: NotificationType | str) -> None
+
+   Set the global default notification level used when a decorated function fails.
+
+   Affects all subsequent calls to :func:`notify_on_completion` that do not
+   supply an explicit *failure_notification_type* argument.
+
+   Parameters
+   ----------
+   level : NotificationType | str
+       A :class:`NotificationType` member or its string value
+       (``"info"``, ``"success"``, ``"warning"``, ``"failure"``).
+
+   Examples
+   --------
+   >>> set_failure_notification_level("warning")
+   >>> set_failure_notification_level(NotificationType.FAILURE)
+
+
+.. py:function:: notify(message: str, title: str = 'PyAnsys', channels: list[NotificationChannel | str] | None = None, format: NotificationFormat = NotificationFormat.TEXT, notification_type: NotificationType | None = None) -> bool
+
+   Send a one-shot notification without creating a persistent notifier.
+
+   This convenience function is intended for simple script usage where a
+   persistent :class:`AnsysNotifier` instance is not needed.
+
+   Parameters
+   ----------
+   message : str
+       Body of the notification.
+   title : str, optional
+       Notification title, by default ``"PyAnsys"``.
+   channels : list[NotificationChannel | str] | None, optional
+       Apprise channel URLs. When ``None``, the global default set by
+       :func:`set_notification_channel` is used; if that is also ``None``,
+       the native desktop notification service for the current OS is used.
+   format : NotificationFormat, optional
+       Body format, by default :attr:`NotificationFormat.TEXT`.
+   notification_type : NotificationType | None, optional
+       notification_type level.  When ``None``, the global default set by
+       :func:`set_notification_level` is used (initially
+       :attr:`NotificationType.INFO`).
+
+   Returns
+   -------
+   bool
+       ``True`` if delivered successfully to all channels.
+
+   Examples
+   --------
+   Minimal usage — sends a desktop notification:
+
+   >>> from ansys.tools.common.notifications import notify
+   >>> notify("Simulation complete.")
+
+   Failure notification:
+
+   >>> notify("Solve diverged!", notification_type=NotificationType.FAILURE)
+
+   Multi-channel:
+
+   >>> notify("Job done.", channels=[NotificationChannel.WINDOWS, NotificationChannel.SLACK + "token/channel"])
+
+
+.. py:function:: notify_on_completion(message: str | None = None, *, title: str = 'PyAnsys', channels: list[NotificationChannel | str] | None = None, format: NotificationFormat = NotificationFormat.TEXT, notification_type: NotificationType | None = None, notify_on_failure: bool | None = None, failure_notification_type: NotificationType | None = None, failure_message: str | None = None) -> collections.abc.Callable
+
+   Send a notification when the decorated function finishes.
+
+   Wraps a callable so that a notification is dispatched automatically on
+   success (and optionally on failure) without any extra code at each call
+   site.
+
+   Parameters
+   ----------
+   message : str | None, optional
+       Body of the notification.  When ``None`` a default message is
+       built from the wrapped function's name: ``"<func_name> completed."``.
+   title : str, optional
+       Notification title, by default ``"PyAnsys"``.
+   channels : list[NotificationChannel | str] | None, optional
+       Apprise channel URLs.  When ``None``, the global default set by
+       :func:`set_notification_channel` is used; if that is also ``None``,
+       the native desktop notification service for the current OS is used.
+   format : NotificationFormat, optional
+       Body format, by default :attr:`NotificationFormat.TEXT`.
+   notification_type : NotificationType | None, optional
+       Notification type used for the notification.  When ``None``, the
+       global default set by :func:`set_notification_level` is used
+       (initially :attr:`NotificationType.INFO`).
+   notify_on_failure : bool | None, optional
+       When ``True`` a notification is also sent if the wrapped function
+       raises an exception.  The exception is always re-raised.  When
+       ``None``, the global default set by :func:`set_notify_on_failure`
+       is used (initially ``True``).
+   failure_notification_type : NotificationType | None, optional
+       Notification type used for the failure notification.  When ``None``,
+       the global default set by :func:`set_failure_notification_level` is
+       used (initially :attr:`NotificationType.FAILURE`).
+   failure_message : str | None, optional
+       Body of the failure notification.  When ``None`` a default message is
+       built from the wrapped function's name and the exception:
+       ``"<func_name> failed: <exception>"``.
+
+   Returns
+   -------
+   Callable
+       A decorator that wraps the target function.
+
+   Examples
+   --------
+   Send a desktop notification when the function returns:
+
+   >>> from ansys.tools.common.notifications import notify_on_completion
+   >>> @notify_on_completion("Simulation complete.")
+   ... def run_simulation():
+   ...     pass
+
+   Auto-generate the message from the function name:
+
+   >>> @notify_on_completion()
+   ... def solve():
+   ...     pass
+
+   Custom channels and failure notification:
+
+   >>> @notify_on_completion(
+   ...     channels=[NotificationChannel.SLACK + "token/channel"],
+   ...     notify_on_failure=True,
+   ... )
+   ... def long_running_job():
+   ...     pass
+
+
+
+
