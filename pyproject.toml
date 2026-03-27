@@ -80,7 +80,7 @@ tests = [
   "mypy-extensions==1.1.0",
   "pyfakefs==6.1.6",
   "pytest==9.0.2",
-  "pytest-cov==7.0.0",
+  "pytest-cov==7.1.0",
 ]
 
 [tool.hatch]
