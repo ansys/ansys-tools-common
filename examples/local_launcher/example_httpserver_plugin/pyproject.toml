@@ -3,9 +3,9 @@ build-backend = "flit_core.buildapi"
 requires = [ "flit-core>=3.2,<4" ]
 
 [project]
-license = "MIT"
-license-files = ["LICENSE"]
 name = "example-httpserver-plugin"
+license = "MIT"
+license-files = [ "LICENSE" ]
 authors = [ { name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" } ]
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
@@ -13,7 +13,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: 3.14"
+  "Programming Language :: Python :: 3.14",
 ]
 dynamic = [ "description", "version" ]
 dependencies = [ "ansys-tools-local-product-launcher", "requests" ]
