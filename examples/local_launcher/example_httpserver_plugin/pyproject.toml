@@ -4,6 +4,8 @@ requires = [ "flit-core>=3.2,<4" ]
 
 [project]
 name = "example-httpserver-plugin"
+license = "MIT"
+license-files = [ "LICENSE" ]
 authors = [ { name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" } ]
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
