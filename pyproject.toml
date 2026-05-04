@@ -75,7 +75,7 @@ tests = [
   "cryptography==47.0.0",
   "grpcio==1.80.0",
   "grpcio-health-checking==1.80.0",
-  "hypothesis==6.152.2",
+  "hypothesis==6.152.4",
   "mypy==1.20.2",
   "mypy-extensions==1.1.0",
   "pyfakefs==6.2.0",
