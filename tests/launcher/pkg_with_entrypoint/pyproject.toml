@@ -11,5 +11,5 @@ packages = [
   { include = "pkg_with_entrypoint", from = "src" },
 ]
 dependencies.python = ">=3.10,<4.0"
-plugins."ansys.tools.common.launcher"."pkg_with_entrypoint.test_entry_point" = "pkg_with_entrypoint:Launcher"
 plugins."ansys.tools.common.launcher"."pkg_with_entrypoint.__fallback__" = "pkg_with_entrypoint:Launcher"
+plugins."ansys.tools.common.launcher"."pkg_with_entrypoint.test_entry_point" = "pkg_with_entrypoint:Launcher"
