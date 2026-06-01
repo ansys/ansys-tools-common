@@ -115,11 +115,11 @@ lint.isort.known-first-party = [ "ansys" ]
 lint.pydocstyle.convention = "numpy"
 
 [tool.mypy]
-python_version = "3.10"
 mypy_path = """\
   $MYPY_CONFIG_FILE_DIR/src:$MYPY_CONFIG_FILE_DIR/tests:$MYPY_CONFIG_FILE_DIR/examples/local_launcher/example_httpserve\
   r_plugin/src\
   """
+python_version = "3.10"
 
 [tool.pytest]
 ini_options.addopts = "-ra --cov=ansys.tools.common --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term --capture=sys -vv"
