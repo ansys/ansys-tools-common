@@ -1,0 +1,107 @@
+
+
+
+
+
+
+The ``report.py`` module
+========================
+
+.. py:module:: ansys.tools.common.report
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: report
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.report.Report`
+            - Generate a :class:`scooby.Report` instance.
+
+
+
+
+
+
+
+    .. tab-item:: Constants
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~__ANSYS_VARS_PREFIX__`
+            - 
+
+
+          * - :py:obj:`~__PYANSYS_LIBS__`
+            - 
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> Report</api/ansys/tools/common/report/Report>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+PyAnsys Tools Report.
+
+Module containing the standardized Report class for PyAnsys projects.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:data:: __ANSYS_VARS_PREFIX__
+   :value: ('AWP', 'ACP', 'ANS', 'FLUENT', 'MAPDL', 'DPF', 'SIMPLORER', 'SIWAVE', 'CADOE')
+
+
+.. py:data:: __PYANSYS_LIBS__
+   :value: ('ansys_sphinx_theme', 'ansys.acp.core', 'ansys.dpf.composites', 'ansys.dpf.core',...
+
+
+
+

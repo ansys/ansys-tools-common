@@ -1,0 +1,31 @@
+
+
+
+
+
+
+:class:`VersionSyntaxError`
+===========================
+
+
+.. py:exception:: ansys.tools.common.exceptions.VersionSyntaxError(msg)
+
+   Bases: :py:obj:`AnsysError`
+
+
+   An exception to be raised when an invalid version syntax is found.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.exceptions import VersionSyntaxError
+
+
+
+
+
