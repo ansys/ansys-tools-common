@@ -9,7 +9,7 @@ repos:
           - "max_line_length=80,retain_line_breaks=true,retain_line_breaks_single=true"
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.23.0
+    rev: v2.24.1
     hooks:
       - id: pyproject-fmt
         additional_dependencies: [toml-fmt-common<1.3.3]
@@ -44,12 +44,12 @@ repos:
           - --start_year=2025
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.37.2
+    rev: 0.37.3
     hooks:
       - id: check-github-workflows
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.16
+    rev: v0.15.17
     hooks:
       - id: ruff-check
       - id: ruff-format
