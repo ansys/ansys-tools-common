@@ -61,7 +61,7 @@ scripts.save-ansys-path = "ansys.tools.common.path.save:cli"
 
 [dependency-groups]
 doc = [
-  "ansys-sphinx-theme[autoapi]==1.8.2",
+  "ansys-sphinx-theme[autoapi]==1.9.0",
   "example-httpserver-plugin",
   "grpcio==1.81.0",
   "grpcio-health-checking==1.81.0",
