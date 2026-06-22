@@ -8,8 +8,8 @@ mypy
 pytest
 pathing
 subprocess
-
-
+Synopsys
+synopsys
 s.P
 e.M
 terminate
