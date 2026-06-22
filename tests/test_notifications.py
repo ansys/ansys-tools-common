@@ -1,0 +1,330 @@
+# Copyright (C) 2025 - 2026 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+"""Tests for the notifications module."""
+
+from unittest.mock import MagicMock, patch
+
+import pytest
+
+from ansys.tools.common.notifications import (
+    AnsysNotifier,
+    NotificationChannel,
+    NotificationFormat,
+    NotificationType,
+    _desktop_url,
+    get_failure_notification_level,
+    get_notification_channels,
+    get_notification_level,
+    get_notify_on_failure,
+    notify,
+    notify_on_completion,
+    set_failure_notification_level,
+    set_notification_channels,
+    set_notification_level,
+    set_notify_on_failure,
+)
+
+
+@pytest.fixture(autouse=True)
+def reset_globals():
+    """Reset module-level globals before each test to avoid cross-test pollution."""
+    set_notification_channels(None)
+    set_notification_level(NotificationType.INFO)
+    set_notify_on_failure(True)
+    set_failure_notification_level(NotificationType.FAILURE)
+    yield
+
+
+@pytest.fixture()
+def mock_apprise():
+    """Patch apprise.Apprise and return a mock instance."""
+    ap_instance = MagicMock()
+    ap_instance.add.return_value = True
+    ap_instance.notify.return_value = True
+
+    with patch("ansys.tools.common.notifications.apprise.Apprise", return_value=ap_instance):
+        yield ap_instance
+
+
+@pytest.mark.parametrize(
+    ("system", "expected"),
+    [
+        ("Windows", NotificationChannel.WINDOWS),
+        ("Darwin", NotificationChannel.MACOS),
+        ("Linux", NotificationChannel.DBUS),
+        ("FreeBSD", NotificationChannel.DBUS),
+    ],
+)
+def test_desktop_url(system, expected):
+    """_desktop_url returns the correct NotificationChannel for each OS."""
+    with patch("platform.system", return_value=system):
+        assert _desktop_url() == expected
+
+
+def test_notifier_defaults(mock_apprise):
+    """AnsysNotifier has the expected default title, format and notification_type."""
+    notifier = AnsysNotifier(channels=["windows://"])
+    assert notifier.title == "PyAnsys"
+    assert notifier.format is NotificationFormat.TEXT
+    assert notifier.notification_type is NotificationType.INFO
+
+
+def test_notifier_auto_detects_desktop_channel(mock_apprise):
+    """When no channels are given the OS-appropriate URL is added."""
+    with patch("platform.system", return_value="Windows"):
+        AnsysNotifier()
+    mock_apprise.add.assert_called_once_with(NotificationChannel.WINDOWS)
+
+
+def test_notifier_sends_correct_payload(mock_apprise):
+    """notify() forwards body, title, format and notification_type to apprise."""
+    notifier = AnsysNotifier(
+        channels=["windows://"],
+        title="PyMAPDL",
+        format=NotificationFormat.HTML,
+        notification_type=NotificationType.SUCCESS,
+    )
+    notifier.notify("Solve complete.")
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "Solve complete."
+    assert kwargs["title"] == "PyMAPDL"
+    assert kwargs["body_format"] == "html"
+    assert kwargs["notify_type"] == "success"
+
+
+def test_notifier_per_call_overrides(mock_apprise):
+    """Per-call title, format and notification_type override the instance defaults."""
+    notifier = AnsysNotifier(channels=["windows://"])
+    notifier.notify(
+        "msg", title="Override", format=NotificationFormat.MARKDOWN, notification_type=NotificationType.FAILURE
+    )
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["title"] == "Override"
+    assert kwargs["body_format"] == "markdown"
+    assert kwargs["notify_type"] == "failure"
+
+
+def test_notifier_returns_delivery_status(mock_apprise):
+    """notify() propagates the bool returned by apprise."""
+    notifier = AnsysNotifier(channels=["windows://"])
+    assert notifier.notify("ok") is True
+    mock_apprise.notify.return_value = False
+    assert notifier.notify("fail") is False
+
+
+def test_notifier_property_setters(mock_apprise):
+    """title, format and notification_type can be changed after construction."""
+    notifier = AnsysNotifier(channels=["windows://"])
+    notifier.title = "Updated"
+    notifier.format = NotificationFormat.MARKDOWN
+    notifier.notification_type = NotificationType.WARNING
+    notifier.notify("msg")
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["title"] == "Updated"
+    assert kwargs["body_format"] == "markdown"
+    assert kwargs["notify_type"] == "warning"
+
+
+def test_notify_convenience_function(mock_apprise):
+    """notify() sends a desktop notification with correct defaults."""
+    with patch("platform.system", return_value="Windows"):
+        result = notify("Job done.")
+    assert result is True
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "Job done."
+    assert kwargs["title"] == "PyAnsys"
+    assert kwargs["body_format"] == "text"
+    assert kwargs["notify_type"] == "info"
+
+
+def test_notify_on_completion_sends_success_notification(mock_apprise):
+    """notify_on_completion sends a success notification when the function returns."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion("Done.")
+        def job():
+            return 42
+
+        result = job()
+
+    assert result == 42
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "Done."
+    assert kwargs["notify_type"] == "info"
+
+
+def test_notify_on_completion_default_message(mock_apprise):
+    """notify_on_completion generates a message from the function name when none is given."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion()
+        def my_solver():
+            pass
+
+        my_solver()
+
+    assert mock_apprise.notify.call_args.kwargs["body"] == "my_solver completed."
+
+
+def test_notify_on_completion_sends_failure_notification(mock_apprise):
+    """notify_on_completion sends an auto-generated failure notification and re-raises."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion()
+        def bad_job():
+            raise ValueError("fail")
+
+        with pytest.raises(ValueError, match="fail"):
+            bad_job()
+
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "bad_job failed: fail"
+    assert kwargs["notify_type"] == "failure"
+
+
+def test_notify_on_completion_explicit_failure_message(mock_apprise):
+    """failure_message is used as the failure notification body instead of auto-generating one."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion("Job done.", failure_message="fail")
+        def bad_job():
+            raise RuntimeError("fail")
+
+        with pytest.raises(RuntimeError):
+            bad_job()
+
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "fail"
+    assert kwargs["notify_type"] == "failure"
+
+
+def test_notify_on_completion_message_not_used_for_failure(mock_apprise):
+    """Message only controls the success body; failure falls back to auto-generated text."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion("Success message.")
+        def bad_job():
+            raise RuntimeError("fail")
+
+        with pytest.raises(RuntimeError):
+            bad_job()
+
+    kwargs = mock_apprise.notify.call_args.kwargs
+    assert kwargs["body"] == "bad_job failed: fail"
+    assert kwargs["notify_type"] == "failure"
+
+
+def test_notify_on_completion_no_failure_notification(mock_apprise):
+    """notify_on_completion skips the failure notification when notify_on_failure=False."""
+    with patch("platform.system", return_value="Windows"):
+
+        @notify_on_completion(notify_on_failure=False)
+        def bad_job():
+            raise RuntimeError("boom")
+
+        with pytest.raises(RuntimeError):
+            bad_job()
+
+    mock_apprise.notify.assert_not_called()
+
+
+def test_notify_on_completion_custom_channels(mock_apprise):
+    """notify_on_completion passes custom channels to apprise."""
+
+    @notify_on_completion(channels=["windows://"], notification_type=NotificationType.SUCCESS)
+    def job():
+        pass
+
+    job()
+
+    mock_apprise.add.assert_called_with("windows://")
+    assert mock_apprise.notify.call_args.kwargs["notify_type"] == "success"
+
+
+def test_set_notification_channels(mock_apprise):
+    """set_notification_channels is used by notify; None resets to desktop default."""
+    set_notification_channels(["chan1", "chan2"])
+    notify("msg")
+    mock_apprise.add.assert_any_call("chan1")
+    mock_apprise.add.assert_any_call("chan2")
+
+    set_notification_channels(None)
+    with patch("platform.system", return_value="Windows"):
+        notify("msg")
+    mock_apprise.add.assert_called_with(NotificationChannel.WINDOWS)
+
+
+@pytest.mark.parametrize("level,expected", [("warning", "warning"), (NotificationType.FAILURE, "failure")])
+def test_set_notification_level(mock_apprise, level, expected):
+    """set_notification_level accepts both strings and NotificationType members."""
+    set_notification_level(level)
+    notify("msg", channels=["windows://"])
+    assert mock_apprise.notify.call_args.kwargs["notify_type"] == expected
+
+
+@pytest.fixture()
+def bad_job():
+    """Return a callable that always raises RuntimeError."""
+
+    def _job():
+        raise RuntimeError("boom")
+
+    return _job
+
+
+@pytest.mark.parametrize("kwargs,expect_called", [({}, False), ({"notify_on_failure": True}, True)])
+def test_set_notify_on_failure(mock_apprise, bad_job, kwargs, expect_called):
+    """set_notify_on_failure(False) suppresses; explicit arg takes priority."""
+    set_notify_on_failure(False)
+    with pytest.raises(RuntimeError):
+        notify_on_completion(channels=["windows://"], **kwargs)(bad_job)()
+    assert mock_apprise.notify.called is expect_called
+
+
+def test_set_failure_notification_level(mock_apprise, bad_job):
+    """set_failure_notification_level is used for failure notifications."""
+    set_failure_notification_level("warning")
+    with pytest.raises(RuntimeError):
+        notify_on_completion(channels=["windows://"])(bad_job)()
+    assert mock_apprise.notify.call_args.kwargs["notify_type"] == "warning"
+
+
+@pytest.mark.parametrize("setter", [set_notification_level, set_failure_notification_level])
+def test_set_level_invalid_raises(setter):
+    """Level setters raise ValueError for unknown strings."""
+    with pytest.raises(ValueError):
+        setter("critical")
+
+
+@pytest.mark.parametrize(
+    "setter,getter,value,expected",
+    [
+        (set_notification_channels, get_notification_channels, ["chan1"], ["chan1"]),
+        (set_notification_level, get_notification_level, "warning", NotificationType.WARNING),
+        (set_notify_on_failure, get_notify_on_failure, False, False),
+        (set_failure_notification_level, get_failure_notification_level, "warning", NotificationType.WARNING),
+    ],
+)
+def test_getters_reflect_setters(setter, getter, value, expected):
+    """Each getter returns the value previously set by its corresponding setter."""
+    setter(value)
+    assert getter() == expected

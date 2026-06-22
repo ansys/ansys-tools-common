@@ -49,6 +49,7 @@ from dataclasses import dataclass
 import logging
 import os
 from pathlib import Path
+import re
 from typing import cast
 from warnings import warn
 
@@ -79,6 +80,7 @@ def create_channel(
     uds_dir: str | Path | None = None,
     uds_id: str | None = None,
     uds_fullpath: str | Path | None = None,
+    uds_full_path: str | Path | None = None,
     certs_dir: str | Path | None = None,
     cert_files: CertificateFiles | None = None,
     grpc_options: list[tuple[str, object]] | None = None,
@@ -110,6 +112,10 @@ def create_channel(
         By default `None` and thus it will use "<uds_service>.sock".
         Otherwise, the socket filename will be "<uds_service>-<uds_id>.sock".
     uds_fullpath : str | Path | None
+        **[DEPRECATED]** Use ``uds_full_path`` instead.
+        Full path to the UDS socket file.
+        By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
+    uds_full_path : str | Path | None
         Full path to the UDS socket file.
         By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
     certs_dir : str | Path | None
@@ -132,6 +138,14 @@ def create_channel(
         The created gRPC channel
 
     """
+    if uds_fullpath is not None:
+        warn(
+            "'uds_fullpath' is deprecated and will be removed in a future version. Use 'uds_full_path' instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if uds_full_path is None:
+            uds_full_path = uds_fullpath
 
     def check_host_port(transport_mode, host, port) -> tuple[str, str, str]:
         if host is None:
@@ -145,7 +159,7 @@ def create_channel(
             transport_mode, host, port = check_host_port(transport_mode, host, port)
             return create_insecure_channel(host, port, grpc_options)
         case "uds":
-            return create_uds_channel(uds_service, uds_dir, uds_id, grpc_options, uds_fullpath)
+            return create_uds_channel(uds_service, uds_dir, uds_id, grpc_options, uds_full_path=uds_full_path)
         case "wnua":
             transport_mode, host, port = check_host_port(transport_mode, host, port)
             return create_wnua_channel(host, port, grpc_options)
@@ -195,6 +209,7 @@ def create_uds_channel(
     uds_id: str | None = None,
     grpc_options: list[tuple[str, object]] | None = None,
     uds_fullpath: str | Path | None = None,
+    uds_full_path: str | Path | None = None,
 ) -> grpc.Channel:
     """Create a gRPC channel using Unix Domain Sockets (UDS).
 
@@ -214,6 +229,10 @@ def create_uds_channel(
         Each option is a tuple of the form ("option_name", value).
         By default `None` and thus only the default authority option is added.
     uds_fullpath : str | Path | None
+        **[DEPRECATED]** Use ``uds_full_path`` instead.
+        Full path to the UDS socket file.
+        By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
+    uds_full_path : str | Path | None
         Full path to the UDS socket file.
         By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
 
@@ -223,13 +242,22 @@ def create_uds_channel(
         The created gRPC channel
 
     """
+    if uds_fullpath is not None:
+        warn(
+            "'uds_fullpath' is deprecated and will be removed in a future version. Use 'uds_full_path' instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if uds_full_path is None:
+            uds_full_path = uds_fullpath
+
     if not is_uds_supported():
         raise RuntimeError("Unix Domain Sockets are not supported on this platform or gRPC version.")
 
-    if uds_fullpath:
+    if uds_full_path:
         # Ensure the parent directory exists
-        Path(uds_fullpath).parent.mkdir(parents=True, exist_ok=True)
-        target = f"unix:{uds_fullpath}"
+        Path(uds_full_path).parent.mkdir(parents=True, exist_ok=True)
+        target = f"unix:{uds_full_path}"
     else:
         if uds_service is None:
             raise ValueError("When using UDS transport mode, 'uds_service' must be provided.")
@@ -388,18 +416,40 @@ def create_mtls_channel(
 def version_tuple(version_str: str) -> tuple[int, ...]:
     """Convert a version string into a tuple of integers for comparison.
 
+    This function handles version strings with pre-release identifiers
+    (alpha, beta, rc, etc.) by extracting only the numeric version parts.
+    For example, "1.78.0rc2" becomes (1, 78, 0).
+
     Parameters
     ----------
     version_str : str
-        The version string to convert.
+        The version string to convert. Can include pre-release identifiers
+        like "1.78.0rc2", "2.0.0a1", "1.63.0b5", etc.
 
     Returns
     -------
     tuple[int, ...]
         A tuple of integers representing the version.
 
+    Examples
+    --------
+    >>> version_tuple("1.2.3")
+    (1, 2, 3)
+    >>> version_tuple("1.78.0rc2")
+    (1, 78, 0)
+    >>> version_tuple("2.0.0a1")
+    (2, 0, 0)
+
     """
-    return tuple(int(x) for x in version_str.split("."))
+    # Extract the numeric version part before any pre-release identifier
+    # Matches: start of string, digits, optionally followed by dot and more digits
+    match = re.match(r"^(\d+(?:\.\d+)*)", version_str)
+    if match:
+        version_part = match.group(1)
+        return tuple(int(x) for x in version_part.split("."))
+
+    # If regex doesn't match, raise an error
+    raise ValueError(f"Unable to parse version string: {version_str}")
 
 
 def check_grpc_version():
@@ -495,6 +545,7 @@ def verify_uds_socket(
     uds_dir: str | Path | None = None,
     uds_id: str | None = None,
     uds_fullpath: str | Path | None = None,
+    uds_full_path: str | Path | None = None,
 ) -> bool:
     """Verify that the UDS socket file has been created.
 
@@ -510,6 +561,10 @@ def verify_uds_socket(
         By default `None` and thus it will use "<uds_service>.sock".
         Otherwise, the socket filename will be "<uds_service>-<uds_id>.sock".
     uds_fullpath : str | Path | None
+        **[DEPRECATED]** Use ``uds_full_path`` instead.
+        Full path to the UDS socket file.
+        By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
+    uds_full_path : str | Path | None
         Full path to the UDS socket file.
         By default `None` and thus it will use the `uds_service`, `uds_dir` and `uds_id` parameters.
 
@@ -518,8 +573,17 @@ def verify_uds_socket(
     bool
         True if the UDS socket file exists, False otherwise.
     """
-    if uds_fullpath:
-        return Path(uds_fullpath).exists()
+    if uds_fullpath is not None:
+        warn(
+            "'uds_fullpath' is deprecated and will be removed in a future version. Use 'uds_full_path' instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if uds_full_path is None:
+            uds_full_path = uds_fullpath
+
+    if uds_full_path:
+        return Path(uds_full_path).exists()
     else:
         if uds_service is None:
             raise ValueError("When using UDS transport mode, 'uds_service' must be provided.")

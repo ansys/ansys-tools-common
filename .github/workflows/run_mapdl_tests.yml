@@ -11,7 +11,7 @@ on:
 
 env:
   PACKAGE_NAME: ansys-tools-common
-  MAIN_PYTHON_VERSION: 3.13
+  MAIN_PYTHON_VERSION: 3.14
 
 permissions:
   contents: read # required to read files
@@ -37,19 +37,19 @@ jobs:
       ON_UBUNTU: true
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # 7.2.0
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # 8.2.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           enable-cache: false
 
       - name: Install project dependencies
         run: |
-          uv sync --group tests
+          uv sync --no-dev --group tests --frozen
 
       - name: Install test package containing entrypoint
         run: |
@@ -59,6 +59,6 @@ jobs:
         env:
           PACKAGE_NAMESPACE: ${{ env.PACKAGE_NAMESPACE }}
         run: |
-          uv run pytest \
+          uv run --no-sync pytest \
             -vx \
             --cov=${PACKAGE_NAMESPACE} --cov-report=term --cov-report=xml:.cov/coverage.xml --cov-report=html:.cov/html
