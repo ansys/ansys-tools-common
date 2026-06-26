@@ -1,0 +1,112 @@
+
+
+
+
+
+
+:class:`Report`
+===============
+
+
+.. py:class:: ansys.tools.common.report.Report(additional=None, ncol=3, text_width=80, sort=False, gpu=True, ansys_vars=None, ansys_libs=None)
+
+   Bases: :py:obj:`scooby.Report`
+
+
+   Generate a :class:`scooby.Report` instance.
+
+   Parameters
+   ----------
+   additional : list(ModuleType), list(str), default: None
+       List of packages or package names to add to output information.
+   ncol : int, default: 3
+       Number of package-columns in the HTML table. This parameter is
+       applicable only has effect if ``mode='HTML'`` or ``mode='html'``.
+   text_width : int, default: 80
+       Text width for non-HTML display modes.
+   sort : bool, default: False
+       Whether to alphabetically sort the packages.
+   gpu : bool, default: True
+       Whether to gather information about the GPU. While
+       the default is``True``, if rendering issues are
+       experienced, pass ``False`` to safely generate
+       a report.
+   ansys_vars : list of str, default: None
+       List containing the Ansys environment variables to report on.
+       For example, ``["MYVAR_1", "MYVAR_2" ...]``
+   ansys_libs : dict {str : str}, default: None
+       Dictionary containing the Ansys libraries and versions to report on.
+       For example, ``{"MyLib" : "v1.2", ...}``.
+
+
+
+
+.. py:currentmodule:: Report
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~project_info`
+            - Get information regarding the Ansys environment and installation.
+
+
+
+
+
+   .. tab-item:: Special methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~__repr__`
+            - Print out the report.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.report import Report
+
+
+
+Method detail
+-------------
+
+.. py:method:: project_info()
+
+   Get information regarding the Ansys environment and installation.
+
+   Returns
+   -------
+   str
+       Project information (environment variables and installation).
+
+
+.. py:method:: __repr__()
+
+   Print out the report.
+
+   Returns
+   -------
+   str
+       Report statement.
+
+
+
+
+
