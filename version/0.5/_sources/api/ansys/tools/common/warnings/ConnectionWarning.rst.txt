@@ -1,0 +1,35 @@
+
+
+
+
+
+
+:class:`ConnectionWarning`
+==========================
+
+
+.. py:exception:: ansys.tools.common.warnings.ConnectionWarning(message: str)
+
+   Bases: :py:obj:`AnsysWarning`
+
+
+   Warning raised when a connection issue is detected but the operation continues.
+
+   This warning is typically issued when a transient connection problem occurs
+   (for example, a retry succeeded or a fallback server was used) and the
+   operation was able to proceed despite the issue.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.warnings import ConnectionWarning
+
+
+
+
+

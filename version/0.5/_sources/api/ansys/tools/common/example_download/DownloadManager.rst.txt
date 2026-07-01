@@ -1,0 +1,136 @@
+
+
+
+
+
+
+:class:`DownloadManager`
+========================
+
+
+.. py:class:: ansys.tools.common.example_download.DownloadManager
+
+   Manages downloads of example files.
+
+   Manages the download of example from the ``example-data``
+   repository, which is at https://github.com/ansys/example-data.
+
+
+
+.. py:currentmodule:: DownloadManager
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~clear_download_cache`
+            - Remove downloaded example files from the local path.
+          * - :py:attr:`~download_file`
+            - Download an example file from the ``example-data`` repository.
+          * - :py:attr:`~download_directory`
+            - Download an example directory from the ``example-data`` repository.
+
+
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.example_download import DownloadManager
+
+
+
+Method detail
+-------------
+
+.. py:method:: clear_download_cache()
+
+   Remove downloaded example files from the local path.
+
+
+.. py:method:: download_file(filename: str, directory: str, destination: str | pathlib.Path | None = None, force: bool = False, timeout: float = 60.0, max_retries: int = 3) -> str
+
+   Download an example file from the ``example-data`` repository.
+
+   Parameters
+   ----------
+   filename : str
+       Name of the example file to download.
+   directory : str
+       Path under the ``example-data`` repository.
+   destination : str | Path | None, default: None
+       Path to download the example file to.
+       The default is ``None``, in which case the default path for app data is used.
+   force : bool, default: False
+       Whether to always download the example file. The default is
+       ``False``, in which case if the example file is cached, it
+       is reused.
+   timeout : float, default: 60.0
+       Timeout in seconds for the download operation. The default is 60 seconds.
+   max_retries : int, default: 3
+       Maximum number of retry attempts for failed downloads.
+
+   Returns
+   -------
+   str
+       Local path of the downloaded example file.
+
+
+.. py:method:: download_directory(directory: str, destination: str | pathlib.Path | None = None, force: bool = False, github_token: str | None = None, timeout: float = 60.0, max_retries: int = 3) -> str
+
+   Download an example directory from the ``example-data`` repository.
+
+   This method first tries to use Git sparse checkout for efficient downloading.
+   If Git is not available or the operation fails, it falls back to HTTP download.
+
+   .. warning::
+
+       Do not execute this function with untrusted ``directory`` argument.
+       Download directory tries to use Git sparse checkout, which involves
+       executing Git commands with the directory as argument.
+
+   Parameters
+   ----------
+   directory : str
+       Path under the ``example-data`` repository.
+   destination : str | Path | None, default: None
+       Path to download the example file to. The default
+       is ``None``, in which case the default path for app data
+       is used.
+   force : bool, default: False
+       Whether to always download the example file. The default is
+       ``False``, in which case if the example file is cached, it
+       is reused.
+   github_token : str | None, default: None
+       GitHub personal access token for API authentication (used by HTTP fallback).
+       When ``None``, falls back to ``GITHUB_TOKEN`` or ``GH_TOKEN`` environment
+       variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
+   timeout : float, default: 60.0
+       Timeout in seconds for the download operation (used by HTTP fallback). The default is 60 seconds.
+   max_retries : int, default: 3
+       Maximum number of retry attempts for failed downloads.
+
+   Returns
+   -------
+   str
+       Local path of the downloaded example file.
+
+
+
+
+
