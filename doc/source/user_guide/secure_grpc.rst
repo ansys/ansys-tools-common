@@ -42,6 +42,10 @@ it easier to connect clients to gRPC servers in different environments.
 Example usage
 -------------
 
+This example uses ``localhost`` for a local connection on the same machine.
+For remote mTLS connections, pass the server's public hostname or IP address
+instead.
+
 .. code-block:: python
 
     from cyberchannel import create_channel
@@ -96,6 +100,20 @@ Generating certificates for mTLS
 `OpenSSL <https://www.openssl.org/>`__ can be used to generate the necessary
 certificates for mTLS.
 
+.. important::
+
+   The commands in this section are intended as guidance for local development
+   and verification of mTLS communication. The ``localhost`` value shown in the
+   server certificate example only works when the client also connects to
+   ``localhost``.
+
+   For remote connections, the server certificate must be generated for the
+   exact hostname or IP address that the client passes to
+   :func:`create_channel`. In other words, the certificate identity must match
+   the runtime ``host=...`` value. If your organization manages certificates
+   through an internal PKI, work with your IT or security team to issue the
+   certificate with the correct remote server identity.
+
 .. list-table:: Server certificate files
     :header-rows: 1
     :widths: auto
@@ -141,12 +159,17 @@ Generate the server certificate
 
 .. code-block:: bash
 
+    # Use localhost only for local testing on the same machine.
+    # For remote connections, replace this value with the server hostname
+    # or IP address that clients use at runtime.
+    export SERVER_HOST=localhost
+
     # Generate server private key
     openssl genrsa -out server.key 4096
 
     # Generate a certificate signing request (CSR) for the server
     openssl req -new -key server.key -out server.csr \
-        -subj "/CN=localhost"
+        -subj "/CN=${SERVER_HOST}"
 
     # Generate server certificate signed by the CA
     openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial \

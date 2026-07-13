@@ -12,7 +12,10 @@ local development environments.
    These certificates are for **testing purposes only**. Do not use them in
    production environments. For production deployments, always use certificates
    from a trusted Certificate Authority. For guidance on how to generate certificates
-   for local development, see the :doc:`secure_grpc` documentation.
+   for local development, see the :doc:`secure_grpc` documentation. The default
+   examples on this page generate certificates for ``localhost`` and are not
+   suitable for remote connections unless you explicitly generate certificates
+   for the hostname or IP address used by the client at runtime.
 
 .. note::
    By default, generated certificates are valid for only 24 hours. This short
