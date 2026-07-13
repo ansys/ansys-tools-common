@@ -3,6 +3,7 @@ ANS
 astroid
 CRLs
 downloader
+hostname
 HSMs
 mypy
 pytest
