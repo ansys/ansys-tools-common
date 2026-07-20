@@ -41,3 +41,7 @@ updates:
       - "pyansys-ci-bot"
     commit-message:
       prefix: "ci"
+    groups:
+      actions:
+        patterns:
+          - "*"
