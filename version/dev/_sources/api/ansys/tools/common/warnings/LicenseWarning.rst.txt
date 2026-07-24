@@ -1,0 +1,35 @@
+
+
+
+
+
+
+:class:`LicenseWarning`
+=======================
+
+
+.. py:exception:: ansys.tools.common.warnings.LicenseWarning(message: str)
+
+   Bases: :py:obj:`AnsysWarning`
+
+
+   Warning raised when a requested feature requires an unavailable license.
+
+   This warning is typically issued when a feature is partially supported but
+   a required license capability is not available, causing the operation to
+   proceed in a degraded or limited mode.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.warnings import LicenseWarning
+
+
+
+
+

@@ -1,0 +1,101 @@
+
+
+
+
+
+
+The ``launch.py`` module
+========================
+
+.. py:module:: ansys.tools.common.launcher.launch
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: launch
+.. tab-set::
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~launch_product`
+            - Launch a product instance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Defines a function for launching Ansys products.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: launch_product(product_name: str, *, launch_mode: str | None = None, config: ansys.tools.common.launcher.interface.LAUNCHER_CONFIG_T | None = None) -> ansys.tools.common.launcher.product_instance.ProductInstance
+
+   Launch a product instance.
+
+   Parameters
+   ----------
+   product_name : str
+       Name of the product to launch.
+   launch_mode : str, default: None
+       Launch mode to use. The default is ``None``, in which case
+       the default launched mode is used. Options available
+       depend on the launcher plugin.
+   config : LAUNCHER_CONFIG_T, default: None
+       Configuration to use for launching the product. The default is
+       ``None``, in which case the default configuration is used.
+
+   Returns
+   -------
+   ProductInstance
+       Object that can be used to interact with the started product.
+
+   Raises
+   ------
+   TypeError
+       If the type of the configuration object does not match the type
+       requested by the launcher plugin.
+
+
+
+

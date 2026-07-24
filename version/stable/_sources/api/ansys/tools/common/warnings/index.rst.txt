@@ -1,0 +1,101 @@
+
+
+
+
+
+
+The ``warnings.py`` module
+==========================
+
+.. py:module:: ansys.tools.common.warnings
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: warnings
+.. tab-set::
+
+
+
+
+
+
+    .. tab-item:: Exceptions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.warnings.AnsysWarning`
+            - Base class for all warnings raised by the Ansys API.
+
+
+          * - :py:obj:`~ansys.tools.common.warnings.DataNotAvailableWarning`
+            - Warning raised when requested data is not yet available.
+
+
+          * - :py:obj:`~ansys.tools.common.warnings.ObjectCreationWarning`
+            - Warning raised when an object is created with unavailable data.
+
+
+          * - :py:obj:`~ansys.tools.common.warnings.ComputationNotPerformedWarning`
+            - Warning raised when data is accessed before a required computation has run.
+
+
+          * - :py:obj:`~ansys.tools.common.warnings.LicenseWarning`
+            - Warning raised when a requested feature requires an unavailable license.
+
+
+          * - :py:obj:`~ansys.tools.common.warnings.ConnectionWarning`
+            - Warning raised when a connection issue is detected but the operation continues.
+
+
+
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-md-lightning_bolt"></span> AnsysWarning</api/ansys/tools/common/warnings/AnsysWarning>
+    <span class="nf nf-md-lightning_bolt"></span> DataNotAvailableWarning</api/ansys/tools/common/warnings/DataNotAvailableWarning>
+    <span class="nf nf-md-lightning_bolt"></span> ObjectCreationWarning</api/ansys/tools/common/warnings/ObjectCreationWarning>
+    <span class="nf nf-md-lightning_bolt"></span> ComputationNotPerformedWarning</api/ansys/tools/common/warnings/ComputationNotPerformedWarning>
+    <span class="nf nf-md-lightning_bolt"></span> LicenseWarning</api/ansys/tools/common/warnings/LicenseWarning>
+    <span class="nf nf-md-lightning_bolt"></span> ConnectionWarning</api/ansys/tools/common/warnings/ConnectionWarning>
+
+
+
+
+
+
+
+Description
+-----------
+
+Warnings module.
+
+
+
+
+
+
+
+
