@@ -46,6 +46,17 @@ def test_non_existent_file():
     assert "after 3 attempts" in str(exc_info.value)
 
 
+def test_download_file_destination_not_a_directory(tmp_path):
+    """Test that a FileNotFoundError (not ValueError) is raised when destination is not a directory."""
+    destination_file = tmp_path / "not_a_dir.txt"
+    destination_file.write_text("content")
+
+    with pytest.raises(FileNotFoundError) as exc_info:
+        download_manager.download_file("some_file.csv", "some/dir", destination=str(destination_file))
+
+    assert "does not exist" in str(exc_info.value) or "not a directory" in str(exc_info.value).lower()
+
+
 def test_get_filepath():
     """Test getting the file path of a downloaded file."""
     filename = "11_blades_mode_1_ND_0.csv"
@@ -79,6 +90,32 @@ def test_download_file():
 
     download_manager.clear_download_cache()
     assert not Path.is_file(local_path)
+
+
+def test_download_file_same_name_different_directories(tmp_path):
+    """Test downloading two files with the same name from different directories.
+
+    The ``example-data`` repository contains several ``edb.def`` files under
+    different ``pyaedt/edb/*.aedb`` folders, each with different content.
+    Both must download successfully and remain independently accessible,
+    with neither overwriting the other.
+    """
+    filename = "edb.def"
+    directory_a = "pyaedt/edb/cpwg.aedb"
+    directory_b = "pyaedt/edb/edb_edge_ports.aedb"
+
+    local_path_a = download_manager.download_file(filename, directory_a, destination=str(tmp_path), force=True)
+    local_path_b = download_manager.download_file(filename, directory_b, destination=str(tmp_path), force=True)
+
+    # Both files must have been saved to different local paths.
+    assert local_path_a != local_path_b
+
+    # Both files must still be accessible on disk, with their own distinct content.
+    assert Path(local_path_a).is_file()
+    assert Path(local_path_b).is_file()
+    assert Path(local_path_a).read_bytes() != Path(local_path_b).read_bytes()
+
+    download_manager.clear_download_cache()
 
 
 def test_download_file_git_based(tmp_path):
