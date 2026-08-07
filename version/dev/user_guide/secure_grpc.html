@@ -1,0 +1,1029 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Securing gRPC connections &#8212; Ansys tools common</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=5ffe81b6" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=5ffe81b6" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../_static/documentation_options.js?v=7838c05f"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/secure_grpc';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://tools.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Certificate generation utilities" href="certificate_generation.html" />
+    <link rel="prev" title="Launcher plugin creation" href="launcher/plugin_creation.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6.dev0" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  <link rel="canonical" href="https://tools.docs.pyansys.com/version/stable/user_guide/secure_grpc.html" />
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="https://docs.pyansys.com/">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="Ansys tools common - Home"/>
+    <img src="../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="Ansys tools common - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html" title="Ansys tools common home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../contributing.html">
+    Contribute
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/ansys-tools-common" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/ansys-tools-common/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i><span class="visually-hidden">Support</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tools.docs.pyansys.com/version/dev/_static/assets/download/ansys-tools-common.pdf" title="Download documentation in PDF" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-file-pdf fa-fw fa-lg" aria-hidden="true"></i><span class="visually-hidden">Download documentation in PDF</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    
+<!--
+  Announcement Version Loader
+  Dynamically loads the announcement.html content into the announcement_msg div.
+-->
+<div id="announcement_msg" aria-live="polite"></div>
+<script>
+  // Fetch and inject the announcement HTML content
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status} Announcement.html file not found, Please ignore this, if you are in dev/stable documentation`);
+      }
+      return response.text();
+    })
+    .then((text) => {
+      var msgDiv = document.getElementById("announcement_msg");
+      if (msgDiv) {
+        msgDiv.innerHTML = text;
+      }
+    })
+    .catch((error) => {
+      // Log only unexpected fetch errors
+      if (!(error.message && error.message.startsWith("HTTP error: 404"))) {
+        console.error(`Fetch problem: ${error.message} Announcement.html could not be loaded.`);
+      }
+    });
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html" title="Ansys tools common home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing.html">
+    Contribute
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+  
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/ansys-tools-common" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/ansys-tools-common/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i><span class="visually-hidden">Support</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://tools.docs.pyansys.com/version/dev/_static/assets/download/ansys-tools-common.pdf" title="Download documentation in PDF" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-file-pdf fa-fw fa-lg" aria-hidden="true"></i><span class="visually-hidden">Download documentation in PDF</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ansys_tools_path.html">Ansys path tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ansys_downloader.html">Ansys example downloader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ansys_exceptions.html">Ansys exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning.html">Ansys versioning tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">Ansys report tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launcher/index.html">Local product launcher</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Securing gRPC connections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="certificate_generation.html">Certificate generation utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notifier.html">Ansys Notifier</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">User guide</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Securing gRPC connections</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="securing-grpc-connections">
+<h1>Securing gRPC connections<a class="headerlink" href="#securing-grpc-connections" title="Link to this heading">#</a></h1>
+<p>With the release of Ansys product service packs adding enhanced security to
+gRPC communication, the PyAnsys ecosystem enables various transport modes for
+securing gRPC connections. This page reviews the available transport modes,
+and how to use them.</p>
+<section id="supported-transport-modes">
+<h2>Supported transport modes<a class="headerlink" href="#supported-transport-modes" title="Link to this heading">#</a></h2>
+<p>PyAnsys supports the following transport modes for gRPC connections:</p>
+<ul class="simple">
+<li><p><strong>Mutual TLS (mTLS).</strong> This mode, which works both locally and over the
+network, allows secure connections using TLS encryption and client/server
+certificates. It is recommended for production use, especially when
+transmitting sensitive data.</p></li>
+<li><p><strong>Unix Domain Sockets (UDS).</strong> This mode allows connections over a local
+socket file. UDS is only supported for local inter-process communication
+(IPC) on a machine running Linux.</p></li>
+<li><p><strong>Windows Named User Authentication (WNUA).</strong> This mode allows secure local
+connections on Windows machines through user authentication. It is only
+supported in Windows.</p></li>
+<li><p><strong>Insecure.</strong> This mode allows connections without any encryption or
+authentication. It is NOT recommended for production use, but can be useful
+for testing or development purposes.</p></li>
+</ul>
+</section>
+<section id="the-cyberchannel-module">
+<h2>The <code class="docutils literal notranslate"><span class="pre">cyberchannel</span></code> module<a class="headerlink" href="#the-cyberchannel-module" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">cyberchannel</span></code> module eases the transition to secure gRPC. It is meant to
+be used by client applications to create gRPC channels with the server.</p>
+<p>This module implements all transport modes described previously. It also
+abstracts away the details of connection setup and certificate handling, making
+it easier to connect clients to gRPC servers in different environments.</p>
+<section id="example-usage">
+<h3>Example usage<a class="headerlink" href="#example-usage" title="Link to this heading">#</a></h3>
+<p>This example uses <code class="docutils literal notranslate"><span class="pre">localhost</span></code> for a local connection on the same machine.
+For remote mTLS connections, pass the server’s public hostname or IP address
+instead.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cyberchannel</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_channel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hello_pb2_grpc</span>
+
+<span class="n">channel</span> <span class="o">=</span> <span class="n">create_channel</span><span class="p">(</span>
+    <span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+    <span class="n">port</span><span class="o">=</span><span class="mi">50051</span><span class="p">,</span>  <span class="c1"># Channel details</span>
+    <span class="n">transport_mode</span><span class="o">=</span><span class="s2">&quot;mtls&quot;</span><span class="p">,</span>
+    <span class="n">certs_dir</span><span class="o">=</span><span class="s2">&quot;path/to/certs&quot;</span><span class="p">,</span>  <span class="c1"># Security details</span>
+    <span class="n">grpc_options</span><span class="o">=</span><span class="p">[</span>  <span class="c1"># Extra details</span>
+        <span class="p">(</span><span class="s2">&quot;grpc.max_receive_message_length&quot;</span><span class="p">,</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="n">stub</span> <span class="o">=</span> <span class="n">hello_pb2_grpc</span><span class="o">.</span><span class="n">GreeterStub</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="api-reference">
+<h3>API reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">create_channel(...)</span></code></p></td>
+<td><p>Main entry point for users.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">verify_transport_mode(...)</span></code></p></td>
+<td><p>Check if selected transport mode is valid. If not, it raises an error.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">verify_uds_socket(...)</span></code></p></td>
+<td><p>Check if UDS socket file exists.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="environment-variables">
+<h3>Environment variables<a class="headerlink" href="#environment-variables" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ANSYS_GRPC_CERTIFICATES</span></code></p></td>
+<td><p>Path to folder containing <code class="docutils literal notranslate"><span class="pre">ca.crt</span></code>, <code class="docutils literal notranslate"><span class="pre">client.crt</span></code>, and <code class="docutils literal notranslate"><span class="pre">client.key</span></code>
+for mTLS connections. If not set, defaults to a local <code class="docutils literal notranslate"><span class="pre">./certs</span></code>
+directory.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">./certs</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="generating-certificates-for-mtls">
+<h2>Generating certificates for mTLS<a class="headerlink" href="#generating-certificates-for-mtls" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://www.openssl.org/">OpenSSL</a> can be used to generate the necessary
+certificates for mTLS.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The commands in this section are intended as guidance for local development
+and verification of mTLS communication. The <code class="docutils literal notranslate"><span class="pre">localhost</span></code> value shown in the
+server certificate example only works when the client also connects to
+<code class="docutils literal notranslate"><span class="pre">localhost</span></code>.</p>
+<p>For remote connections, the server certificate must be generated for the
+exact hostname or IP address that the client passes to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">create_channel()</span></code>. In other words, the certificate identity must match
+the runtime <code class="docutils literal notranslate"><span class="pre">host=...</span></code> value. If your organization manages certificates
+through an internal PKI, work with your IT or security team to issue the
+certificate with the correct remote server identity.</p>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="id1">
+<caption><span class="caption-text">Server certificate files</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Required Files</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>server.crt</p></td>
+<td><p>Server identity</p></td>
+</tr>
+<tr class="row-odd"><td><p>server.key</p></td>
+<td><p>Server private key</p></td>
+</tr>
+<tr class="row-even"><td><p>ca.crt</p></td>
+<td><p>To verify client certificates</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table" id="id2">
+<caption><span class="caption-text">Client certificate files</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Required Files</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>client.crt</p></td>
+<td><p>Client identity</p></td>
+</tr>
+<tr class="row-odd"><td><p>client.key</p></td>
+<td><p>Client private key</p></td>
+</tr>
+<tr class="row-even"><td><p>ca.crt</p></td>
+<td><p>To verify server certificates</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These files can be generated using <a class="reference external" href="https://www.openssl.org/">OpenSSL</a>.</p>
+<section id="generate-a-certificate-authority">
+<h3>Generate a certificate authority<a class="headerlink" href="#generate-a-certificate-authority" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate private key for CA</span>
+openssl<span class="w"> </span>genrsa<span class="w"> </span>-out<span class="w"> </span>ca.key<span class="w"> </span><span class="m">4096</span>
+
+<span class="c1"># Generate self-signed CA certificate</span>
+openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-new<span class="w"> </span>-nodes<span class="w"> </span>-key<span class="w"> </span>ca.key<span class="w"> </span>-sha256<span class="w"> </span>-days<span class="w"> </span><span class="m">200</span><span class="w"> </span>-out<span class="w"> </span>ca.crt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=MyRootCA&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-the-server-certificate">
+<h3>Generate the server certificate<a class="headerlink" href="#generate-the-server-certificate" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use localhost only for local testing on the same machine.</span>
+<span class="c1"># For remote connections, replace this value with the server hostname</span>
+<span class="c1"># or IP address that clients use at runtime.</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SERVER_HOST</span><span class="o">=</span>localhost
+
+<span class="c1"># Generate server private key</span>
+openssl<span class="w"> </span>genrsa<span class="w"> </span>-out<span class="w"> </span>server.key<span class="w"> </span><span class="m">4096</span>
+
+<span class="c1"># Generate a certificate signing request (CSR) for the server</span>
+openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-key<span class="w"> </span>server.key<span class="w"> </span>-out<span class="w"> </span>server.csr<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=</span><span class="si">${</span><span class="nv">SERVER_HOST</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c1"># Generate server certificate signed by the CA</span>
+openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>server.csr<span class="w"> </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span>-CAcreateserial<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-out<span class="w"> </span>server.crt<span class="w"> </span>-days<span class="w"> </span><span class="m">200</span><span class="w"> </span>-sha256
+</pre></div>
+</div>
+</section>
+<section id="generate-the-client-certificate">
+<h3>Generate the client certificate<a class="headerlink" href="#generate-the-client-certificate" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate client private key</span>
+openssl<span class="w"> </span>genrsa<span class="w"> </span>-out<span class="w"> </span>client.key<span class="w"> </span><span class="m">4096</span>
+
+<span class="c1"># Generate a certificate signing request (CSR) for the client</span>
+openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-key<span class="w"> </span>client.key<span class="w"> </span>-out<span class="w"> </span>client.csr<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-subj<span class="w"> </span><span class="s2">&quot;/CN=grpc-client&quot;</span>
+
+<span class="c1"># Generate client certificate signed by the CA</span>
+openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>client.csr<span class="w"> </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span>-CAcreateserial<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-out<span class="w"> </span>client.crt<span class="w"> </span>-days<span class="w"> </span><span class="m">200</span><span class="w"> </span>-sha256
+</pre></div>
+</div>
+</section>
+<section id="verify-certificates">
+<h3>Verify certificates<a class="headerlink" href="#verify-certificates" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verify server certificate</span>
+openssl<span class="w"> </span>verify<span class="w"> </span>-CAfile<span class="w"> </span>ca.crt<span class="w"> </span>server.crt
+
+<span class="c1"># Verify client certificate</span>
+openssl<span class="w"> </span>verify<span class="w"> </span>-CAfile<span class="w"> </span>ca.crt<span class="w"> </span>client.crt
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-transport-modes">Supported transport modes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-cyberchannel-module">The <code class="docutils literal notranslate"><span class="pre">cyberchannel</span></code> module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-usage">Example usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-reference">API reference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables">Environment variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-certificates-for-mtls">Generating certificates for mTLS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-a-certificate-authority">Generate a certificate authority</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-server-certificate">Generate the server certificate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-client-certificate">Generate the client certificate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-certificates">Verify certificates</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+
+  
+  <nav class="tocsection editthispage" aria-label="Edit this page">
+    <a href="https://github.com/ansys/ansys-tools-common/edit/main/doc/source/user_guide/secure_grpc.rst" rel="noopener noreferrer">
+      <i class="fa-solid fa-pencil" aria-hidden="true"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </nav>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user_guide/secure_grpc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"ignoreLocation": true, "keys": ["title", "text", "objectID"], "limit": 10, "minMatchCharLength": 2, "threshold": 0.5}');
+const SEARCH_FILE = "../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026 Synopsys, Inc. and ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<!--
+  Theme Version Footer
+  Displays the Sphinx theme version and the last updated date.
+  Accessibility and semantic improvements included.
+-->
+<footer class="theme-version" aria-label="Theme version and last update">
+  <span>
+    
+      Built with the
+      <a href="https://sphinxdocs.ansys.com/version/stable/index.html" target="_blank" rel="noopener noreferrer">
+        Ansys Sphinx Theme
+      </a>
+      1.9.0.
+    
+  </span>
+  <br />
+  <span>Last updated on <time id="ast_build_date"></time></span>
+</footer>
+<script>
+  // Set the last updated date in a readable format
+  (function() {
+    var options = { day: "numeric", month: "long", year: "numeric" };
+    var ast_lastModifiedDate = new Date(document.lastModified);
+    var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+    var dateElem = document.getElementById("ast_build_date");
+    if (dateElem) {
+      dateElem.textContent = ast_build_date;
+    }
+  })();
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

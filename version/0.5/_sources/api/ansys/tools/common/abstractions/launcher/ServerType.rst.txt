@@ -1,0 +1,80 @@
+
+
+
+
+
+
+:class:`ServerType`
+===================
+
+
+.. py:class:: ansys.tools.common.abstractions.launcher.ServerType
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Defines which protocols the server supports.
+
+   The ``ServerType`` class is used as values in the :attr:`LauncherProtocol.SERVER_SPEC`
+   attribute to define the capabilities of the servers started with a given product and launch method.
+
+
+
+.. py:currentmodule:: ServerType
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~GENERIC`
+            - Generic server, which responds at a given URL and port.
+          * - :py:attr:`~GRPC`
+            - Server that can be accessed via gRPC.
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.abstractions.launcher import ServerType
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: GENERIC
+
+   Generic server, which responds at a given URL and port.
+
+   The generic server type can be used for any server. It does not
+   include information about which protocol should be used.
+
+
+.. py:attribute:: GRPC
+
+   Server that can be accessed via gRPC.
+
+   Servers of this type are accessible via the :attr:`.ProductInstance.channels`
+   attribute.
+
+
+
+
+
+

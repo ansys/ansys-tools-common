@@ -1,0 +1,130 @@
+
+
+
+
+
+
+:class:`VersionMeta`
+====================
+
+
+.. py:class:: ansys.tools.common.versioning.VersionMeta
+
+   Provides a metaclass for version comparison.
+
+   Implements modifications to magic methods.
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: VersionMeta
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+
+
+   .. tab-item:: Special methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~__le__`
+            - Less equal.
+          * - :py:attr:`~__lt__`
+            - Less than.
+          * - :py:attr:`~__ge__`
+            - Greater equal.
+          * - :py:attr:`~__gt__`
+            - Greater than.
+          * - :py:attr:`~__eq__`
+            - Equal method.
+          * - :py:attr:`~__ne__`
+            - Not equal.
+          * - :py:attr:`~__hash__`
+            - Call the underlying __hash__ method.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.versioning import VersionMeta
+
+
+
+Method detail
+-------------
+
+.. py:method:: __le__(__x: Union[str, int]) -> bool
+
+   Less equal.
+
+   If compared against a string that contains ``dev``, it always evaluates to ``True``.
+   If compared against an integer, it performs a classic 'less equal' operation.
+
+
+.. py:method:: __lt__(__x: Union[str, int]) -> bool
+
+   Less than.
+
+   If compared against a string which contains ``dev``, it always evaluates to ``True``.
+   If compared against an integer, it performs a classic 'less than' operation.
+
+
+.. py:method:: __ge__(__x: Union[str, int]) -> bool
+
+   Greater equal.
+
+   If compared against a string that contains ``dev``, it always evaluates to ``False``.
+   If compared against an integer, it performs a classic 'greater equal' operation.
+
+
+.. py:method:: __gt__(__x: Union[str, int]) -> bool
+
+   Greater than.
+
+   If compared against a string that contains ``dev``, it always evaluates to ``False``.
+   If compared against an integer, it performs a classic 'greater than' operation.
+
+
+.. py:method:: __eq__(__x: object) -> bool
+
+   Equal method.
+
+   If compared against a string that contains ''dev``, it always evaluates to ``False``.
+   If compared against an integer, it performs a classic 'equal' operation.
+
+
+.. py:method:: __ne__(__x: object) -> bool
+
+   Not equal.
+
+   If compared against a string that contains ``dev``, it always evaluates to not
+   'equal' operation (``True``). If compared against an integer, it performs a classic 'not equal' operation.
+
+
+.. py:method:: __hash__() -> int
+
+   Call the underlying __hash__ method.
+
+
+
+
+

@@ -1,0 +1,176 @@
+
+
+
+
+
+
+:class:`Logger`
+===============
+
+
+.. py:class:: ansys.tools.common.logger.Logger(level: int = logging.ERROR, logger_name: str = 'Logger', column_width: int = 15)
+
+   Bases: :py:obj:`object`
+
+
+   Provides the singleton logger.
+
+   Parameters
+   ----------
+   level : int, default: ``logging.ERROR``
+       Output level of the logger.
+   logger_name : str, default: ``"Logger"``
+       Name of the logger.
+   column_width : int, default: ``15``
+       Maximum width of the module and function names in the log output.
+
+
+
+
+.. py:currentmodule:: Logger
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~get_logger`
+            - Get the logger.
+          * - :py:attr:`~set_level`
+            - Set the logger output level.
+          * - :py:attr:`~enable_output`
+            - Enable logger output to a given stream.
+          * - :py:attr:`~add_file_handler`
+            - Save logs to a file in addition to printing them to the standard output.
+          * - :py:attr:`~debug`
+            - Log a message with level DEBUG.
+          * - :py:attr:`~info`
+            - Log a message with level INFO.
+          * - :py:attr:`~warning`
+            - Log a message with level WARNING.
+          * - :py:attr:`~warn`
+            - Log a message with level WARNING.
+          * - :py:attr:`~error`
+            - Log a message with level ERROR.
+          * - :py:attr:`~critical`
+            - Log a message with level CRITICAL.
+          * - :py:attr:`~fatal`
+            - Log a message with level FATAL.
+          * - :py:attr:`~log`
+            - Log a message with a specified level.
+
+
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.logger import Logger
+
+
+
+Method detail
+-------------
+
+.. py:method:: get_logger()
+
+   Get the logger.
+
+   Returns
+   -------
+   Logger
+       Logger.
+
+
+
+.. py:method:: set_level(level: int)
+
+   Set the logger output level.
+
+   Parameters
+   ----------
+   level : int
+       Output level of the logger.
+
+
+
+.. py:method:: enable_output(stream=None)
+
+   Enable logger output to a given stream.
+
+   If a stream is not specified, ``sys.stderr`` is used.
+
+   Parameters
+   ----------
+   stream: TextIO, default: ``None``
+       Stream to output the log output to.
+
+
+
+.. py:method:: add_file_handler(logs_dir: str | pathlib.Path = '.log')
+
+   Save logs to a file in addition to printing them to the standard output.
+
+   Parameters
+   ----------
+   logs_dir : str or Path, default: ``".log"``
+       Directory to save the log file to. If it does not exist, it is created.
+
+
+.. py:method:: debug(*args, **kwargs)
+
+   Log a message with level DEBUG.
+
+
+.. py:method:: info(*args, **kwargs)
+
+   Log a message with level INFO.
+
+
+.. py:method:: warning(*args, **kwargs)
+
+   Log a message with level WARNING.
+
+
+.. py:method:: warn(*args, **kwargs)
+
+   Log a message with level WARNING.
+
+
+.. py:method:: error(*args, **kwargs)
+
+   Log a message with level ERROR.
+
+
+.. py:method:: critical(*args, **kwargs)
+
+   Log a message with level CRITICAL.
+
+
+.. py:method:: fatal(*args, **kwargs)
+
+   Log a message with level FATAL.
+
+
+.. py:method:: log(level, msg, *args, **kwargs)
+
+   Log a message with a specified level.
+
+
+
+
+

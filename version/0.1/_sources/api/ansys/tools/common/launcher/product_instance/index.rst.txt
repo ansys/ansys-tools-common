@@ -1,0 +1,78 @@
+
+
+
+
+
+
+The ``product_instance.py`` module
+==================================
+
+.. py:module:: ansys.tools.common.launcher.product_instance
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: product_instance
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.product_instance.ProductInstance`
+            - Provides a wrapper for interacting with the launched product instance.
+
+
+
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> ProductInstance</api/ansys/tools/common/launcher/product_instance/ProductInstance>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Defines a wrapper for interacting with launched product instances.
+
+
+
+
+
+
+
+
