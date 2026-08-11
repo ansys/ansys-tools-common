@@ -436,6 +436,22 @@ def test_get_available_ansys_installation_linux_awp_root_student_last(mock_empty
     assert list(available.items())[-1] == (-211, str(student_path))
 
 
+@pytest.mark.linux
+def test_get_available_ansys_installation_linux_awp_root_keeps_students_last(mock_filesystem, monkeypatch):
+    """Test Linux AWP discovery appends non-student installs before student ones."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
+
+    custom_install_path = Path("/cluster/apps/ansys_inc/v271")
+    mock_filesystem.create_dir(str(custom_install_path))
+    monkeypatch.setenv("AWP_ROOT271", str(custom_install_path))
+
+    available = get_available_ansys_installations()
+
+    assert available[271] == str(custom_install_path)
+    assert list(available.keys())[-2:] == [-201, -211]
+
+
 @pytest.mark.filterwarnings("ignore", category=DeprecationWarning)
 def test_get_ansys_path(mock_filesystem_with_config):
     """Test get the ansys path."""
