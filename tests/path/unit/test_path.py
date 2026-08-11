@@ -56,7 +56,7 @@ from ansys.tools.common.path import (
     save_mechanical_path,
     version_from_path,
 )
-from ansys.tools.common.path.path import _is_float, _version_from_release_string
+from ansys.tools.common.path.path import LINUX_DEFAULT_DIRS, _is_float, _version_from_release_string
 
 LOG.setLevel(logging.DEBUG)
 
@@ -397,6 +397,25 @@ def test_get_available_ansys_installation_linux(mock_filesystem):
             ANSYS_INSTALLATION_PATHS + ANSYS_STUDENT_INSTALLATION_PATHS,
         )
     )
+
+
+@pytest.mark.linux
+def test_linux_default_dirs_include_home_ansys_inc():
+    """Test the Linux default search paths include ``~/ansys_inc``."""
+    assert str(Path.home() / "ansys_inc") in LINUX_DEFAULT_DIRS
+
+
+@pytest.mark.linux
+def test_get_available_ansys_installation_linux_awp_root(mock_empty_filesystem, monkeypatch):
+    """Test Linux installation discovery honors ``AWP_ROOTXXX`` paths."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
+
+    custom_install_path = Path("/cluster/apps/ansys_inc/v231")
+    mock_empty_filesystem.create_dir(str(custom_install_path))
+    monkeypatch.setenv("AWP_ROOT231", str(custom_install_path))
+
+    assert get_available_ansys_installations() == {231: str(custom_install_path)}
 
 
 @pytest.mark.filterwarnings("ignore", category=DeprecationWarning)

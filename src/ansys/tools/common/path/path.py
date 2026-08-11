@@ -47,7 +47,7 @@ linux_default_dirs = [
     ["/", "ansys_inc"],
     ["/", "install", "ansys_inc"],
     ["/", "opt", "ansys_inc"],
-    str(Path.home() / "ansys_inc"),
+    [*Path.home().parts, "ansys_inc"],
 ]
 LINUX_DEFAULT_DIRS = [str(Path(*each)) for each in linux_default_dirs]
 
@@ -117,10 +117,10 @@ CONFIG_FILE = SETTINGS_DIR / CONFIG_FILE_NAME
 # FileMigrationStrategy: TypeAlias = Callable[[], Dict[PRODUCT_TYPE, str]]
 
 
-def _get_installed_windows_versions(
+def _get_installed_awp_root_versions(
     supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS,
-) -> Dict[int, str]:  # pragma: no cover
-    """Get the AWP_ROOT environment variable values for supported versions.
+) -> Dict[int, str]:
+    """Get the ``AWP_ROOTXXX`` environment variable values for supported versions.
 
     Parameters
     ----------
@@ -145,8 +145,7 @@ def _get_installed_windows_versions(
         path = Path(path_str)
         if "student" in path_str.lower():
             awp_roots_student.insert(0, (-1 * ver, path_str))
-            # Check if non-student version exists by replacing "\\ANSYS Student"
-            path_non_student = Path(str(path).replace("\\ANSYS Student", ""))
+            path_non_student = path.parent.parent / path.name if path.parent.name == "ANSYS Student" else path
             if path_non_student.is_dir():
                 awp_roots.append((ver, str(path_non_student)))
         else:
@@ -310,14 +309,18 @@ def _get_available_base_unified(
     >>> {251: "/usr/ansys_inc/v251"}
     """
     base_path = None
+    installed_versions = _get_installed_awp_root_versions(supported_versions)
+
     if os.name == "nt":  # pragma: no cover
-        installed_versions = _get_installed_windows_versions(supported_versions)
         if installed_versions:
             return installed_versions
         else:  # pragma: no cover
             base_path = _get_default_windows_base_path()
     elif os.name == "posix":
         base_path = _get_default_linux_base_path()
+        ansys_paths = _expand_base_path(base_path)
+        ansys_paths.update(installed_versions)
+        return ansys_paths
     else:  # pragma: no cover
         raise OSError(f"Unsupported OS {os.name}")
     return _expand_base_path(base_path)
@@ -335,7 +338,10 @@ def get_available_ansys_installations(
 
     Notes
     -----
-    On Windows, It uses the environment variable ``AWP_ROOTXXX``.
+    On Windows, it uses the environment variable ``AWP_ROOTXXX``.
+
+    On Linux, it scans the default installation roots and merges in any
+    installation paths provided through ``AWP_ROOTXXX``.
 
     The student versions are returned at the end of the dict and
     with negative value for the version.
