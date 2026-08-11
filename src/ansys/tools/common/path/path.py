@@ -323,7 +323,8 @@ def _get_available_base_unified(
     elif os.name == "posix":
         base_path = _get_default_linux_base_path()
         ansys_paths = _expand_base_path(base_path)
-        ansys_paths.update(installed_versions)
+        ansys_paths.update({ver: path for ver, path in installed_versions.items() if ver > 0})
+        ansys_paths.update({ver: path for ver, path in installed_versions.items() if ver < 0})
         return ansys_paths
     else:  # pragma: no cover
         raise OSError(f"Unsupported OS {os.name}")
