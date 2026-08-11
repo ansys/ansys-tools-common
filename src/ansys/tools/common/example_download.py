@@ -31,6 +31,8 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 
+from ansys.tools.common.exceptions import DownloadError
+
 __all__ = ["DownloadManager"]
 
 BASE_URL = "https://github.com/ansys/example-data/raw/main"
@@ -83,6 +85,9 @@ class DownloadManager(metaclass=DownloadManagerMeta):
     ) -> str:
         """Download an example file from the ``example-data`` repository.
 
+        This method first tries to use Git sparse checkout for efficient downloading.
+        If Git is not available or the operation fails, it falls back to HTTP download.
+
         Parameters
         ----------
         filename : str
@@ -97,9 +102,17 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             ``False``, in which case if the example file is cached, it
             is reused.
         timeout : float, default: 60.0
-            Timeout in seconds for the download operation. The default is 60 seconds.
+            Timeout in seconds for each git or HTTP operation attempt (not
+            a bound on the total call duration). The default is 60 seconds.
         max_retries : int, default: 3
-            Maximum number of retry attempts for failed downloads.
+            Maximum number of retry attempts for failed downloads, applied
+            separately to the Git-based and HTTP-based strategies. Between
+            attempts, an exponential backoff delay (1, 2, 4, ... seconds) is
+            applied. Because this method can fully exhaust retries for the
+            Git-based strategy before falling back to the HTTP-based one,
+            the worst-case total duration is roughly
+            ``2 * max_retries * timeout`` plus the backoff delays for both
+            strategies.
 
         Returns
         -------
@@ -110,9 +123,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         ------
         FileNotFoundError
             If the destination path exists but is not a directory.
-        RuntimeError
+        ValueError
+            If the HTTP fallback constructs a download URL that does not use
+            the ``http`` or ``https`` scheme.
+        DownloadError
             If the file could not be downloaded after exhausting all retry
-            attempts, using both the Git-based and HTTP-based methods.
+            attempts.
         """
         # Convert to Path object
         destination_path = Path(destination).resolve() if destination is not None else None
@@ -179,9 +195,17 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             When ``None``, falls back to ``GITHUB_TOKEN`` or ``GH_TOKEN`` environment
             variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
         timeout : float, default: 60.0
-            Timeout in seconds for the download operation (used by HTTP fallback). The default is 60 seconds.
+            Timeout in seconds for each git or HTTP operation attempt (not
+            a bound on the total call duration). The default is 60 seconds.
         max_retries : int, default: 3
-            Maximum number of retry attempts for failed downloads.
+            Maximum number of retry attempts for failed downloads, applied
+            separately to the Git-based and HTTP-based strategies. Between
+            attempts, an exponential backoff delay (1, 2, 4, ... seconds) is
+            applied. Because this method can fully exhaust retries for the
+            Git-based strategy before falling back to the HTTP-based one,
+            the worst-case total duration is roughly
+            ``2 * max_retries * timeout`` plus the backoff delays for both
+            strategies.
 
         Returns
         -------
@@ -190,9 +214,15 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         Raises
         ------
-        RuntimeError
+        requests.HTTPError
+            If listing the directory contents from the GitHub API fails
+            (for example, due to an invalid directory or a rate limit).
+        ValueError
+            If the HTTP fallback constructs a download URL that does not use
+            the ``http`` or ``https`` scheme.
+        DownloadError
             If the directory could not be downloaded after exhausting all
-            retry attempts, using both the Git-based and HTTP-based methods.
+            retry attempts.
         """
         # Try using Git sparse checkout first and fallback to individual file download if it fails.
         try:
@@ -233,9 +263,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             ``False``, in which case if the example directory is cached, it
             is reused.
         timeout : float, default: 60.0
-            Timeout in seconds for each git operation.
+            Timeout in seconds for each git operation attempt (not a bound
+            on the total call duration).
         max_retries : int, default: 3
             Maximum number of retry attempts for failed git operations.
+            Between attempts, an exponential backoff delay (1, 2, 4, ...
+            seconds) is applied.
 
         Returns
         -------
@@ -247,7 +280,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         ValueError
             If ``directory`` contains characters not allowed for safe use in
             Git commands.
-        RuntimeError
+        DownloadError
             If the Git operation fails after exhausting all retry attempts.
         """
         import re
@@ -282,11 +315,13 @@ class DownloadManager(metaclass=DownloadManagerMeta):
                     wait_time = 2**attempt
                     time.sleep(wait_time)
                 else:
-                    raise RuntimeError(f"Git operation failed after {max_retries} attempts: {e}") from e
+                    raise DownloadError(
+                        f"Failed to download directory '{directory}' after {max_retries} attempts: {e}"
+                    ) from e
             finally:
                 shutil.rmtree(temp_clone, ignore_errors=True)
 
-        raise RuntimeError("Git operation failed after all retry attempts.")
+        raise DownloadError(f"Failed to download directory '{directory}' after {max_retries} attempts.")
 
     def _download_directory_http_based(
         self,
@@ -316,9 +351,13 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             When ``None``, falls back to ``GITHUB_TOKEN`` or ``GH_TOKEN`` environment
             variables. Using a token increases the rate limit from 60 req/h to 5000 req/h.
         timeout : float, default: 60.0
-            Timeout in seconds for the download operation. The default is 60 seconds.
+            Timeout in seconds for each HTTP download attempt (not a bound
+            on the total call duration).
         max_retries : int, default: 3
-            Maximum number of retry attempts for failed downloads.
+            Maximum number of retry attempts for failed downloads, passed
+            through to :meth:`download_file` for each file in the
+            directory. See :meth:`download_file` for the worst-case
+            duration this can add per file.
 
         Returns
         -------
@@ -332,7 +371,10 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             (for example, due to an invalid directory or a rate limit).
         FileNotFoundError
             If the destination path exists but is not a directory.
-        RuntimeError
+        ValueError
+            If the HTTP fallback constructs a download URL that does not use
+            the ``http`` or ``https`` scheme.
+        DownloadError
             If a file in the directory could not be downloaded after
             exhausting all retry attempts.
         """
@@ -387,9 +429,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
             ``False``, in which case if the file is cached, it
             is reused.
         timeout : float, default: 60.0
-            Timeout in seconds for each git operation.
+            Timeout in seconds for each git operation attempt (not a bound
+            on the total call duration).
         max_retries : int, default: 3
             Maximum number of retry attempts for failed git operations.
+            Between attempts, an exponential backoff delay (1, 2, 4, ...
+            seconds) is applied.
 
         Returns
         -------
@@ -401,7 +446,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         ValueError
             If ``filename`` or ``directory`` contains characters not allowed
             for safe use in Git commands.
-        RuntimeError
+        DownloadError
             If the Git operation fails after exhausting all retry attempts,
             including when the requested file cannot be found in the
             repository.
@@ -502,11 +547,13 @@ class DownloadManager(metaclass=DownloadManagerMeta):
                     wait_time = 2**attempt
                     time.sleep(wait_time)
                 else:
-                    raise RuntimeError(f"Git operation failed after {max_retries} attempts: {e}") from e
+                    raise DownloadError(
+                        f"Failed to download file '{file_path_in_repo}' after {max_retries} attempts: {e}"
+                    ) from e
             finally:
                 shutil.rmtree(temp_clone, ignore_errors=True)
 
-        raise RuntimeError("Git operation failed after all retry attempts.")
+        raise DownloadError(f"Failed to download file '{file_path_in_repo}' after {max_retries} attempts.")
 
     def _download_file_http_based(
         self,
@@ -530,9 +577,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         force : bool, default: False
             Whether to force downloading to avoid cached examples.
         timeout : float, default: 60.0
-            Timeout in seconds for the download operation. The default is 60 seconds.
+            Timeout in seconds for each HTTP request attempt (not a bound
+            on the total call duration). Passed through to
+            :meth:`_retrieve_data`.
         max_retries : int, default: 3
-            Maximum number of retry attempts for failed downloads.
+            Maximum number of retry attempts for failed downloads. See
+            :meth:`_retrieve_data` for more information.
 
         Returns
         -------
@@ -544,7 +594,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         ValueError
             If the constructed download URL does not use the ``http`` or
             ``https`` scheme.
-        RuntimeError
+        DownloadError
             If the file could not be downloaded after exhausting all retry
             attempts.
         """
@@ -679,9 +729,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         force : bool, default: False
             Whether to force downloading to avoid cached examples.
         timeout : float , default: 60.0
-            Timeout in seconds for the download operation. The default is 60 seconds.
+            Timeout in seconds for each HTTP request attempt (not a bound
+            on the total call duration).
         max_retries : int, default: 3
-            Maximum number of retry attempts for failed downloads.
+            Maximum number of retry attempts for failed downloads. Between
+            attempts, an exponential backoff delay (1, 2, 4, ... seconds) is
+            applied.
 
         Returns
         -------
@@ -692,7 +745,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         ------
         ValueError
             If ``url`` does not use the ``http`` or ``https`` scheme.
-        RuntimeError
+        DownloadError
             If the file could not be downloaded after exhausting all retry
             attempts.
         """
@@ -723,7 +776,7 @@ class DownloadManager(metaclass=DownloadManagerMeta):
                     time.sleep(wait_time)
                 else:
                     # Final attempt failed
-                    raise RuntimeError(f"Failed to download file from {url} after {max_retries} attempts: {e}") from e
+                    raise DownloadError(f"Failed to download file from {url} after {max_retries} attempts: {e}") from e
 
     def _list_files(self, folder: str, github_token: str | None = None) -> list:
         """List all files in a folder of the example-data repository.

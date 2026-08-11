@@ -29,6 +29,7 @@ import pytest
 import requests
 
 from ansys.tools.common.example_download import download_manager
+from ansys.tools.common.exceptions import DownloadError
 
 
 def test_non_existent_file():
@@ -37,8 +38,8 @@ def test_non_existent_file():
     directory = "pymapdl/cfx_mapping"
 
     # Attempt to download the non-existent file
-    # With retry logic, it now raises RuntimeError after retrying
-    with pytest.raises(RuntimeError) as exc_info:
+    # With retry logic, it now raises DownloadError after retrying
+    with pytest.raises(DownloadError) as exc_info:
         download_manager.download_file(filename, directory)
 
     # Verify the error message indicates retry attempts
@@ -224,8 +225,8 @@ def test_retrieve_data_retry_logic(tmp_path):
         # Mock all requests to fail
         mock_get.side_effect = requests.exceptions.ConnectionError("Connection failed")
 
-        # Verify it raises RuntimeError after 3 attempts
-        with pytest.raises(RuntimeError) as exc_info:
+        # Verify it raises DownloadError after 3 attempts
+        with pytest.raises(DownloadError) as exc_info:
             download_manager._retrieve_data(url, filename, tmp_path, force=True)
 
         # Verify the error message
