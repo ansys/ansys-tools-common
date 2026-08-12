@@ -64,7 +64,7 @@ def test_save_mapdl_path():
     old_config = config_path.read_text() if config_path.is_file() else None
 
     # Find the MAPDL executable path for version 222
-    path, _ = find_mapdl(version=222)
+    path, ver = find_mapdl(version=222)
 
     # Save the found MAPDL path to the config
     assert save_mapdl_path(path, allow_prompt=False)

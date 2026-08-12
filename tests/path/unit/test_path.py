@@ -55,7 +55,7 @@ from ansys.tools.common.path import (
     save_mechanical_path,
     version_from_path,
 )
-from ansys.tools.common.path.path import _is_float, _version_from_release_string
+from ansys.tools.common.path.path import LINUX_DEFAULT_DIRS, _is_float, _version_from_release_string
 
 LOG.setLevel(logging.DEBUG)
 
@@ -131,8 +131,10 @@ LATEST_MECHANICAL_INSTALL_PATH = latest(MECHANICAL_INSTALL_PATHS)
 
 
 @pytest.fixture
-def mock_filesystem(fs):
+def mock_filesystem(fs, monkeypatch):
     """Mock a filesystem with Ansys installations for testing purposes."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
     for mapdl_install_path in MAPDL_INSTALL_PATHS + MAPDL_STUDENT_INSTALL_PATHS:
         fs.create_file(mapdl_install_path)
     for mechanical_install_path in MECHANICAL_INSTALL_PATHS + MECHANICAL_STUDENT_INSTALL_PATHS:
@@ -144,8 +146,10 @@ def mock_filesystem(fs):
 
 
 @pytest.fixture
-def mock_filesystem_without_student_versions(fs):
+def mock_filesystem_without_student_versions(fs, monkeypatch):
     """Mock a filesystem without student versions of Ansys installations."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
     for mapdl_install_path in MAPDL_INSTALL_PATHS:
         fs.create_file(mapdl_install_path)
     for mechanical_install_path in MECHANICAL_INSTALL_PATHS:
@@ -181,8 +185,10 @@ def mock_filesystem_with_empty_config(mock_filesystem):
 
 
 @pytest.fixture
-def mock_filesystem_without_executable(fs):
+def mock_filesystem_without_executable(fs, monkeypatch):
     """Mock the filesystem without executable files for testing purposes."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
     fs.create_dir(ANSYS_BASE_PATH)
 
 
@@ -396,6 +402,59 @@ def test_get_available_ansys_installation_linux(mock_filesystem):
             ANSYS_INSTALLATION_PATHS + ANSYS_STUDENT_INSTALLATION_PATHS,
         )
     )
+
+
+@pytest.mark.linux
+def test_linux_default_dirs_include_home_ansys_inc():
+    """Test the Linux default search paths include ``~/ansys_inc``."""
+    assert str(Path.home() / "ansys_inc") in LINUX_DEFAULT_DIRS
+
+
+@pytest.mark.linux
+def test_get_available_ansys_installation_linux_awp_root(mock_empty_filesystem, monkeypatch):
+    """Test Linux installation discovery honors ``AWP_ROOTXXX`` paths."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
+
+    custom_install_path = Path("/cluster/apps/ansys_inc/v231")
+    mock_empty_filesystem.create_dir(str(custom_install_path))
+    monkeypatch.setenv("AWP_ROOT231", str(custom_install_path))
+
+    assert get_available_ansys_installations() == {231: str(custom_install_path)}
+
+
+@pytest.mark.linux
+def test_get_available_ansys_installation_linux_awp_root_student_last(mock_empty_filesystem, monkeypatch):
+    """Test Linux ``AWP_ROOTXXX`` discovery keeps student installs at the end."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
+
+    non_student_path = Path("/cluster/apps/ansys_inc/v211")
+    student_path = Path("/cluster/apps/ansys_inc/ANSYS Student/v211")
+    mock_empty_filesystem.create_dir(str(non_student_path))
+    mock_empty_filesystem.create_dir(str(student_path))
+    monkeypatch.setenv("AWP_ROOT211", str(student_path))
+
+    available = get_available_ansys_installations()
+
+    assert available[211] == str(non_student_path)
+    assert list(available.items())[-1] == (-211, str(student_path))
+
+
+@pytest.mark.linux
+def test_get_available_ansys_installation_linux_awp_root_keeps_students_last(mock_filesystem, monkeypatch):
+    """Test Linux AWP discovery appends non-student installs before student ones."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
+
+    custom_install_path = Path("/cluster/apps/ansys_inc/v271")
+    mock_filesystem.create_dir(str(custom_install_path))
+    monkeypatch.setenv("AWP_ROOT271", str(custom_install_path))
+
+    available = get_available_ansys_installations()
+
+    assert available[271] == str(custom_install_path)
+    assert list(available.keys())[-2:] == [-201, -211]
 
 
 @pytest.mark.filterwarnings("ignore", category=DeprecationWarning)
