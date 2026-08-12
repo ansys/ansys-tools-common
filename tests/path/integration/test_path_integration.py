@@ -65,19 +65,19 @@ def test_save_mapdl_path():
     old_config = config_path.read_text() if config_path.is_file() else None
 
     # Find the MAPDL executable path for version 222
-    path, _ = find_mapdl(version=222)
+    path, ver = find_mapdl(version=222)
 
     # Save the found MAPDL path to the config
     assert save_mapdl_path(path, allow_prompt=False)
 
     # Verify that the config file contains the correct mapdl path
     config_data = json.loads(config_path.read_text())
-    assert config_data == {"mapdl": "/ansys_inc/v222/ansys/bin/ansys222"}
+    assert config_data == {"mapdl": path}
 
     # Test saving None path does not overwrite the saved config
     assert save_mapdl_path(None, allow_prompt=False)
     config_data = json.loads(config_path.read_text())
-    assert config_data == {"mapdl": "/ansys_inc/v222/ansys/bin/ansys222"}
+    assert config_data == {"mapdl": path}
 
     # Clear all configurations after the test
     clear_configuration("all")

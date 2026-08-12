@@ -326,8 +326,13 @@ def _get_available_base_unified(
         ansys_paths = _expand_base_path(base_path)
         non_student_paths = {ver: path for ver, path in ansys_paths.items() if ver > 0}
         student_paths = {ver: path for ver, path in ansys_paths.items() if ver < 0}
-        non_student_paths.update({ver: path for ver, path in installed_versions.items() if ver > 0})
-        student_paths.update({ver: path for ver, path in installed_versions.items() if ver < 0})
+        # AWP_ROOT entries supplement the default scan but do not override versions
+        # already found by the default scan (which resolves versioned subdirectories).
+        for ver, path in installed_versions.items():
+            if ver > 0 and ver not in non_student_paths:
+                non_student_paths[ver] = path
+            elif ver < 0 and ver not in student_paths:
+                student_paths[ver] = path
         return {**non_student_paths, **student_paths}
     else:  # pragma: no cover
         raise OSError(f"Unsupported OS {os.name}")

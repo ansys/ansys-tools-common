@@ -128,6 +128,10 @@ python_version = "3.10"
 
 [tool.pytest]
 ini_options.addopts = "-ra --cov=ansys.tools.common --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term --capture=sys -vv"
+ini_options.markers = [
+  "linux: mark test as Linux-only",
+  "win32: mark test as Windows-only",
+]
 
 [tool.towncrier]
 package = "ansys.tools.common"
