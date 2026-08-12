@@ -147,12 +147,10 @@ def _get_installed_awp_root_versions(
         if "student" in path_str.lower():
             awp_roots_student.insert(0, (-1 * ver, path_str))
             if path.parent.name == "ANSYS Student":
+                # Check if non-student version exists...
                 path_non_student = path.parent.parent / path.name
-            else:
-                continue
-
-            if path_non_student.is_dir():
-                awp_roots.append((ver, str(path_non_student)))
+                if path_non_student.is_dir():
+                  awp_roots.append((ver, str(path_non_student)))
         else:
             awp_roots.append((ver, path_str))
 
