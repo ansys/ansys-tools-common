@@ -72,7 +72,7 @@ def test_save_mapdl_path():
 
     # Verify that the config file contains the correct mapdl path
     config_data = json.loads(config_path.read_text())
-    assert config_data == {"mapdl": path}
+    assert config_data == {"mapdl": "/ansys_inc/v222/ansys/bin/ansys222"}
 
     # Test saving None path does not overwrite the saved config
     assert save_mapdl_path(None, allow_prompt=False)
