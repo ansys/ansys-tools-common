@@ -132,8 +132,10 @@ LATEST_MECHANICAL_INSTALL_PATH = latest(MECHANICAL_INSTALL_PATHS)
 
 
 @pytest.fixture
-def mock_filesystem(fs):
+def mock_filesystem(fs, monkeypatch):
     """Mock a filesystem with Ansys installations for testing purposes."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
     for mapdl_install_path in MAPDL_INSTALL_PATHS + MAPDL_STUDENT_INSTALL_PATHS:
         fs.create_file(mapdl_install_path)
     for mechanical_install_path in MECHANICAL_INSTALL_PATHS + MECHANICAL_STUDENT_INSTALL_PATHS:
@@ -145,8 +147,10 @@ def mock_filesystem(fs):
 
 
 @pytest.fixture
-def mock_filesystem_without_student_versions(fs):
+def mock_filesystem_without_student_versions(fs, monkeypatch):
     """Mock a filesystem without student versions of Ansys installations."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
     for mapdl_install_path in MAPDL_INSTALL_PATHS:
         fs.create_file(mapdl_install_path)
     for mechanical_install_path in MECHANICAL_INSTALL_PATHS:
