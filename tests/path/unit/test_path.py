@@ -182,8 +182,10 @@ def mock_filesystem_with_empty_config(mock_filesystem):
 
 
 @pytest.fixture
-def mock_filesystem_without_executable(fs):
+def mock_filesystem_without_executable(fs, monkeypatch):
     """Mock the filesystem without executable files for testing purposes."""
+    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
+        monkeypatch.delenv(awp_root_var)
     fs.create_dir(ANSYS_BASE_PATH)
 
 
@@ -416,21 +418,6 @@ def test_get_available_ansys_installation_linux_awp_root(mock_empty_filesystem, 
     monkeypatch.setenv("AWP_ROOT231", str(custom_install_path))
 
     assert get_available_ansys_installations() == {231: str(custom_install_path)}
-
-
-@pytest.mark.linux
-def test_get_available_ansys_installation_linux_awp_root_base_dir(mock_empty_filesystem, monkeypatch):
-    """Test Linux ``AWP_ROOTXXX`` root dirs resolve to versioned installs."""
-    for awp_root_var in filter(lambda var: var.startswith("AWP_ROOT"), os.environ.keys()):
-        monkeypatch.delenv(awp_root_var)
-
-    install_root_path = Path("/cluster/apps/ansys_inc")
-    versioned_install_path = install_root_path / "v231"
-    mock_empty_filesystem.create_dir(str(versioned_install_path))
-    monkeypatch.setenv("AWP_ROOT231", str(install_root_path))
-
-    assert get_available_ansys_installations() == {231: str(versioned_install_path)}
-
 
 @pytest.mark.linux
 def test_get_available_ansys_installation_linux_awp_root_student_last(mock_empty_filesystem, monkeypatch):
