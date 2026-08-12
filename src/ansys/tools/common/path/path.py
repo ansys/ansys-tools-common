@@ -143,6 +143,11 @@ def _get_installed_awp_root_versions(
             continue
 
         path = Path(path_str)
+        versioned_subdir = path / f"v{ver}"
+        if versioned_subdir.is_dir():
+            path = versioned_subdir
+            path_str = str(path)
+
         if "student" in path_str.lower():
             awp_roots_student.insert(0, (-1 * ver, path_str))
             if path.parent.name == "ANSYS Student":
