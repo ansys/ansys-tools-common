@@ -150,7 +150,7 @@ def _get_installed_awp_root_versions(
                 # Check if non-student version exists...
                 path_non_student = path.parent.parent / path.name
                 if path_non_student.is_dir():
-                  awp_roots.append((ver, str(path_non_student)))
+                    awp_roots.append((ver, str(path_non_student)))
         else:
             awp_roots.append((ver, path_str))
 
