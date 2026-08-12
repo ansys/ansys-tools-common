@@ -419,6 +419,7 @@ def test_get_available_ansys_installation_linux_awp_root(mock_empty_filesystem, 
 
     assert get_available_ansys_installations() == {231: str(custom_install_path)}
 
+
 @pytest.mark.linux
 def test_get_available_ansys_installation_linux_awp_root_student_last(mock_empty_filesystem, monkeypatch):
     """Test Linux ``AWP_ROOTXXX`` discovery keeps student installs at the end."""
