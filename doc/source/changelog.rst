@@ -8,6 +8,22 @@ project.
 
 .. towncrier release notes start
 
+`0.5.2 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.5.2>`_ - August 13, 2026
+============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Fix Linux installation discovery for \`~/ansys_inc\` and \`AWP_ROOTXXX\`
+          - `#384 <https://github.com/ansys/ansys-tools-common/pull/384>`_
+
+
 `0.5.1 <https://github.com/ansys/ansys-tools-common/releases/tag/v0.5.1>`_ - June 18, 2026
 ==========================================================================================
 

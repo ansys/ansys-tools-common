@@ -80,7 +80,7 @@ tests = [
   "cryptography==50.0.0",
   "grpcio==1.83.0",
   "grpcio-health-checking==1.83.0",
-  "hypothesis==6.165.0",
+  "hypothesis==6.165.2",
   "mypy==2.3.0",
   "mypy-extensions==1.1.0",
   "pyfakefs==6.2.0",
@@ -128,6 +128,10 @@ python_version = "3.10"
 
 [tool.pytest]
 ini_options.addopts = "-ra --cov=ansys.tools.common --cov-report html:.cov/html --cov-report xml:.cov/xml --cov-report term --capture=sys -vv"
+ini_options.markers = [
+  "linux: mark test as Linux-only",
+  "win32: mark test as Windows-only",
+]
 
 [tool.towncrier]
 package = "ansys.tools.common"
