@@ -28,6 +28,7 @@ import pytest
 import requests
 
 from ansys.tools.common.example_download import download_manager
+from ansys.tools.common.exceptions import DownloadError
 
 
 def test_non_existent_file():
@@ -36,13 +37,24 @@ def test_non_existent_file():
     directory = "pymapdl/cfx_mapping"
 
     # Attempt to download the non-existent file
-    # With retry logic, it now raises RuntimeError after retrying
-    with pytest.raises(RuntimeError) as exc_info:
+    # With retry logic, it now raises DownloadError after retrying
+    with pytest.raises(DownloadError) as exc_info:
         download_manager.download_file(filename, directory)
 
     # Verify the error message indicates retry attempts
     assert "Failed to download file from" in str(exc_info.value)
     assert "after 3 attempts" in str(exc_info.value)
+
+
+def test_download_file_destination_not_a_directory(tmp_path):
+    """Test that a FileNotFoundError (not ValueError) is raised when destination is not a directory."""
+    destination_file = tmp_path / "not_a_dir.txt"
+    destination_file.write_text("content")
+
+    with pytest.raises(FileNotFoundError) as exc_info:
+        download_manager.download_file("some_file.csv", "some/dir", destination=str(destination_file))
+
+    assert "not a directory" in str(exc_info.value).lower()
 
 
 def test_get_filepath():
@@ -78,6 +90,32 @@ def test_download_file():
 
     download_manager.clear_download_cache()
     assert not Path.is_file(local_path)
+
+
+def test_download_file_same_name_different_directories(tmp_path):
+    """Test downloading two files with the same name from different directories.
+
+    The ``example-data`` repository contains several ``edb.def`` files under
+    different ``pyaedt/edb/*.aedb`` folders, each with different content.
+    Both must download successfully and remain independently accessible,
+    with neither overwriting the other.
+    """
+    filename = "edb.def"
+    directory_a = "pyaedt/edb/cpwg.aedb"
+    directory_b = "pyaedt/edb/edb_edge_ports.aedb"
+
+    local_path_a = download_manager.download_file(filename, directory_a, destination=str(tmp_path), force=True)
+    local_path_b = download_manager.download_file(filename, directory_b, destination=str(tmp_path), force=True)
+
+    # Both files must have been saved to different local paths.
+    assert local_path_a != local_path_b
+
+    # Both files must still be accessible on disk, with their own distinct content.
+    assert Path(local_path_a).is_file()
+    assert Path(local_path_b).is_file()
+    assert Path(local_path_a).read_bytes() != Path(local_path_b).read_bytes()
+
+    download_manager.clear_download_cache()
 
 
 def test_download_file_git_based(tmp_path):
@@ -186,8 +224,8 @@ def test_retrieve_data_retry_logic(tmp_path):
         # Mock all requests to fail
         mock_get.side_effect = requests.exceptions.ConnectionError("Connection failed")
 
-        # Verify it raises RuntimeError after 3 attempts
-        with pytest.raises(RuntimeError) as exc_info:
+        # Verify it raises DownloadError after 3 attempts
+        with pytest.raises(DownloadError) as exc_info:
             download_manager._retrieve_data(url, filename, tmp_path, force=True)
 
         # Verify the error message

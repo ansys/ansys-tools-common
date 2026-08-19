@@ -134,3 +134,23 @@ class VersionError(AnsysError):
 
         """
         super().__init__(msg)
+
+
+class DownloadError(AnsysError, RuntimeError):
+    """Error raised when an example file or directory download fails.
+
+    This exception also inherits from ``RuntimeError`` for backward
+    compatibility with clients that anticipate a ``RuntimeError`` from
+    download operations.
+
+    Parameters
+    ----------
+    msg : str
+        Message to raise for the exception. This includes full
+        failure context, such as the resource being downloaded, the
+        number of retry attempts made, and the underlying error.
+    """
+
+    def __init__(self, msg):
+        """Initialize the exception."""
+        super().__init__(msg)
