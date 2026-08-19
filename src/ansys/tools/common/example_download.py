@@ -85,8 +85,11 @@ class DownloadManager(metaclass=DownloadManagerMeta):
     ) -> str:
         """Download an example file from the ``example-data`` repository.
 
-        This method first tries to use Git sparse checkout for efficient downloading.
-        If Git is not available or the operation fails, it falls back to HTTP download.
+        This method first tries to use Git sparse checkout for efficient downloading,
+        retrying up to ``max_retries`` times. If Git is not available or all Git
+        attempts fail, it falls back to HTTP download, which is retried up to
+        ``max_retries`` times as well. Between attempts, an exponential backoff
+        delay (1, 2, 4, ... seconds) is applied.
 
         Parameters
         ----------
@@ -122,7 +125,8 @@ class DownloadManager(metaclass=DownloadManagerMeta):
         Raises
         ------
         FileNotFoundError
-            If the destination path exists but is not a directory.
+            If the destination path exists but is not a directory, or if it
+            does not exist and could not be created.
         ValueError
             If the HTTP fallback constructs a download URL that does not use
             the ``http`` or ``https`` scheme.
@@ -139,7 +143,12 @@ class DownloadManager(metaclass=DownloadManagerMeta):
 
         # Check if it was able to create the dir, very rare case
         if destination_path is not None and not destination_path.is_dir():
-            raise FileNotFoundError(f"Destination directory does not exist: {destination_path}")
+            if destination_path.exists():
+                raise FileNotFoundError(f"Destination path exists but is not a directory: {destination_path}")
+            else:
+                raise FileNotFoundError(
+                    f"Destination directory does not exist and could not be created: {destination_path}"
+                )
 
         if destination_path is None:
             destination_path = Path(tempfile.gettempdir()).resolve()
@@ -169,8 +178,11 @@ class DownloadManager(metaclass=DownloadManagerMeta):
     ) -> str:
         """Download an example directory from the ``example-data`` repository.
 
-        This method first tries to use Git sparse checkout for efficient downloading.
-        If Git is not available or the operation fails, it falls back to HTTP download.
+        This method first tries to use Git sparse checkout for efficient downloading,
+        retrying up to ``max_retries`` times. If Git is not available or all Git
+        attempts fail, it falls back to HTTP download, which is retried up to
+        ``max_retries`` times as well. Between attempts, an exponential backoff
+        delay (1, 2, 4, ... seconds) is applied.
 
         .. warning::
 

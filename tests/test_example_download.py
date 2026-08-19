@@ -55,7 +55,7 @@ def test_download_file_destination_not_a_directory(tmp_path):
     with pytest.raises(FileNotFoundError) as exc_info:
         download_manager.download_file("some_file.csv", "some/dir", destination=str(destination_file))
 
-    assert "does not exist" in str(exc_info.value) or "not a directory" in str(exc_info.value).lower()
+    assert "not a directory" in str(exc_info.value).lower()
 
 
 def test_get_filepath():
