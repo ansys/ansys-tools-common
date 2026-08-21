@@ -1,0 +1,75 @@
+
+
+
+
+
+
+:class:`AnsysTypeError`
+=======================
+
+
+.. py:exception:: ansys.tools.common.exceptions.AnsysTypeError(expected_type: str | type, actual_type: str | type = None)
+
+   Bases: :py:obj:`AnsysError`
+
+
+   Error raised when an argument is of the wrong type.
+
+   This exception is raised when Python-wise types would work, but internal
+   Ansys-specific typing is not right.
+
+   Parameters
+   ----------
+   expected_type : str | type
+       Expected type of the argument.
+   actual_type : str | type
+       Actual type of the argument.
+
+
+
+.. py:currentmodule:: AnsysTypeError
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~expected_type`
+            - 
+          * - :py:attr:`~actual_type`
+            - 
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.exceptions import AnsysTypeError
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: expected_type
+
+.. py:attribute:: actual_type
+
+
+
+
+

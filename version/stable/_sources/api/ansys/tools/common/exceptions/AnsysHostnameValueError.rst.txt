@@ -1,0 +1,31 @@
+
+
+
+
+
+
+:class:`AnsysHostnameValueError`
+================================
+
+
+.. py:exception:: ansys.tools.common.exceptions.AnsysHostnameValueError(msg)
+
+   Bases: :py:obj:`AnsysError`
+
+
+   Error raised when hostname value is not valid.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.exceptions import AnsysHostnameValueError
+
+
+
+
+

@@ -1,0 +1,130 @@
+
+
+
+
+
+
+The ``launcher`` package
+============================
+
+.. py:module:: ansys.tools.common.launcher
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: launcher
+.. tab-set::
+
+    .. tab-item:: Subpackages
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.helpers`
+            - Helper modules for implementing local product launcher plugins.
+
+
+
+    .. tab-item:: Submodules
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.config`
+            - Tools for managing local product launcher configuration.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.grpc_transport`
+            - Defines options for connecting to a gRPC server.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.interface`
+            - Interface definitions for implementing a local product launcher.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.launch`
+            - Defines a function for launching Ansys products.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.product_instance`
+            - Provides a wrapper for interacting with launched product instances.
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~launch_product`
+            - Launch a product instance.
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-md-package"></span> helpers</api/ansys/tools/common/launcher/helpers/index>
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-fa-file"></span> config</api/ansys/tools/common/launcher/config/index>
+    <span class="nf nf-fa-file"></span> grpc_transport</api/ansys/tools/common/launcher/grpc_transport/index>
+    <span class="nf nf-fa-file"></span> interface</api/ansys/tools/common/launcher/interface/index>
+    <span class="nf nf-fa-file"></span> launch</api/ansys/tools/common/launcher/launch/index>
+    <span class="nf nf-fa-file"></span> product_instance</api/ansys/tools/common/launcher/product_instance/index>
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Local product launcher.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+
+
+

@@ -1,0 +1,118 @@
+
+
+
+
+
+
+:class:`AbstractGRPCConnection`
+===============================
+
+
+.. py:class:: ansys.tools.common.abstractions.connection.AbstractGRPCConnection(host: str, port: str)
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Abstract class for managing gRPC connections.
+
+   Parameters
+   ----------
+   host : str
+       Host where the gRPC server is running.
+   port : str
+       Port where the gRPC server is listening.
+
+
+
+
+
+.. py:currentmodule:: AbstractGRPCConnection
+
+Overview
+--------
+
+.. tab-set::
+
+   .. tab-item:: Abstract methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~connect`
+            - Establish a connection to the gRPC server.
+          * - :py:attr:`~close`
+            - Disconnect from the gRPC server.
+
+
+
+
+   .. tab-item:: Properties
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~service`
+            - GRPC stub for making requests.
+          * - :py:attr:`~is_closed`
+            - Flag indicating if the connection is closed.
+
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.abstractions.connection import AbstractGRPCConnection
+
+Property detail
+---------------
+
+.. py:property:: service
+   :abstractmethod:
+
+
+   GRPC stub for making requests.
+
+
+.. py:property:: is_closed
+   :type: bool
+
+
+   Flag indicating if the connection is closed.
+
+   Returns
+   -------
+   bool
+       ``True`` if the connection is closed, ``False`` otherwise.
+
+
+
+
+
+Method detail
+-------------
+
+.. py:method:: connect() -> None
+   :abstractmethod:
+
+
+   Establish a connection to the gRPC server.
+
+
+.. py:method:: close() -> None
+   :abstractmethod:
+
+
+   Disconnect from the gRPC server.
+
+
+
+
+
