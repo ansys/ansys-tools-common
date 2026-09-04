@@ -1,0 +1,31 @@
+
+
+
+
+
+
+:class:`VersionError`
+=====================
+
+
+.. py:exception:: ansys.tools.common.exceptions.VersionError(msg)
+
+   Bases: :py:obj:`AnsysError`
+
+
+   An exception raised when a version is not valid.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.exceptions import VersionError
+
+
+
+
+
