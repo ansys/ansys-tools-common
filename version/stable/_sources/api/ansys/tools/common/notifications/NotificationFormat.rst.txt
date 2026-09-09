@@ -1,0 +1,89 @@
+
+
+
+
+
+
+:class:`NotificationFormat`
+===========================
+
+
+.. py:class:: ansys.tools.common.notifications.NotificationFormat
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   Body format of the notification.
+
+   Using a ``str`` enum means the values can be compared directly with the
+   string constants used by the ``apprise`` library.
+
+
+
+.. py:currentmodule:: NotificationFormat
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~TEXT`
+            - Plain text (default). Compatible with every notification channel.
+          * - :py:attr:`~HTML`
+            - HTML-formatted body. Rendered by channels that support it (e.g. email,
+          * - :py:attr:`~MARKDOWN`
+            - Markdown-formatted body. Rendered by channels that support it (e.g.
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.notifications import NotificationFormat
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: TEXT
+   :value: 'text'
+
+
+   Plain text (default). Compatible with every notification channel.
+
+
+.. py:attribute:: HTML
+   :value: 'html'
+
+
+   HTML-formatted body. Rendered by channels that support it (e.g. email,
+   Slack). Channels that don't support HTML will fall back to plain text.
+
+
+.. py:attribute:: MARKDOWN
+   :value: 'markdown'
+
+
+   Markdown-formatted body. Rendered by channels that support it (e.g.
+   Discord, Telegram, Slack). Falls back to plain text elsewhere.
+
+
+
+
+
+

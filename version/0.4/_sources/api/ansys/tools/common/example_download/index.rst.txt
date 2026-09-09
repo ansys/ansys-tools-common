@@ -1,0 +1,78 @@
+
+
+
+
+
+
+The ``example_download.py`` module
+==================================
+
+.. py:module:: ansys.tools.common.example_download
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: example_download
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.example_download.DownloadManager`
+            - Manages downloads of example files.
+
+
+
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> DownloadManager</api/ansys/tools/common/example_download/DownloadManager>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Module for downloading examples from the PyAnsys Github ``example-data`` repository.
+
+
+
+
+
+
+
+

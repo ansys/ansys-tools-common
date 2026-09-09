@@ -1,0 +1,208 @@
+
+
+
+
+
+
+:class:`CertificateGenerator`
+=============================
+
+
+.. py:class:: ansys.tools.common.utils.certificates.CertificateGenerator(key_size: int = 4096, validity_days: int = 1)
+
+   Certificate generator for creating self-signed certificates for testing.
+
+   This class encapsulates all the logic needed to generate a complete PKI
+   setup including CA, server, and client certificates.
+
+   Parameters
+   ----------
+   key_size : int, optional
+       Size of the RSA keys in bits, by default 4096
+   validity_days : int, optional
+       Number of days the certificates should be valid, by default 1 (24 hours)
+
+   Examples
+   --------
+   >>> from ansys.tools.common.utils.certificates import CertificateGenerator
+   >>> gen = CertificateGenerator(validity_days=2)
+   >>> ca_key, ca_cert = gen.create_ca_certificate()
+   >>> server_key, server_cert = gen.create_server_certificate(ca_cert, ca_key, "localhost")
+
+
+
+
+
+.. py:currentmodule:: CertificateGenerator
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~generate_private_key`
+            - Generate an RSA private key.
+          * - :py:attr:`~create_ca_certificate`
+            - Create a self-signed CA certificate.
+          * - :py:attr:`~create_server_certificate`
+            - Create a server certificate signed by the CA with optional Subject Alternative Names.
+          * - :py:attr:`~create_client_certificate`
+            - Create a client certificate signed by the CA.
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~key_size`
+            - 
+          * - :py:attr:`~validity_days`
+            - 
+
+
+   .. tab-item:: Static methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~save_private_key`
+            - Save a private key to a PEM file.
+          * - :py:attr:`~save_certificate`
+            - Save a certificate to a PEM file.
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.utils.certificates import CertificateGenerator
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: key_size
+   :value: 4096
+
+
+.. py:attribute:: validity_days
+   :value: 1
+
+
+
+
+Method detail
+-------------
+
+.. py:method:: generate_private_key() -> cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey
+
+   Generate an RSA private key.
+
+   Returns
+   -------
+   rsa.RSAPrivateKey
+       Generated RSA private key
+
+
+.. py:method:: save_private_key(key: cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey, filepath: pathlib.Path) -> None
+   :staticmethod:
+
+
+   Save a private key to a PEM file.
+
+   Parameters
+   ----------
+   key : rsa.RSAPrivateKey
+       The private key to save
+   filepath : Path
+       Path to the output file
+
+
+.. py:method:: save_certificate(cert: cryptography.x509.Certificate, filepath: pathlib.Path) -> None
+   :staticmethod:
+
+
+   Save a certificate to a PEM file.
+
+   Parameters
+   ----------
+   cert : x509.Certificate
+       The certificate to save
+   filepath : Path
+       Path to the output file
+
+
+.. py:method:: create_ca_certificate(common_name: str = 'Test CA') -> tuple[cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey, cryptography.x509.Certificate]
+
+   Create a self-signed CA certificate.
+
+   Parameters
+   ----------
+   common_name : str, optional
+       Common name for the CA certificate, by default "Test CA"
+
+   Returns
+   -------
+   tuple[rsa.RSAPrivateKey, x509.Certificate]
+       Tuple containing (ca_key, ca_cert)
+
+
+.. py:method:: create_server_certificate(ca_cert: cryptography.x509.Certificate, ca_key: cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey, server_common_name: str, san_names: Optional[list[str]] = None) -> tuple[cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey, cryptography.x509.Certificate]
+
+   Create a server certificate signed by the CA with optional Subject Alternative Names.
+
+   Parameters
+   ----------
+   ca_cert : x509.Certificate
+       The CA certificate to use as issuer
+   ca_key : rsa.RSAPrivateKey
+       The CA private key to sign the certificate
+   server_common_name : str
+       The common name for the server certificate (will be used as CN and primary SAN)
+   san_names : list[str], optional
+       Additional Subject Alternative Names to include, by default None
+
+   Returns
+   -------
+   tuple[rsa.RSAPrivateKey, x509.Certificate]
+       Tuple containing (server_key, server_cert)
+
+
+.. py:method:: create_client_certificate(ca_cert: cryptography.x509.Certificate, ca_key: cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey, client_common_name: str) -> tuple[cryptography.hazmat.primitives.asymmetric.rsa.RSAPrivateKey, cryptography.x509.Certificate]
+
+   Create a client certificate signed by the CA.
+
+   Parameters
+   ----------
+   ca_cert : x509.Certificate
+       The CA certificate to use as issuer
+   ca_key : rsa.RSAPrivateKey
+       The CA private key to sign the certificate
+   client_common_name : str
+       The common name for the client certificate
+
+   Returns
+   -------
+   tuple[rsa.RSAPrivateKey, x509.Certificate]
+       Tuple containing (client_key, client_cert)
+
+
+
+
+

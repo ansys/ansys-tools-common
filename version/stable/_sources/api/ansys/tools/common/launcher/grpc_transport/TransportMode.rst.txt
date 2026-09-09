@@ -1,0 +1,81 @@
+
+
+
+
+
+
+:class:`TransportMode`
+======================
+
+
+.. py:class:: ansys.tools.common.launcher.grpc_transport.TransportMode
+
+   Bases: :py:obj:`StrEnum`
+
+
+   Enumeration of supported gRPC transport modes.
+
+
+
+.. py:currentmodule:: TransportMode
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~UDS`
+            - 
+          * - :py:attr:`~WNUA`
+            - 
+          * - :py:attr:`~MTLS`
+            - 
+          * - :py:attr:`~INSECURE`
+            - 
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.launcher.grpc_transport import TransportMode
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: UDS
+   :value: 'uds'
+
+
+.. py:attribute:: WNUA
+   :value: 'wnua'
+
+
+.. py:attribute:: MTLS
+   :value: 'mtls'
+
+
+.. py:attribute:: INSECURE
+   :value: 'insecure'
+
+
+
+
+
+
