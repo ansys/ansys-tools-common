@@ -1,0 +1,156 @@
+
+
+
+
+
+
+The ``ansys.tools.common`` library
+==================================
+
+.. py:module:: ansys.tools.common
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: common
+.. tab-set::
+
+    .. tab-item:: Subpackages
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.abstractions`
+            - Initialization module for abstractions.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher`
+            - Local product launcher.
+
+
+          * - :py:obj:`~ansys.tools.common.path`
+            - Tools to find or cache installed Ansys products.
+
+
+          * - :py:obj:`~ansys.tools.common.utils`
+            - Utilities for ansys-tools-common.
+
+
+
+    .. tab-item:: Submodules
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.cyberchannel`
+            - Module to create gRPC channels with different transport modes.
+
+
+          * - :py:obj:`~ansys.tools.common.example_download`
+            - Module for downloading examples from the PyAnsys Github ``example-data`` repository.
+
+
+          * - :py:obj:`~ansys.tools.common.exceptions`
+            - Exceptions module.
+
+
+          * - :py:obj:`~ansys.tools.common.logger`
+            - Provides the singleton helper class for the logger.
+
+
+          * - :py:obj:`~ansys.tools.common.logger_formatter`
+            - Default logger formatter module.
+
+
+          * - :py:obj:`~ansys.tools.common.report`
+            - Ansys report tool.
+
+
+          * - :py:obj:`~ansys.tools.common.versioning`
+            - A module containing various utilities.
+
+
+
+
+
+
+
+
+    .. tab-item:: Attributes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~__version__`
+            - 
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-md-package"></span> abstractions</api/ansys/tools/common/abstractions/index>
+    <span class="nf nf-md-package"></span> launcher</api/ansys/tools/common/launcher/index>
+    <span class="nf nf-md-package"></span> path</api/ansys/tools/common/path/index>
+    <span class="nf nf-md-package"></span> utils</api/ansys/tools/common/utils/index>
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-fa-file"></span> cyberchannel</api/ansys/tools/common/cyberchannel/index>
+    <span class="nf nf-fa-file"></span> example_download</api/ansys/tools/common/example_download/index>
+    <span class="nf nf-fa-file"></span> exceptions</api/ansys/tools/common/exceptions/index>
+    <span class="nf nf-fa-file"></span> logger</api/ansys/tools/common/logger/index>
+    <span class="nf nf-fa-file"></span> logger_formatter</api/ansys/tools/common/logger_formatter/index>
+    <span class="nf nf-fa-file"></span> report</api/ansys/tools/common/report/index>
+    <span class="nf nf-fa-file"></span> versioning</api/ansys/tools/common/versioning/index>
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Main module.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:data:: __version__
+
+
+

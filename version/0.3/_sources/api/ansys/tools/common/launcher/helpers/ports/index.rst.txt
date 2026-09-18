@@ -1,0 +1,89 @@
+
+
+
+
+
+
+The ``ports.py`` module
+=======================
+
+.. py:module:: ansys.tools.common.launcher.helpers.ports
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: ports
+.. tab-set::
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~find_free_ports`
+            - Find free ports on the localhost.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Helpers for managing port assignment.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: find_free_ports(num_ports: int = 1) -> list[int]
+
+   Find free ports on the localhost.
+
+   .. note::
+
+       Because there is no way to reserve a port that would still allow
+       a server to connect to it, there is no guarantee that the ports
+       are *still* free when eventually used.
+
+   Parameters
+   ----------
+   num_ports :
+       Number of free ports to obtain.
+
+
+
+

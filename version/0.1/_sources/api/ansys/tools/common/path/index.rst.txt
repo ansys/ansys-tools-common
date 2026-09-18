@@ -1,0 +1,239 @@
+
+
+
+
+
+
+The ``path`` package
+========================
+
+.. py:module:: ansys.tools.common.path
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: path
+.. tab-set::
+
+    .. tab-item:: Subpackages
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.path.applications`
+            - Application plugin for ansys-tools-path.
+
+
+
+    .. tab-item:: Submodules
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.path.path`
+            - Module for installation path retrieval.
+
+
+          * - :py:obj:`~ansys.tools.common.path.save`
+            - Convenience CLI to save path for ansys application in configuration.
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~change_default_ansys_path`
+            - Deprecated, use `change_default_mapdl_path` instead.
+
+
+          * - :py:obj:`~change_default_dyna_path`
+            - Change your default Ansys LS-Dyna path.
+
+
+          * - :py:obj:`~change_default_mapdl_path`
+            - Change your default Ansys MAPDL path.
+
+
+          * - :py:obj:`~change_default_mechanical_path`
+            - Change your default Mechanical path.
+
+
+          * - :py:obj:`~clear_configuration`
+            - Clear the entry of the specified product in the configuration file.
+
+
+          * - :py:obj:`~find_ansys`
+            - Obsolete method, use find_mapdl.
+
+
+          * - :py:obj:`~find_dyna`
+            - Search for Ansys LS-Dyna path within the standard install location.
+
+
+          * - :py:obj:`~find_mapdl`
+            - Search for Ansys MAPDL path within the standard install location.
+
+
+          * - :py:obj:`~find_mechanical`
+            - Search for the Mechanical path in the standard installation location.
+
+
+          * - :py:obj:`~get_ansys_path`
+            - Deprecated, use `get_mapdl_path` instead.
+
+
+          * - :py:obj:`~get_available_ansys_installations`
+            - Return a dictionary of available Ansys unified installation versions with their base paths.
+
+
+          * - :py:obj:`~get_dyna_path`
+            - Acquires Ansys LS-Dyna Path from a cached file or user input.
+
+
+          * - :py:obj:`~get_latest_ansys_installation`
+            - Return a tuple with the latest ansys installation version and its path.
+
+
+          * - :py:obj:`~get_mapdl_path`
+            - Acquires Ansys MAPDL Path.
+
+
+          * - :py:obj:`~get_mechanical_path`
+            - Acquires Ansys Mechanical Path.
+
+
+          * - :py:obj:`~get_saved_application_path`
+            - Get the saved path for a specific application from the configuration file.
+
+
+          * - :py:obj:`~save_ansys_path`
+            - Deprecated, use `save_mapdl_path` instead.
+
+
+          * - :py:obj:`~save_dyna_path`
+            - Find Ansys LD-Dyna's path or query user.
+
+
+          * - :py:obj:`~save_mapdl_path`
+            - Find Ansys MAPDL's path or query user.
+
+
+          * - :py:obj:`~save_mechanical_path`
+            - Find the Mechanical path or query user.
+
+
+          * - :py:obj:`~version_from_path`
+            - Extract the product version from a path.
+
+
+
+
+    .. tab-item:: Constants
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~LOG`
+            - 
+
+
+          * - :py:obj:`~SETTINGS_DIR`
+            - 
+
+
+          * - :py:obj:`~SUPPORTED_ANSYS_VERSIONS`
+            - 
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-md-package"></span> applications</api/ansys/tools/common/path/applications/index>
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-fa-file"></span> path</api/ansys/tools/common/path/path/index>
+    <span class="nf nf-fa-file"></span> save</api/ansys/tools/common/path/save/index>
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Tools to find/cache installed Ansys products.
+
+WARNING: This is not concurrent-safe (multiple python processes might race on this data.)
+
+
+
+
+
+
+
+Module detail
+-------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
