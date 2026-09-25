@@ -1,0 +1,88 @@
+
+
+
+
+
+
+The ``dyna.py`` module
+======================
+
+.. py:module:: ansys.tools.common.path.applications.dyna
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: dyna
+.. tab-set::
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~is_valid_executable_path`
+            - Check if the executable path is valid for Ansys Dyna.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+dyna-specific logic for ansys-tools-path.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: is_valid_executable_path(exe_loc: str) -> bool
+
+   Check if the executable path is valid for Ansys Dyna.
+
+   Parameters
+   ----------
+   exe_loc : str
+       The path to the executable file.
+
+   Returns
+   -------
+   bool
+       ``True`` if the path is valid for Ansys Dyna, ``False`` otherwise.
+
+
+
+

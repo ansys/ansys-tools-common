@@ -1,0 +1,83 @@
+
+
+
+
+
+
+:class:`MTLSOptions`
+====================
+
+
+.. py:class:: ansys.tools.common.launcher.grpc_transport.MTLSOptions
+
+   Bases: :py:obj:`TransportOptionsBase`
+
+
+   Options for mTLS transport mode.
+
+
+
+.. py:currentmodule:: MTLSOptions
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~certs_dir`
+            - 
+          * - :py:attr:`~host`
+            - 
+          * - :py:attr:`~port`
+            - 
+          * - :py:attr:`~allow_remote_host`
+            - 
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.launcher.grpc_transport import MTLSOptions
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: certs_dir
+   :type:  str | pathlib.Path | None
+   :value: None
+
+
+.. py:attribute:: host
+   :type:  str
+   :value: 'localhost'
+
+
+.. py:attribute:: port
+   :type:  int
+
+.. py:attribute:: allow_remote_host
+   :type:  bool
+   :value: False
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+
+
+
+
+
+
+:class:`AnsysError`
+===================
+
+
+.. py:exception:: ansys.tools.common.exceptions.AnsysError(message: str)
+
+   Bases: :py:obj:`Exception`
+
+
+   Base class for all exceptions raised by the Ansys API.
+
+   You can use this base class to catch all Ansys-related exceptions.
+
+
+
+.. py:currentmodule:: AnsysError
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~message`
+            - 
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.exceptions import AnsysError
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: message
+
+
+
+
+

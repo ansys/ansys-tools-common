@@ -1,0 +1,210 @@
+
+
+
+
+
+
+:class:`LauncherProtocol`
+=========================
+
+
+.. py:class:: ansys.tools.common.launcher.interface.LauncherProtocol(*, config: LAUNCHER_CONFIG_T)
+
+   Bases: :py:obj:`Protocol`\ [\ :py:obj:`LAUNCHER_CONFIG_T`\ ]
+
+
+   Provides the interface for managing a local product instance.
+
+   A plugin to the local product launcher must implement the interface
+   defined in this class.
+
+   To check for compatibility, you should derive from this
+   class. For example ``MyLauncher(LauncherProtocol[MyConfigModel])``.
+   Check the resulting code with `Mypy <https://mypy.readthedocs.io>`_.
+
+   The ``__init__`` method should accept exactly one keyword-only
+   parameter: ``config``. Note that this is `not enforced by Mypy
+   <https://bugs.python.org/issue44807>`_.
+
+   Parameters
+   ----------
+   config :
+       Configuration options used to start the product. This parameter
+       must be an instance of ``CONFIG_MODEL``.
+
+
+
+.. py:currentmodule:: LauncherProtocol
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~start`
+            - Start the product instance.
+          * - :py:attr:`~stop`
+            - Stop the product instance.
+          * - :py:attr:`~check`
+            - Check if the product instance is responding to requests.
+
+
+   .. tab-item:: Properties
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~urls`
+            - Dictionary of URLs that the server is listening on.
+          * - :py:attr:`~transport_options`
+            - Dictionary of transport options for the gRPC servers started.
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~CONFIG_MODEL`
+            - Defines the configuration options for the launcher.
+          * - :py:attr:`~SERVER_SPEC`
+            - Defines the server types that are started.
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.launcher.interface import LauncherProtocol
+
+Property detail
+---------------
+
+.. py:property:: urls
+   :type: dict[str, str]
+
+
+   Dictionary of URLs that the server is listening on.
+
+   The keys of the returned dictionary must correspond to the keys
+   defined in the :attr:`.LauncherProtocol.SERVER_SPEC` attribute.
+
+   Example
+   -------
+   >>> launcher.urls
+   {"MAIN": "http://127.0.0.1:8080", "FILE_TRANSFER": "grpc://127.0.0.1:50051"}
+
+
+.. py:property:: transport_options
+   :type: dict[str, ansys.tools.common.launcher.grpc_transport.TransportOptionsType]
+
+
+   Dictionary of transport options for the gRPC servers started.
+
+   The keys of the returned dictionary must correspond to the keys
+   defined in the :attr:`.LauncherProtocol.SERVER_SPEC` attribute
+   which have the value :attr:`ServerType.GRPC`.
+
+
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: CONFIG_MODEL
+   :type:  type[LAUNCHER_CONFIG_T]
+
+   Defines the configuration options for the launcher.
+
+   The configuration options that this launcher accepts, specified
+   as a :py:func:`dataclass <dataclasses.dataclass>`. Note that the
+   ``default`` and ``metadata[METADATA_KEY_DOC]`` of the fields are
+   used in the configuration CLI, if available.
+
+
+.. py:attribute:: SERVER_SPEC
+   :type:  ClassVar[collections.abc.Mapping[str, ServerType]]
+
+   Defines the server types that are started.
+
+   Examples
+   --------
+   This code defines a server that is accessible via a URL at the
+   ``"MAIN"`` key and a server accessible via gRPC at the
+   ``"FILE_TRANSFER"`` key.
+
+   .. code:: python
+
+       SERVER_SPEC = MappingProxyType(
+           {
+               "MAIN": ServerType.GENERIC,
+               "FILE_TRANSFER": ServerType.GRPC,
+           }
+       )
+
+   The :attr:`.ProductInstance.urls` attribute then has keys
+   ``{"MAIN", "FILE_TRANSFER"}``, whereas the
+   :attr:`.ProductInstance.channels` attribute has only the
+   key ``"FILE_TRANSFER"``.
+
+
+
+
+Method detail
+-------------
+
+.. py:method:: start() -> None
+
+   Start the product instance.
+
+
+.. py:method:: stop(*, timeout: float | None = None) -> None
+
+   Stop the product instance.
+
+   Parameters
+   ----------
+   timeout : float
+       Time after which the instance can be forcefully stopped.
+       The timeout should be interpreted as a hint to the implementation.
+       It is *not required* to trigger a force-shutdown, but the stop
+       *must* return within a finite time.
+
+
+.. py:method:: check(*, timeout: float | None = None) -> bool
+
+   Check if the product instance is responding to requests.
+
+   Parameters
+   ----------
+   timeout : float
+       Timeout in seconds for the check.
+       The timeout should be interpreted as a hint to the implementation.
+       It is *not required* to return within the given time, but the
+       check *must* return within a finite time, meaning it must not
+       hang indefinitely.
+
+   Returns
+   -------
+   bool
+       ``True`` if the product instance is responding, ``False`` otherwise.
+
+
+
+
+
