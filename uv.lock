@@ -349,7 +349,7 @@ dev = [
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "sphinx-click", specifier = "==6.2.0" },
     { name = "sphinx-copybutton", specifier = "==0.5.2" },
-    { name = "sphinx-gallery", specifier = "==0.22.0" },
+    { name = "sphinx-gallery", specifier = "==0.22.1" },
 ]
 doc = [
     { name = "ansys-sphinx-theme", extras = ["autoapi"], specifier = "==1.9.0" },
@@ -359,7 +359,7 @@ doc = [
     { name = "matplotlib", specifier = "==3.10.9" },
     { name = "sphinx-click", specifier = "==6.2.0" },
     { name = "sphinx-copybutton", specifier = "==0.5.2" },
-    { name = "sphinx-gallery", specifier = "==0.22.0" },
+    { name = "sphinx-gallery", specifier = "==0.22.1" },
 ]
 tests = [
     { name = "apprise", specifier = ">=1.9.7" },
@@ -404,16 +404,16 @@ wheels = [
 
 [[package]]
 name = "ansys-tools-visualization-interface"
-version = "0.14.0"
+version = "0.14.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyvista", extra = ["jupyter"] },
     { name = "trame-router" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/27/6c/b9d9bb75ff7b8f822cf920a23c952e1f3d7f083a7c522a240a75d752cf81/ansys_tools_visualization_interface-0.14.0.tar.gz", hash = "sha256:b419f6c4aa04c583f606d6950729841a09cb338ff62c4012335b729000dd3b41", size = 379094, upload-time = "2026-07-22T09:21:13.923Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/c7/8b3b485b17267990e2e9b0c490fdf910a1def16b7320dcc22c5cf0bcb6fe/ansys_tools_visualization_interface-0.14.1.tar.gz", hash = "sha256:106a152d0a5bc50de810a80c1ba6365b680e806d1905f7368e2da0d8edf776ae", size = 379068, upload-time = "2026-09-25T15:27:35.264Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/3a/c1856dfd50c3ab4a55c5b5fdd0e68b2596da00ec911e9c824e5ed4ee6a2c/ansys_tools_visualization_interface-0.14.0-py3-none-any.whl", hash = "sha256:a7634ec951e03107486c1e38ad0bfd67a0ea41a0fa592efd9db54c4db9738f79", size = 464810, upload-time = "2026-07-22T09:21:11.81Z" },
+    { url = "https://files.pythonhosted.org/packages/35/17/ddf798d0d9ff4e6e2aec625b490b7ef805fde341e86098426fceb7a9f9af/ansys_tools_visualization_interface-0.14.1-py3-none-any.whl", hash = "sha256:7c768781ac86b338822c62cc69c78ae083c3234466c53c6fb2a7ddde7ce0f885", size = 464825, upload-time = "2026-09-25T15:27:33.344Z" },
 ]
 
 [[package]]
@@ -3361,11 +3361,11 @@ wheels = [
 
 [[package]]
 name = "platformdirs"
-version = "4.11.10"
+version = "4.11.11"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/89/24/92d90bebedf197eb15b144367ce6fd4ad2de571927cd09dde190a36db8fc/platformdirs-4.11.10.tar.gz", hash = "sha256:9cd351c078ccf7dda1fdc5f8ccb9d8f5258984c63990e6df3627dde0b70b51d0", size = 39389, upload-time = "2026-09-18T01:45:15.107Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f8/13/f870dd0b42690138e4e37a76b5138e5690ed4365a77071bb092d59037da0/platformdirs-4.11.11.tar.gz", hash = "sha256:b0befe8a90759e4a9a8b9820d434ae226a6549063210b596da0038a7a05aede4", size = 39949, upload-time = "2026-09-19T01:18:47.259Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/67/45/cae23ec98a49825d58de75c38cdb714605adeb6e6ab72a7ad2b28322892c/platformdirs-4.11.10-py3-none-any.whl", hash = "sha256:973c4c082b964958c71588448488d2b14fb253893dfbdb82325a14c84e540e8f", size = 24763, upload-time = "2026-09-18T01:45:13.878Z" },
+    { url = "https://files.pythonhosted.org/packages/39/be/3ae887e84c38c4dd1c549cd5825adc93f48069a94fe1cb8ac52a9da16f15/platformdirs-4.11.11-py3-none-any.whl", hash = "sha256:972ea6b2b387155a536226a0750e46923d731d459a387c4a255c583ed2f64547", size = 24992, upload-time = "2026-09-19T01:18:45.825Z" },
 ]
 
 [[package]]
@@ -4578,7 +4578,7 @@ wheels = [
 
 [[package]]
 name = "sphinx-gallery"
-version = "0.22.0"
+version = "0.22.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pillow" },
@@ -4586,9 +4586,9 @@ dependencies = [
     { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
     { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/03/9a/bbc84c497f90b599747ebbcb28e5943fb3d542b112597985000fae730112/sphinx_gallery-0.22.0.tar.gz", hash = "sha256:03392d30e3a561b493e728c776799238b484c1648b2ed1a04182831ae8d7d7ce", size = 505484, upload-time = "2026-09-16T17:18:34.587Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/73/64/5f1e9b7780d387c6804d0f9d6f2f2dd89ac70e3bee73f61ffbfcc38defde/sphinx_gallery-0.22.1.tar.gz", hash = "sha256:15560a4c2dc0b4a4924c64e3bcb8c6dba7ddad6dcb77c50e255615e645eb18aa", size = 509262, upload-time = "2026-09-18T19:38:54.518Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cc/af/fded01d0cd0f050eb8d5ac68859a6f02daf782a57c3d98b84dde59bbfdf6/sphinx_gallery-0.22.0-py3-none-any.whl", hash = "sha256:2adea49f00b5a5a65f4a0141bb6a5bd0b9c2f0e76ca1483477424e2295584ad4", size = 484540, upload-time = "2026-09-16T17:18:32.863Z" },
+    { url = "https://files.pythonhosted.org/packages/64/fb/bbaef2395227fd4053184383a32fc43d6d42aa7c49097d9518103ffb6615/sphinx_gallery-0.22.1-py3-none-any.whl", hash = "sha256:5a5ef17bd1d1d127845b09f2cf33a4d4295033a0ef00e1f2623fabcc9365aff3", size = 487224, upload-time = "2026-09-18T19:38:52.964Z" },
 ]
 
 [[package]]
