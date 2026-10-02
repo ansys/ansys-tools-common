@@ -1,0 +1,31 @@
+
+
+
+
+
+
+:class:`ProductInstanceError`
+=============================
+
+
+.. py:exception:: ansys.tools.common.exceptions.ProductInstanceError(message: str)
+
+   Bases: :py:obj:`AnsysError`
+
+
+   Custom exception for ProductInstance lifecycle errors.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.exceptions import ProductInstanceError
+
+
+
+
+

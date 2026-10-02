@@ -1,0 +1,78 @@
+
+
+
+
+
+
+The ``connection.py`` module
+============================
+
+.. py:module:: ansys.tools.common.abstractions.connection
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: connection
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.abstractions.connection.AbstractGRPCConnection`
+            - Abstract class for managing gRPC connections.
+
+
+
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> AbstractGRPCConnection</api/ansys/tools/common/abstractions/connection/AbstractGRPCConnection>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Module for abstract connection class.
+
+
+
+
+
+
+
+

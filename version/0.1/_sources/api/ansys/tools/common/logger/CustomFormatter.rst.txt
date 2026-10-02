@@ -1,0 +1,89 @@
+
+
+
+
+
+
+:class:`CustomFormatter`
+========================
+
+
+.. py:class:: ansys.tools.common.logger.CustomFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
+
+   Bases: :py:obj:`logging.Formatter`
+
+
+   Custom formatter to truncate long columns.
+
+
+
+.. py:currentmodule:: CustomFormatter
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~set_column_width`
+            - Set the maximum column width for module and function names.
+          * - :py:attr:`~format`
+            - Format the log record, truncating the module and function names if necessary.
+
+
+   .. tab-item:: Properties
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~max_column_width`
+            - Get the maximum column length.
+
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.logger import CustomFormatter
+
+Property detail
+---------------
+
+.. py:property:: max_column_width
+
+   Get the maximum column length.
+
+
+
+
+
+Method detail
+-------------
+
+.. py:method:: set_column_width(width: int)
+
+   Set the maximum column width for module and function names.
+
+
+.. py:method:: format(record)
+
+   Format the log record, truncating the module and function names if necessary.
+
+
+
+
+

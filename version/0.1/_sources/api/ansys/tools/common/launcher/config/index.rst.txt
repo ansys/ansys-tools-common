@@ -1,0 +1,188 @@
+
+
+
+
+
+
+The ``config.py`` module
+========================
+
+.. py:module:: ansys.tools.common.launcher.config
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: config
+.. tab-set::
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~get_launch_mode_for`
+            - Get the default launch mode configured for a product.
+
+
+          * - :py:obj:`~get_config_for`
+            - Get the configuration object for a (product, launch_mode) combination.
+
+
+          * - :py:obj:`~is_configured`
+            - Check if a configuration exists for the product/launch mode.
+
+
+          * - :py:obj:`~set_config_for`
+            - Set the configuration for a given product and launch mode.
+
+
+          * - :py:obj:`~save_config`
+            - Save the configuration to a file on disk.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Tools for managing Local Product Launcher configuration.
+
+The methods in the ``config`` class manage the default configuration
+for launching products. The configuration is loaded from and stored to a
+``config.json`` file. By default, this file is located in the user configuration
+directory (platform-dependent). Its location can be specified explicitly
+with the ``ANSYS_LAUNCHER_CONFIG_PATH`` environment variable.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: get_launch_mode_for(*, product_name: str, launch_mode: str | None = None) -> str
+
+   Get the default launch mode configured for a product.
+
+   Parameters
+   ----------
+   product_name :
+       Product to retrieve the launch mode for.
+   launch_mode :
+       Launch mode to use. The default is ``None``, in which case the default
+       launch mode is used. If a launch mode is specified, this value is returned.
+
+   Returns
+   -------
+   str or None
+       Launch mode for the product.
+
+
+.. py:function:: get_config_for(*, product_name: str, launch_mode: str | None) -> ansys.tools.common.launcher.interface.DataclassProtocol
+
+   Get the configuration object for a (product, launch_mode) combination.
+
+   Get the default configuration object for the product. If a
+   ``launch_mode`` parameter is given, the configuration for this mode is returned.
+   Otherwise, the configuration for the default launch mode is returned.
+
+   Parameters
+   ----------
+   product_name :
+       Product to get the configuration for.
+   launch_mode :
+       Launch mode for the configuration.
+
+   Returns
+   -------
+   :
+       Configuration object.
+
+   Raises
+   ------
+   KeyError
+       If the requested configuration does not exist.
+   TypeError
+       If the configuration type does not match the type specified by
+       the launcher plugin.
+
+
+.. py:function:: is_configured(*, product_name: str, launch_mode: str | None = None) -> bool
+
+   Check if a configuration exists for the product/launch mode.
+
+   Note that if only the fallback launcher/configuration is available, this
+   method returns ``False``.
+
+   Parameters
+   ----------
+   product_name :
+       Product whose configuration is checked.
+   launch_mode :
+       Launch mode whose configuration is checked. The default is ``None``,
+       in which case the default launch mode is used.
+
+
+.. py:function:: set_config_for(*, product_name: str, launch_mode: str, config: ansys.tools.common.launcher.interface.LAUNCHER_CONFIG_T, overwrite_default: bool = False) -> None
+
+   Set the configuration for a given product and launch mode.
+
+   Update the configuration by setting the configuration for the
+   given product and launch mode.
+
+   This method only updates the in-memory configuration, and
+   it does not store it to a file.
+
+   Parameters
+   ----------
+   product_name :
+       Name of the product whose configuration to update.
+   launch_mode :
+       Launch mode that the configuration applies to.
+   config :
+       Configuration object.
+   overwrite_default :
+       Whether to change the default launch mode for the product
+       to the value specified for the ``launch_mode`` parameter.
+
+
+.. py:function:: save_config() -> None
+
+   Save the configuration to a file on disk.
+
+   This method saves the current in-memory configuration to the ``config.json`` file.
+
+
+
+

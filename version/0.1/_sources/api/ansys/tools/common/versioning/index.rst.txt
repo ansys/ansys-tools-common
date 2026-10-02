@@ -1,0 +1,325 @@
+
+
+
+
+
+
+The ``versioning.py`` module
+============================
+
+.. py:module:: ansys.tools.common.versioning
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: versioning
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.versioning.VersionMeta`
+            - Metaclass for version comparison.
+
+
+          * - :py:obj:`~ansys.tools.common.versioning.SemanticVersion`
+            - Class for semantic versioning.
+
+
+          * - :py:obj:`~ansys.tools.common.versioning.Mystr`
+            - Custom class to hold strings for versioning.
+
+
+          * - :py:obj:`~ansys.tools.common.versioning.Myint`
+            - Custom class to hold integers for versioning.
+
+
+          * - :py:obj:`~ansys.tools.common.versioning.VersionNumber`
+            - Class for version comparison.
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~sanitize_version_string`
+            - Sanitize a version string number by adding additional zeros.
+
+
+          * - :py:obj:`~sanitize_version_tuple`
+            - Sanitize a version number by adding additional zeros.
+
+
+          * - :py:obj:`~version_string_as_tuple`
+            - Convert a semantic version string into a tuple.
+
+
+          * - :py:obj:`~version_tuple_as_string`
+            - Convert a semantic version tuple into a string.
+
+
+          * - :py:obj:`~server_meets_version`
+            - Check if server meets the required version.
+
+
+          * - :py:obj:`~requires_version`
+            - Ensure the method called matches a certain version.
+
+
+          * - :py:obj:`~valid_version_string`
+            - Check if version string is valid.
+
+
+          * - :py:obj:`~valid_semantic_version`
+            - Check if a semantic version is valid.
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> VersionMeta</api/ansys/tools/common/versioning/VersionMeta>
+    <span class="nf nf-cod-symbol_class"></span> SemanticVersion</api/ansys/tools/common/versioning/SemanticVersion>
+    <span class="nf nf-cod-symbol_class"></span> Mystr</api/ansys/tools/common/versioning/Mystr>
+    <span class="nf nf-cod-symbol_class"></span> Myint</api/ansys/tools/common/versioning/Myint>
+    <span class="nf nf-cod-symbol_class"></span> VersionNumber</api/ansys/tools/common/versioning/VersionNumber>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+A module containing various utilities.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: sanitize_version_string(version_string)
+
+   Sanitize a version string number by adding additional zeros.
+
+   Parameters
+   ----------
+   version_string : str
+       A string representing a semantic version.
+
+   Returns
+   -------
+   str
+       A string representing a semantic version.
+
+   Examples
+   --------
+   >>> sanitize_version_string("0")
+   '0.0.0'
+   >>> sanitize_version_string("1.2")
+   '1.2.0'
+   >>> sanitize_version_string("0.3.4")
+   '0.3.4'
+
+
+
+.. py:function:: sanitize_version_tuple(version_tuple)
+
+   Sanitize a version number by adding additional zeros.
+
+   Parameters
+   ----------
+   version_tuple : tuple
+       A tuple representing a semantic version.
+
+   Returns
+   -------
+   tuple
+       A tuple representing a semantic version.
+
+   Examples
+   --------
+   >>> sanitize_version_tuple((0,))
+   (0, 0, 0)
+   >>> sanitize_version_tuple((1, 2))
+   (1, 2, 0)
+   >>> sanitize_version_tuple((0, 3, 4))
+   (0, 3, 4)
+
+
+
+.. py:function:: version_string_as_tuple(version_string)
+
+   Convert a semantic version string into a tuple.
+
+   Parameters
+   ----------
+   version_string : str
+       A string representing a semantic version.
+
+   Returns
+   -------
+   version_tuple : tuple
+       A tuple representing a semantic version.
+
+   Examples
+   --------
+   >>> version_string_as_tuple("0.3.4")
+   (0, 3, 4)
+   >>> version_string_as_tuple("1.2")
+   (1, 2, 0)
+
+
+
+
+.. py:function:: version_tuple_as_string(version_tuple)
+
+   Convert a semantic version tuple into a string.
+
+   Parameters
+   ----------
+   version_tuple : tuple
+       A tuple representing a semantic version.
+
+   Returns
+   -------
+   str
+       A string representing a semantic version.
+
+   Examples
+   --------
+   >>> version_tuple_as_string((0, 3, 4))
+   '0.3.4'
+   >>> version_tuple_as_string((1, 2))
+   '1.2.0'
+
+
+
+.. py:function:: server_meets_version(server_version, required_version)
+
+   Check if server meets the required version.
+
+   Parameters
+   ----------
+   server_version : str, tuple, obj
+       A string or tuple representing the server version.
+       If it is an object different from the previous ones, it must have a '_server_version' attribute.
+
+   required_version : str, tuple
+       A string or tuple representing the version to be meet.
+
+   Returns
+   -------
+   bool
+       ``True`` if server version meets required version, ``False`` if not.
+
+   Raises
+   ------
+   ValueError
+       If the 'server_version' object does not have '_server_version' attribute.
+
+   Examples
+   --------
+   >>> server_version, required_version = "1.2.0", "1.3.0"
+   >>> server_meets_version(server_version, required_version)
+   False
+   >>> server_version, required_version = (1, 2, 0), (1, 3, 0)
+   >>> server_meets_version(server_version, required_version)
+   False
+   >>> server_version, required_version = "2.3.0", "1.3.0"
+   >>> server_meets_version(server_version, required_version)
+   True
+   >>> server_version, required_version = (2, 3, 0), (1, 3, 0)
+   >>> server_meets_version(server_version, required_version)
+   True
+   >>> server_version, required_version = (0, 0, 0), (0, 0, 0)
+   >>> server_meets_version(server_version, required_version)
+   True
+   >>> class MyServer:
+           def __init__(self):
+               self._server_version = "1.2.0"
+   >>> server = MyServer()
+   >>> server_version, required_version = server, "1.3.0"
+   >>> server_meets_version(server, required_version)
+
+
+
+.. py:function:: requires_version(version, version_map=None)
+
+   Ensure the method called matches a certain version.
+
+   Parameters
+   ----------
+   version : str, tuple
+       A string or tuple representing the minimum required version.
+   version_map : dict, optional
+       A dictionary relating server version and ANSYS unified install version.
+
+   Raises
+   ------
+   AttributeError
+       Decorated class method requires ``_server_version`` attribute.
+   VersionError
+       Decorated class method is not supported by server version.
+
+
+
+.. py:function:: valid_version_string(version)
+
+   Check if version string is valid.
+
+
+.. py:function:: valid_semantic_version(iterable)
+
+   Check if a semantic version is valid.
+
+
+
+

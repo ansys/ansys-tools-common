@@ -1,0 +1,154 @@
+
+
+
+
+
+
+The ``launcher.py`` module
+==========================
+
+.. py:module:: ansys.tools.common.abstractions.launcher
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: launcher
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.abstractions.launcher.DataclassProtocol`
+            - Provides the ``Protocol`` class for Python dataclasses.
+
+
+          * - :py:obj:`~ansys.tools.common.abstractions.launcher.LauncherProtocol`
+            - Provides the interface for managing a local product instance.
+
+
+
+    .. tab-item:: Enums
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.abstractions.launcher.ServerType`
+            - Defines which protocols the server supports.
+
+
+
+
+
+
+    .. tab-item:: Constants
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~METADATA_KEY_DOC`
+            - Key used in the :py:class:`dataclasses.Field` ``metadata`` for the option description.
+
+
+          * - :py:obj:`~METADATA_KEY_NOPROMPT`
+            - Key used in the :py:class:`dataclasses.Field` ``metadata`` to skip prompting for the option by default.
+
+
+          * - :py:obj:`~FALLBACK_LAUNCH_MODE_NAME`
+            - 
+
+
+          * - :py:obj:`~LAUNCHER_CONFIG_T`
+            - 
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> DataclassProtocol</api/ansys/tools/common/abstractions/launcher/DataclassProtocol>
+    <span class="nf nf-cod-symbol_class"></span> LauncherProtocol</api/ansys/tools/common/abstractions/launcher/LauncherProtocol>
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_enum"></span> ServerType</api/ansys/tools/common/abstractions/launcher/ServerType>
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Interface definitions for implementing a local product launcher.
+
+A plugin for the local product launcher must implement the :class:`LauncherProtocol` class and register it.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:data:: METADATA_KEY_DOC
+   :value: 'launcher_doc'
+
+
+   Key used in the :py:class:`dataclasses.Field` ``metadata`` for the option description.
+
+
+.. py:data:: METADATA_KEY_NOPROMPT
+   :value: 'launcher_noprompt'
+
+
+   Key used in the :py:class:`dataclasses.Field` ``metadata`` to skip prompting for the option by default.
+
+
+.. py:data:: FALLBACK_LAUNCH_MODE_NAME
+   :value: '__fallback__'
+
+
+.. py:data:: LAUNCHER_CONFIG_T
+
+
+
