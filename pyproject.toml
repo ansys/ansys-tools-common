@@ -78,7 +78,7 @@ doc = [
 ]
 tests = [
   "apprise>=1.9.7",
-  "cryptography==50.0.1",
+  "cryptography==50.0.2",
   "grpcio==1.84.0",
   "grpcio-health-checking==1.84.0",
   "hypothesis==6.168.3",
