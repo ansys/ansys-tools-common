@@ -1,0 +1,36 @@
+
+
+
+
+
+
+:class:`AnsysLogicError`
+========================
+
+
+.. py:exception:: ansys.tools.common.exceptions.AnsysLogicError(message: str)
+
+   Bases: :py:obj:`AnsysError`
+
+
+   Exception raised when an unexpected logical condition occurs.
+
+   Parameters
+   ----------
+   message : str
+       Error message.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.exceptions import AnsysLogicError
+
+
+
+
+

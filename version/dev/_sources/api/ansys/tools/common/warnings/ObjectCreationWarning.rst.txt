@@ -1,0 +1,34 @@
+
+
+
+
+
+
+:class:`ObjectCreationWarning`
+==============================
+
+
+.. py:exception:: ansys.tools.common.warnings.ObjectCreationWarning(message: str)
+
+   Bases: :py:obj:`AnsysWarning`
+
+
+   Warning raised when an object is created with unavailable data.
+
+   This warning is typically issued when an object is instantiated but some
+   required data is missing, resulting in an incomplete object state.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.warnings import ObjectCreationWarning
+
+
+
+
+

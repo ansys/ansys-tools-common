@@ -1,0 +1,35 @@
+
+
+
+
+
+
+:class:`ComputationNotPerformedWarning`
+=======================================
+
+
+.. py:exception:: ansys.tools.common.warnings.ComputationNotPerformedWarning(message: str)
+
+   Bases: :py:obj:`AnsysWarning`
+
+
+   Warning raised when data is accessed before a required computation has run.
+
+   This warning is typically issued when a property or method returns ``None``
+   because the user has not yet called the required computation step (for
+   example, ``.process()`` or ``.compute()``).
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.warnings import ComputationNotPerformedWarning
+
+
+
+
+

@@ -1,0 +1,199 @@
+
+
+
+
+
+
+The ``certificates.py`` module
+==============================
+
+.. py:module:: ansys.tools.common.utils.certificates
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: certificates
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.utils.certificates.CertificateGenerator`
+            - Certificate generator for creating self-signed certificates for testing.
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~parse_server_spec`
+            - Parse a server specification string into primary hostname and SAN list.
+
+
+          * - :py:obj:`~generate_test_certificates`
+            - Generate a complete set of test certificates for gRPC mutual TLS.
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> CertificateGenerator</api/ansys/tools/common/utils/certificates/CertificateGenerator>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Certificate generation utilities for gRPC mutual TLS testing.
+
+This module provides utilities for generating self-signed certificates suitable
+for testing gRPC applications with mutual TLS authentication, including support
+for HPC deployments with multiple servers.
+
+Examples
+--------
+Generate certificates for a single server:
+
+>>> from ansys.tools.common.utils import generate_test_certificates
+>>> files = generate_test_certificates(output_dir="certs")
+
+Generate certificates for multiple servers (HPC deployment):
+
+>>> files = generate_test_certificates(servers=["node01,192.0.2.1", "node02,192.0.2.2"], output_dir="certs")
+
+Use in pytest fixtures:
+
+>>> import pytest
+>>> from pathlib import Path
+>>> from ansys.tools.common.utils import generate_test_certificates
+>>>
+>>> @pytest.fixture(scope="session")
+... def tls_certificates(tmp_path_factory):
+...     cert_dir = tmp_path_factory.mktemp("certs")
+...     files = generate_test_certificates(output_dir=cert_dir)
+...     return {
+...         "ca_cert": cert_dir / "ca.crt",
+...         "server_cert": cert_dir / "server.crt",
+...         "server_key": cert_dir / "server.key",
+...         "client_cert": cert_dir / "client.crt",
+...         "client_key": cert_dir / "client.key",
+...     }
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: parse_server_spec(server_spec: str) -> tuple[str, list[str]]
+
+   Parse a server specification string into primary hostname and SAN list.
+
+   Parameters
+   ----------
+   server_spec : str
+       A comma-separated string like "node01,192.0.2.1" or just "node01"
+
+   Returns
+   -------
+   tuple[str, list[str]]
+       Tuple containing (primary_hostname, [additional_san_names])
+
+   Raises
+   ------
+   ValueError
+       If the server specification is empty or invalid
+
+
+.. py:function:: generate_test_certificates(servers: Optional[list[str]] = None, client_name: str = 'Test Client', validity_days: int = 1, output_dir: Optional[pathlib.Path] = None, key_size: int = 4096) -> list[pathlib.Path]
+
+   Generate a complete set of test certificates for gRPC mutual TLS.
+
+   This is a convenience function that generates all necessary certificates
+   (CA, server(s), and client) and saves them to the specified directory.
+   Perfect for pytest fixtures and test setup.
+
+   Parameters
+   ----------
+   servers : list[str], optional
+       List of server specifications in format "hostname[,san1,san2,...]".
+       If None, defaults to ["localhost,127.0.0.1"]
+   client_name : str, optional
+       Common name for the client certificate, by default "Test Client"
+   validity_days : int, optional
+       Number of days the certificates should be valid, by default 1 (24 hours)
+   output_dir : Path, optional
+       Output directory for certificates. If None, uses current directory.
+   key_size : int, optional
+       Size of the RSA keys in bits, by default 4096
+
+   Returns
+   -------
+   list[Path]
+       List of paths to all generated certificate files
+
+   Examples
+   --------
+   Basic usage:
+
+   >>> from ansys.tools.common.utils import generate_test_certificates
+   >>> files = generate_test_certificates(output_dir=Path("certs"))
+   >>> print(files)
+   [Path('certs/ca.key'), Path('certs/ca.crt'), ...]
+
+   HPC deployment with multiple servers:
+
+   >>> files = generate_test_certificates(servers=["node01,192.0.2.1", "node02,192.0.2.2"], output_dir=Path("certs"))
+
+   Use in pytest:
+
+   >>> @pytest.fixture(scope="session")
+   ... def tls_certs(tmp_path_factory):
+   ...     cert_dir = tmp_path_factory.mktemp("certs")
+   ...     generate_test_certificates(output_dir=cert_dir)
+   ...     return cert_dir
+
+
+
+

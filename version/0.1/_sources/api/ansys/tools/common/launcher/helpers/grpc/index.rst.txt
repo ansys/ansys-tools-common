@@ -1,0 +1,90 @@
+
+
+
+
+
+
+The ``grpc.py`` module
+======================
+
+.. py:module:: ansys.tools.common.launcher.helpers.grpc
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: grpc
+.. tab-set::
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~check_grpc_health`
+            - Check that a gRPC server is responding to health check requests.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Helpers for interacting with gRPC servers.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: check_grpc_health(channel: grpc.Channel, timeout: float | None = None) -> bool
+
+   Check that a gRPC server is responding to health check requests.
+
+   Parameters
+   ----------
+   channel :
+       Channel to the gRPC server.
+   timeout :
+       Timeout in seconds for the gRPC health check request.
+
+   Returns
+   -------
+   :
+       ``True`` if the health check succeeds, ``False`` otherwise.
+
+
+
+
