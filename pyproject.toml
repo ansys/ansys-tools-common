@@ -35,7 +35,7 @@ dependencies = [
 optional-dependencies.all = [
   "ansys-tools-filetransfer>=0.1.1",
   "ansys-tools-visualization-interface>=0.9.2",
-  "apprise>=1.9.7",
+  "apprise>=2.0.1",
   "cryptography>=43.0",
   "pywin32>=311; sys_platform=='win32'",
 ]
@@ -46,8 +46,8 @@ optional-dependencies.graphics = [
   "ansys-tools-visualization-interface>=0.9.2",
 ]
 optional-dependencies.notifications = [
-  "apprise>=1.9.7; sys_platform!='win32'",
-  "apprise[windows]>=1.9.7; sys_platform=='win32'",
+  "apprise>=2.0.1; sys_platform!='win32'",
+  "apprise[windows]>=2.0.1; sys_platform=='win32'",
 ]
 optional-dependencies.other = [
   "cryptography>=43.0",
@@ -77,7 +77,7 @@ doc = [
   "sphinx-gallery==0.22.1",
 ]
 tests = [
-  "apprise>=1.9.7",
+  "apprise>=2.0.1",
   "cryptography==50.0.2",
   "grpcio==1.84.0",
   "grpcio-health-checking==1.84.0",

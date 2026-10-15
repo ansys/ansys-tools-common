@@ -480,13 +480,16 @@ class AnsysNotifier:
 
         >>> notifier.notify("Converged in 42 steps.", title="MyApp", notification_type=NotificationType.SUCCESS)
         """
-        return self._ap.notify(
-            title=title if title is not None else self._title,
-            body=message,
-            body_format=(NotificationFormat(format) if format is not None else self._format).value,
-            notify_type=(
-                NotificationType(notification_type) if notification_type is not None else self._notification_type
-            ).value,
+        # Apprise 2.x returns an ``AppriseResult`` instead of a bool.
+        return bool(
+            self._ap.notify(
+                title=title if title is not None else self._title,
+                body=message,
+                body_format=(NotificationFormat(format) if format is not None else self._format).value,
+                notify_type=(
+                    NotificationType(notification_type) if notification_type is not None else self._notification_type
+                ).value,
+            )
         )
 
 
