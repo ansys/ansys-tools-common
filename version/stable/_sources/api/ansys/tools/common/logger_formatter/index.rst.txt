@@ -1,0 +1,108 @@
+
+
+
+
+
+
+The ``logger_formatter.py`` module
+==================================
+
+.. py:module:: ansys.tools.common.logger_formatter
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: logger_formatter
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.logger_formatter.PyAnsysBaseFormatter`
+            - Provides a custom formatter to truncate long columns.
+
+
+
+
+
+
+
+    .. tab-item:: Constants
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~DEFAULT_FORMATTER`
+            - Default formatter for the logger.
+
+
+          * - :py:obj:`~DEFAULT_HEADER`
+            - Default header for the log file.
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> PyAnsysBaseFormatter</api/ansys/tools/common/logger_formatter/PyAnsysBaseFormatter>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Default logger formatter module.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:data:: DEFAULT_FORMATTER
+   :type:  Final
+
+   Default formatter for the logger.
+
+
+.. py:data:: DEFAULT_HEADER
+
+   Default header for the log file.
+
+
+
+
