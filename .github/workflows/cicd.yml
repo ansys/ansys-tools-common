@@ -95,7 +95,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python: ['3.10', '3.11', '3.12', '3.13', '3.14']
     steps:
-      - uses: ansys/actions/build-wheelhouse@7410037bfb276c79ae91eb3617b9f5d2876f0c94 # v11.0.8
+      - uses: ansys/actions/build-wheelhouse@fix/macos-compat-issues
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
