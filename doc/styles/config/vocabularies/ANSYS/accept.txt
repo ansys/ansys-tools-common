@@ -1,6 +1,7 @@
 (?i)Ansys
 ANS
 astroid
+checkin
 CRLs
 downloader
 hostname

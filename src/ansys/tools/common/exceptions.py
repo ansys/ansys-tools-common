@@ -155,3 +155,90 @@ class DownloadError(AnsysError, RuntimeError):
     def __init__(self, msg):
         """Initialize the exception."""
         super().__init__(msg)
+
+
+class LicenseError(AnsysError):
+    """Base class for licensing-related errors.
+
+    This exception serves as the base class for all licensing-related
+    exceptions. You can use this to catch any licensing error.
+
+    Parameters
+    ----------
+    msg : str
+        The error message describing the licensing issue.
+    """
+
+    def __init__(self, msg: str) -> None:
+        """Initialize the exception with a message."""
+        super().__init__(msg)
+
+
+class LicenseServerError(LicenseError):
+    """Exception raised when a license server is unreachable or returns an error.
+
+    This exception is raised when attempting to communicate with a license
+    server fails, such as connection timeouts, refused connections, or
+    error responses from the server.
+
+    Parameters
+    ----------
+    msg : str
+        The error message describing the server issue.
+    """
+
+    def __init__(self, msg: str) -> None:
+        """Initialize the exception with a message."""
+        super().__init__(msg)
+
+
+class LicenseToolNotFoundError(LicenseError):
+    """Exception raised when lmutil or ansysli_util cannot be found.
+
+    This exception is raised when the licensing tools (lmutil, ansysli_util)
+    are not found in any Ansys installation.
+
+    Parameters
+    ----------
+    msg : str
+        The error message describing which tool was not found.
+    """
+
+    def __init__(self, msg: str) -> None:
+        """Initialize the exception with a message."""
+        super().__init__(msg)
+
+
+class LicenseFileParseError(LicenseError):
+    """Exception raised when parsing a license file, log, or config fails.
+
+    This exception is raised when a license file, log file, or configuration
+    file cannot be parsed due to invalid format or content.
+
+    Parameters
+    ----------
+    msg : str
+        The error message describing the parse failure.
+    """
+
+    def __init__(self, msg: str) -> None:
+        """Initialize the exception with a message."""
+        super().__init__(msg)
+
+
+class LicenseConfigError(LicenseError):
+    """Exception raised when writing or updating license configuration fails.
+
+    This exception is raised when a license configuration file cannot be
+    written or updated due to permission issues, invalid paths, or other
+    filesystem errors.
+
+    Parameters
+    ----------
+    msg : str
+        The error message describing the configuration failure.
+    """
+
+    def __init__(self, msg: str) -> None:
+        """Initialize the exception with a message."""
+        super().__init__(msg)
