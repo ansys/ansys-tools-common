@@ -1,0 +1,93 @@
+
+
+
+
+
+
+:class:`DownloadManager`
+========================
+
+
+.. py:class:: ansys.tools.common.example_download.DownloadManager
+
+   Manages downloads of example files.
+
+   Manages the download of example from the ``example-data``
+   repository, which is at https://github.com/ansys/example-data.
+
+
+
+.. py:currentmodule:: DownloadManager
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~clear_download_cache`
+            - Remove downloaded example files from the local path.
+          * - :py:attr:`~download_file`
+            - Download an example file from the ``example-data`` repository.
+
+
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.example_download import DownloadManager
+
+
+
+Method detail
+-------------
+
+.. py:method:: clear_download_cache()
+
+   Remove downloaded example files from the local path.
+
+
+.. py:method:: download_file(filename: str, directory: str, destination: Optional[str] = None, force: bool = False) -> str
+
+   Download an example file from the ``example-data`` repository.
+
+   Parameters
+   ----------
+   filename : str
+       Name of the example file to download.
+   directory : str
+       Path under the ``example-data`` repository.
+   destination : str, default: None
+       Path to download the example file to. The default
+       is ``None``, in which case the default path for app data
+       is used.
+   force : bool, default: False
+       Whether to always download the example file. The default is
+       ``False``, in which case if the example file is cached, it
+       is reused.
+
+   Returns
+   -------
+   tuple[str, str]
+       Tuple containing the filepath to use and the local
+       filepath of the downloaded directory. The two are
+       different in case of containers.
+
+
+
+
+
