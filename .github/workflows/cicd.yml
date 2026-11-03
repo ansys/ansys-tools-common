@@ -58,6 +58,46 @@ jobs:
           hide-log: false
           dev-mode: ${{ github.ref != 'refs/heads/main' }}
 
+  # TEMPORARY: reproduce the safety "set is not JSON serializable" crash with full debug output
+  debug-safety:
+    name: Debug safety (temporary)
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_REF: 87ff2e65e8884121f9afc97728ca9f213228ecc2
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ansys/actions/_setup-python@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          use-cache: false
+          provision-uv: true
+
+      - name: Run safety with --debug
+        shell: bash
+        run: |
+          base="https://raw.githubusercontent.com/ansys/actions/${ACTIONS_REF}/check-vulnerabilities"
+          curl -sSfL -o /tmp/action-req.txt "${base}/requirements.txt"
+          curl -sSfL -o /tmp/safety-ignore.yml "${base}/.safety-ignore.yml"
+          python -m venv .venv
+          source .venv/bin/activate
+          uv sync --frozen --no-default-groups
+          uv pip freeze > /tmp/requirements-for-safety.txt
+          deactivate
+          cat /tmp/requirements-for-safety.txt
+          python -m venv .venv_safety
+          source .venv_safety/bin/activate
+          uv pip install -r /tmp/action-req.txt
+          set +e
+          safety --debug check -o bare --save-json info_safety.json --continue-on-error \
+            --policy-file /tmp/safety-ignore.yml -r /tmp/requirements-for-safety.txt
+          echo "safety exit code: $?"
+          safety check -o json --continue-on-error \
+            --policy-file /tmp/safety-ignore.yml -r /tmp/requirements-for-safety.txt
+          echo "safety json exit code: $?"
+
   code-style:
     name: Code style
     runs-on: ubuntu-latest
