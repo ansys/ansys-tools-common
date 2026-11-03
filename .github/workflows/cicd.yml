@@ -64,7 +64,6 @@ jobs:
     steps:
       - uses: ansys/actions/code-style@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
         with:
-
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   doc-style:
