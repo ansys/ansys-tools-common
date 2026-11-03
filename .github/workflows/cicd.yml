@@ -58,34 +58,6 @@ jobs:
           hide-log: false
           dev-mode: ${{ github.ref != 'refs/heads/main' }}
 
-  # TEMPORARY: reproduce the safety "set is not JSON serializable" crash with full debug output
-  debug-safety:
-    name: Debug safety (temporary)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/check-vulnerabilities@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
-        continue-on-error: true
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          python-package-name: ${{ env.PACKAGE_NAME }}
-          hide-log: false
-          dev-mode: true
-
-      - name: Re-run the action's safety command with --debug
-        shell: bash
-        run: |
-          action_dir="/home/runner/work/_actions/ansys/actions/87ff2e65e8884121f9afc97728ca9f213228ecc2/check-vulnerabilities"
-          ls -la "${action_dir}"
-          cat "${action_dir}/requirements-for-safety.txt"
-          ls -la ~/.safety || true
-          cat ~/.safety/config.ini || true
-          source .venv_bandit_safety/bin/activate
-          set +e
-          safety --debug check -o bare --save-json info_safety_debug.json --continue-on-error \
-            --policy-file "${action_dir}/.safety-ignore.yml" -r "${action_dir}/requirements-for-safety.txt"
-          echo "safety exit code: $?"
-
   code-style:
     name: Code style
     runs-on: ubuntu-latest
