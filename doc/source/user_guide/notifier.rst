@@ -150,8 +150,7 @@ Four settings are available, each controlled by a getter/setter pair:
 
 
     @notify_on_completion("Solve finished.")
-    def solve():
-        ...
+    def solve(): ...
 
 Per-call arguments always take priority over the global defaults, so individual
 calls can still override any setting when needed:
