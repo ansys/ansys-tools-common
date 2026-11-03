@@ -55,7 +55,7 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
           python-package-name: ${{ env.PACKAGE_NAME }}
-          hide-log: true
+          hide-log: false
           dev-mode: ${{ github.ref != 'refs/heads/main' }}
 
   code-style:
@@ -64,7 +64,6 @@ jobs:
     steps:
       - uses: ansys/actions/code-style@87ff2e65e8884121f9afc97728ca9f213228ecc2 # v11.1.4
         with:
-
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
   doc-style:
