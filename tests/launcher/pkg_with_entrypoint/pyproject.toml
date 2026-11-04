@@ -6,7 +6,7 @@ requires = [ "poetry-core>=1" ]
 name = "pkg_with_entrypoint"
 version = "0.1.0"
 description = "Test package with entrypoint for ansys-tools-local-product-launcher"
-authors = [ "Ansys, Inc." ]
+authors = [ "Synopsys, Inc. and ANSYS, Inc." ]
 packages = [
   { include = "pkg_with_entrypoint", from = "src" },
 ]
