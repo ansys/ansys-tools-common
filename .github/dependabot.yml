@@ -62,5 +62,3 @@ updates:
       pre-commit-hooks:
         patterns:
           - "*"
-    assignees:
-      - "AlejandroFernandezLuces"

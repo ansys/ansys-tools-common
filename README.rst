@@ -60,7 +60,7 @@ or the `Discussions <https://discuss.ansys.com/>`_ page on the Ansys Developer p
 you can post questions, share ideas, and get community feedback.
 
 If you have general questions about the PyAnsys ecosystem, email
-`pyansys.core@ansys.com <pyansys.core@ansys.com>`_. If your
+`pyansys-core@synopsys.com <pyansys-core@synopsys.com>`_. If your
 question is specific to Ansys Common Tools, ask your
 question in an issue as described in the previous paragraph.
 
