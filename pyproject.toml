@@ -60,7 +60,7 @@ scripts.save-ansys-path = "ansys.tools.common.path.save:cli"
 
 [dependency-groups]
 dev = [
-  "pre-commit==4.6.2",
+  "pre-commit==4.7.0",
   { include-group = "doc" },
   { include-group = "tests" },
 ]
