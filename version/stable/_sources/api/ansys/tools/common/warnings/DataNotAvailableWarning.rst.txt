@@ -1,0 +1,34 @@
+
+
+
+
+
+
+:class:`DataNotAvailableWarning`
+================================
+
+
+.. py:exception:: ansys.tools.common.warnings.DataNotAvailableWarning(message: str)
+
+   Bases: :py:obj:`AnsysWarning`
+
+
+   Warning raised when requested data is not yet available.
+
+   This warning is typically issued when a property or method returns ``None``
+   because the underlying data has not been computed or loaded yet.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.warnings import DataNotAvailableWarning
+
+
+
+
+
