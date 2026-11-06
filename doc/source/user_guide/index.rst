@@ -41,6 +41,13 @@ This section explains key concepts for implementing the tools in Ansys Common To
 
         Learn how to use the versioning tool.
 
+    .. grid-item-card:: Ansys licensing tool
+        :padding: 2 2 2 2
+        :link: ansys_licensing
+        :link-type: doc
+
+        Learn how to use the licensing tool.
+
     .. grid-item-card:: Ansys report tool
         :padding: 2 2 2 2
         :link: report
@@ -84,6 +91,8 @@ This section explains key concepts for implementing the tools in Ansys Common To
     ansys_downloader
     ansys_exceptions
     versioning
+    ansys_licensing
+    licensing_cli
     report
     launcher/index
     secure_grpc
