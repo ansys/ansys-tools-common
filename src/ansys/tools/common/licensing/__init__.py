@@ -26,7 +26,6 @@ This module provides utilities for working with Ansys licensing (FlexLM):
 
 - Find licensing tools (lmutil, ansysli_util) within Ansys installations
 - Query license server status
-- Parse licensing logs (debug logs, server logs)
 - Inspect license-related environment variables
 - Inspect license-related config files (ansyslmd.ini, license.preferences.xml)
 """
@@ -39,15 +38,6 @@ from ansys.tools.common.licensing.config import (
     parse_license_preferences_xml,
     set_ansyslmd_ini,
 )
-from ansys.tools.common.licensing.data import (
-    ANSYS_APPLICATION_SHORT_NAMES,
-    ANSYS_LICENSE_FEATURES,
-    ApplicationInfo,
-    get_all_application_short_names,
-    get_all_feature_names,
-    get_application_info,
-    get_feature_description,
-)
 from ansys.tools.common.licensing.diagnosis import (
     check_feature,
     check_license_server_status,
@@ -57,13 +47,6 @@ from ansys.tools.common.licensing.diagnosis import (
     get_license_server,
     get_license_server_with_source,
     test_license_checkout,
-)
-from ansys.tools.common.licensing.logs import (
-    find_application_license_log,
-    find_general_client_log,
-    find_license_log,
-    get_recent_license_errors,
-    parse_license_log,
 )
 from ansys.tools.common.licensing.models import (
     AnsyslmdConfig,
@@ -105,13 +88,10 @@ VENDOR_INFO = {
 
 __all__ = [
     # Constants
-    "ANSYS_APPLICATION_SHORT_NAMES",
-    "ANSYS_LICENSE_FEATURES",
     "DEFAULT_VENDOR",
     "VENDOR_INFO",
     # Data models
     "AnsyslmdConfig",
-    "ApplicationInfo",
     "FeatureInfo",
     "LicenseCheckoutResult",
     "LicenseEnvironment",
@@ -121,11 +101,6 @@ __all__ = [
     "LicenseServer",
     "LicenseServerStatus",
     "LogEntry",
-    # Data lookup functions
-    "get_all_application_short_names",
-    "get_all_feature_names",
-    "get_application_info",
-    "get_feature_description",
     # Tool discovery
     "find_ansysli_util",
     "find_lmutil",
@@ -141,12 +116,6 @@ __all__ = [
     "parse_ansyslmd_ini",
     "parse_license_preferences_xml",
     "set_ansyslmd_ini",
-    # Logs
-    "find_application_license_log",
-    "find_general_client_log",
-    "find_license_log",
-    "get_recent_license_errors",
-    "parse_license_log",
     # Diagnosis (comprehensive environment, server resolution, status & troubleshooting)
     "check_feature",
     "check_license_server_status",

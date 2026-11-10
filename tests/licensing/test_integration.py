@@ -14,7 +14,6 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from ansys.tools.common.exceptions import (
-    LicenseFileParseError,
     LicenseServerError,
     LicenseToolNotFoundError,
 )
@@ -26,7 +25,6 @@ from ansys.tools.common.licensing import (
     find_lmutil,
     get_license_environment,
     parse_ansyslmd_ini,
-    parse_license_log,
     parse_license_preferences_xml,
 )
 
@@ -53,12 +51,6 @@ VENDOR ansyslmd
 
 FEATURE mechanical_enterprise ansyslmd 25.0 31-dec-2025 10 SIGN="..."
 INCREMENT fluent_solver ansyslmd 25.0 permanent 20 SIGN="..."
-"""
-
-# Sample log content
-SAMPLE_LOG_CONTENT = """2024-10-15 10:30:00 [INFO] License checkout: mechanical_enterprise
-2024-10-15 10:35:00 [ERROR] License checkout failed: feature_not_found
-2024-10-15 11:00:00 [WARNING] License server slow response
 """
 
 
@@ -173,32 +165,6 @@ class TestWorkflowDiagnoseEnv:
         # Step 3: Check server
         status = check_license_server_status_all(server=env.effective_server)
         assert status.is_up is True
-
-
-class TestWorkflowLogAnalysis:
-    """TC-22.1.4: Log analysis workflow."""
-
-    def test_workflow_log_analysis(self, fs, monkeypatch):
-        """Test: Find log → Parse → Get recent errors."""
-        # Setup log file
-        if os.name == "nt":
-            temp_dir = Path(os.environ.get("TEMP", "C:\\Windows\\Temp"))
-            monkeypatch.setenv("TEMP", str(temp_dir))
-            log_path = temp_dir / "ansyscl.testuser.log"
-        else:
-            log_path = Path.home() / ".ansys" / "ansyscl.testuser.log"
-
-        fs.create_file(str(log_path), contents=SAMPLE_LOG_CONTENT)
-
-        # Step 1: Find log (we'll parse directly since find depends on exact path patterns)
-        # Step 2: Parse log
-        log_info = parse_license_log(str(log_path))
-        assert len(log_info.entries) > 0
-        assert len(log_info.errors) >= 1
-
-        # Step 3: Verify error content
-        error = log_info.errors[0]
-        assert "failed" in error.message.lower() or "error" in error.level.lower()
 
 
 class TestWorkflowConfigDiscovery:
@@ -326,12 +292,6 @@ class TestErrorPropagation:
 
         with pytest.raises(LicenseServerError):
             check_license_server_status_all(server="1055@host")
-
-    def test_error_file_parse_fails(self, fs):
-        """TC-22.3.3: LicenseFileParseError propagates when parsing invalid log."""
-        # Try to parse non-existent log file
-        with pytest.raises(LicenseFileParseError):
-            parse_license_log("/nonexistent/file.log")
 
 
 class TestCLIIntegration:

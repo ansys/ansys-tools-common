@@ -26,14 +26,11 @@ class TestModuleImports:
             check_license_server_status_all,
             find_ansysli_util,
             find_ansyslmd_ini,
-            find_license_log,
             find_license_preferences_xml,
             find_lmutil,
             get_license_environment,
             get_license_server,
-            get_recent_license_errors,
             parse_ansyslmd_ini,
-            parse_license_log,
             parse_license_preferences_xml,
         )
 
@@ -46,9 +43,6 @@ class TestModuleImports:
         assert callable(parse_ansyslmd_ini)
         assert callable(find_license_preferences_xml)
         assert callable(parse_license_preferences_xml)
-        assert callable(find_license_log)
-        assert callable(parse_license_log)
-        assert callable(get_recent_license_errors)
         assert callable(check_license_server_status_all)
         assert callable(check_feature)
         assert callable(check_license_server_status)
@@ -109,10 +103,6 @@ class TestModuleImports:
             "parse_ansyslmd_ini",
             "find_license_preferences_xml",
             "parse_license_preferences_xml",
-            # Logs
-            "find_license_log",
-            "parse_license_log",
-            "get_recent_license_errors",
             # Diagnosis
             "check_license_server_status_all",
             "check_feature",
@@ -155,18 +145,6 @@ class TestExpectedExports:
         assert parse_ansyslmd_ini.__module__ == "ansys.tools.common.licensing.config"
         assert find_license_preferences_xml.__module__ == "ansys.tools.common.licensing.config"
         assert parse_license_preferences_xml.__module__ == "ansys.tools.common.licensing.config"
-
-    def test_logs_exports(self):
-        """Logs functions are exported."""
-        from ansys.tools.common.licensing import (
-            find_license_log,
-            get_recent_license_errors,
-            parse_license_log,
-        )
-
-        assert find_license_log.__module__ == "ansys.tools.common.licensing.logs"
-        assert parse_license_log.__module__ == "ansys.tools.common.licensing.logs"
-        assert get_recent_license_errors.__module__ == "ansys.tools.common.licensing.logs"
 
     def test_server_exports(self):
         """Server functions are exported."""
@@ -267,14 +245,11 @@ class TestDocstrings:
             check_license_server_status_all,
             find_ansysli_util,
             find_ansyslmd_ini,
-            find_license_log,
             find_license_preferences_xml,
             find_lmutil,
             get_license_environment,
             get_license_server,
-            get_recent_license_errors,
             parse_ansyslmd_ini,
-            parse_license_log,
             parse_license_preferences_xml,
         )
 
@@ -287,9 +262,6 @@ class TestDocstrings:
             parse_ansyslmd_ini,
             find_license_preferences_xml,
             parse_license_preferences_xml,
-            find_license_log,
-            parse_license_log,
-            get_recent_license_errors,
             check_license_server_status_all,
             check_feature,
             check_license_server_status,
