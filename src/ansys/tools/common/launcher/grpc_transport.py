@@ -24,9 +24,9 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
-import enum
+from enum import StrEnum
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import Any, ClassVar
 
 import grpc
 
@@ -40,29 +40,6 @@ __all__ = [
     "InsecureOptions",
     "TransportOptionsType",
 ]
-
-# For Python 3.10 and below, emulate the behavior of StrEnum by
-# inheriting from str and enum.Enum.
-# Note that this does *not* work on Python 3.11+, since the default
-# Enum format method has changed and will not return the value of
-# the enum member.
-# When type checking, always use the Python 3.10 workaround, otherwise
-# the StrEnum resolves as 'Any'.
-if TYPE_CHECKING:  # pragma: no cover
-
-    class StrEnum(str, enum.Enum):
-        """String enum."""
-
-else:
-    try:
-        from enum import StrEnum
-    except ImportError:
-        import enum
-
-        class StrEnum(str, enum.Enum):
-            """String enum."""
-
-            pass
 
 
 class TransportMode(StrEnum):

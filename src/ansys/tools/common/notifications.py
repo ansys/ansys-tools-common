@@ -42,7 +42,7 @@ Quick start
 from __future__ import annotations
 
 from collections.abc import Callable
-from enum import Enum
+from enum import StrEnum
 import functools
 import platform
 
@@ -72,8 +72,7 @@ __all__ = [
 ]
 
 
-# TODO: Use StrEnum after dropping Python 3.10 support.
-class NotificationChannel(str, Enum):
+class NotificationChannel(StrEnum):
     """Well-known apprise notification channel URL schemes.
 
     Each member's value is the scheme prefix of the apprise URL for that
@@ -111,8 +110,7 @@ class NotificationChannel(str, Enum):
     """Microsoft Teams incoming webhook. Append ``A/B/C/D``."""
 
 
-# TODO: Use StrEnum after dropping Python 3.10 support.
-class NotificationFormat(str, Enum):
+class NotificationFormat(StrEnum):
     """Body format of the notification.
 
     Using a ``str`` enum means the values can be compared directly with the
@@ -131,7 +129,7 @@ class NotificationFormat(str, Enum):
     Discord, Telegram, Slack). Falls back to plain text elsewhere."""
 
 
-class NotificationType(str, Enum):
+class NotificationType(StrEnum):
     """Notification type / type of the notification.
 
     Controls the visual appearance of the notification (colour, icon, sound)
