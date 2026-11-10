@@ -52,16 +52,16 @@ from ansys.tools.common.licensing.diagnosis import (
 # Re-exported for convenience; intentionally omitted from ``__all__`` so the API docs
 # list each model once, under ``ansys.tools.common.licensing.models``.
 from ansys.tools.common.licensing.models import (
-    AnsyslmdConfig,  # noqa: F401
-    FeatureInfo,  # noqa: F401
-    LicenseCheckoutResult,  # noqa: F401
-    LicenseEnvironment,  # noqa: F401
-    LicenseErrorType,  # noqa: F401
-    LicenseLogInfo,  # noqa: F401
-    LicensePreferences,  # noqa: F401
-    LicenseServer,  # noqa: F401
-    LicenseServerStatus,  # noqa: F401
-    LogEntry,  # noqa: F401
+    AnsyslmdConfig as AnsyslmdConfig,
+    FeatureInfo as FeatureInfo,
+    LicenseCheckoutResult as LicenseCheckoutResult,
+    LicenseEnvironment as LicenseEnvironment,
+    LicenseErrorType as LicenseErrorType,
+    LicenseLogInfo as LicenseLogInfo,
+    LicensePreferences as LicensePreferences,
+    LicenseServer as LicenseServer,
+    LicenseServerStatus as LicenseServerStatus,
+    LogEntry as LogEntry,
 )
 from ansys.tools.common.licensing.tools import find_ansysli_util, find_lmutil
 from ansys.tools.common.licensing.vars import (
