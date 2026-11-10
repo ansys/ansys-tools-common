@@ -400,7 +400,7 @@ class LicenseServer:
 
     @classmethod
     def from_environment(cls, vendor: str = "ansyslmd", **kwargs: Any) -> "LicenseServer":
-        """Create a ``LicenseServer`` from the effective environment/config.
+        r"""Create a ``LicenseServer`` from the effective environment/config.
 
         Resolves the license server using the standard priority:
         env vars → user config → installation config.
@@ -409,7 +409,7 @@ class LicenseServer:
         ----------
         vendor : str, optional
             Vendor daemon name. Default is ``"ansyslmd"``.
-        **kwargs
+        \*\*kwargs
             Forwarded to the ``LicenseServer`` constructor (e.g., ``version``).
 
         Returns

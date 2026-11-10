@@ -84,14 +84,6 @@ class TestModuleImports:
             # Constants
             "DEFAULT_VENDOR",
             "VENDOR_INFO",
-            # Models
-            "AnsyslmdConfig",
-            "FeatureInfo",
-            "LicenseEnvironment",
-            "LicenseLogInfo",
-            "LicensePreferences",
-            "LicenseServerStatus",
-            "LogEntry",
             # Tools
             "find_lmutil",
             "find_ansysli_util",
@@ -112,6 +104,31 @@ class TestModuleImports:
         for name in expected_exports:
             assert name in licensing.__all__, f"{name} missing from __all__"
             assert hasattr(licensing, name), f"{name} not accessible on module"
+
+    def test_models_importable_but_not_in_all(self):
+        """Models stay importable from the package but are documented under ``models``.
+
+        They are intentionally omitted from ``__all__`` so the API documentation lists
+        each class once, under ``ansys.tools.common.licensing.models``.
+        """
+        from ansys.tools.common import licensing
+
+        model_names = [
+            "AnsyslmdConfig",
+            "FeatureInfo",
+            "LicenseCheckoutResult",
+            "LicenseEnvironment",
+            "LicenseErrorType",
+            "LicenseLogInfo",
+            "LicensePreferences",
+            "LicenseServer",
+            "LicenseServerStatus",
+            "LogEntry",
+        ]
+
+        for name in model_names:
+            assert hasattr(licensing, name), f"{name} not accessible on module"
+            assert name not in licensing.__all__, f"{name} should not be in __all__"
 
 
 class TestExpectedExports:
