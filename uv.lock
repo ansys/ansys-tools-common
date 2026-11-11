@@ -300,7 +300,7 @@ dev = [
     { name = "mypy", specifier = "==2.4.1" },
     { name = "mypy-extensions", specifier = "==1.2.0" },
     { name = "pre-commit", specifier = "==4.7.0" },
-    { name = "pyfakefs", specifier = "==6.3.1" },
+    { name = "pyfakefs", specifier = "==6.3.2" },
     { name = "pytest", specifier = "==9.2.0" },
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "sphinx-click", specifier = "==6.2.0" },
@@ -325,7 +325,7 @@ tests = [
     { name = "hypothesis", specifier = "==6.170.14" },
     { name = "mypy", specifier = "==2.4.1" },
     { name = "mypy-extensions", specifier = "==1.2.0" },
-    { name = "pyfakefs", specifier = "==6.3.1" },
+    { name = "pyfakefs", specifier = "==6.3.2" },
     { name = "pytest", specifier = "==9.2.0" },
     { name = "pytest-cov", specifier = "==7.1.0" },
 ]
@@ -2840,11 +2840,11 @@ wheels = [
 
 [[package]]
 name = "pyfakefs"
-version = "6.3.1"
+version = "6.3.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/c6/9b/6f4f5ad257bac4196f72c4fce748ec9c211ca98f4e09e6acd5677ce68712/pyfakefs-6.3.1.tar.gz", hash = "sha256:e3c59486b72068a4421e63039e048abdae8b52d6213b86463ecc1e72159b18e5", size = 235650, upload-time = "2026-11-02T20:20:10.615Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/56/8b/285a3ff923b81488a831536f8ca44305223df6d6169a0c58ba756de5e7e9/pyfakefs-6.3.2.tar.gz", hash = "sha256:7c67bdf4c11b42903c7cb6c74fa63432485afc697ad6f89ecce6fb0a4e4f24ed", size = 235667, upload-time = "2026-11-03T18:24:02.739Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dd/09/e4f6e3f77ba28a26d76c11a4cded5304eadd078b395f1dce640710b12dc2/pyfakefs-6.3.1-py3-none-any.whl", hash = "sha256:3201ef862b6e1ccc208a023bb14d3a213489f9d683c74de9b593ddea69c52350", size = 248049, upload-time = "2026-11-02T20:20:08.865Z" },
+    { url = "https://files.pythonhosted.org/packages/b2/9e/429d92eeb61de5c726fd3a522b28553cd69139fa63ed789eaaa29e006c90/pyfakefs-6.3.2-py3-none-any.whl", hash = "sha256:20b9889981459dde1fe1548b0e6c298a72c373951f9bd81a3c397ddda8591c55", size = 247941, upload-time = "2026-11-03T18:24:01.007Z" },
 ]
 
 [[package]]
