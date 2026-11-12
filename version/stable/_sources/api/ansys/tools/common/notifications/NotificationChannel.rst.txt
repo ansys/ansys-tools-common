@@ -1,0 +1,132 @@
+
+
+
+
+
+
+:class:`NotificationChannel`
+============================
+
+
+.. py:class:: ansys.tools.common.notifications.NotificationChannel
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   Well-known apprise notification channel URL schemes.
+
+   Each member's value is the scheme prefix of the apprise URL for that
+   channel.  Members with self-contained URLs (:attr:`WINDOWS`,
+   :attr:`MACOS`, :attr:`DBUS`) can be used directly.  Members that require
+   credentials or IDs (:attr:`SLACK`, :attr:`MSTEAMS`, :attr:`MAILTO`,
+   :attr:`MAILTOS`) serve as the scheme prefix — concatenate your tokens to
+   form the full URL::
+
+       NotificationChannel.SLACK + "token/channel"
+       NotificationChannel.MAILTO + "user:pass@gmail.com"
+
+   A plain :class:`str` is always accepted wherever a channel is expected.
+
+
+
+.. py:currentmodule:: NotificationChannel
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~WINDOWS`
+            - Windows 10/11 native toast notification.
+          * - :py:attr:`~MACOS`
+            - macOS Notification Center.
+          * - :py:attr:`~DBUS`
+            - Linux desktop notification via D-Bus (GNOME, KDE, etc.).
+          * - :py:attr:`~MAILTO`
+            - Gmail or other IMAP provider. Append ``user:pass@gmail.com``.
+          * - :py:attr:`~MAILTOS`
+            - Corporate SMTP with TLS. Append ``user:pass@smtp.corp.com``.
+          * - :py:attr:`~SLACK`
+            - Slack channel. Append ``token/channel``.
+          * - :py:attr:`~MSTEAMS`
+            - Microsoft Teams incoming webhook. Append ``A/B/C/D``.
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.notifications import NotificationChannel
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: WINDOWS
+   :value: 'windows://'
+
+
+   Windows 10/11 native toast notification.
+
+
+.. py:attribute:: MACOS
+   :value: 'macosx://'
+
+
+   macOS Notification Center.
+
+
+.. py:attribute:: DBUS
+   :value: 'dbus://'
+
+
+   Linux desktop notification via D-Bus (GNOME, KDE, etc.).
+
+
+.. py:attribute:: MAILTO
+   :value: 'mailto://'
+
+
+   Gmail or other IMAP provider. Append ``user:pass@gmail.com``.
+
+
+.. py:attribute:: MAILTOS
+   :value: 'mailtos://'
+
+
+   Corporate SMTP with TLS. Append ``user:pass@smtp.corp.com``.
+
+
+.. py:attribute:: SLACK
+   :value: 'slack://'
+
+
+   Slack channel. Append ``token/channel``.
+
+
+.. py:attribute:: MSTEAMS
+   :value: 'msteams://'
+
+
+   Microsoft Teams incoming webhook. Append ``A/B/C/D``.
+
+
+
+
+
+
