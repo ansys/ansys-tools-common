@@ -7,7 +7,7 @@
 * @ansys/ansys-common-tools-maintainers
 
 # Local launcher
-/src/ansys/common/tools/launcher/* @greschd
+/src/ansys/common/tools/launcher/* @greschd @ansys/ansys-common-tools-maintainers
 
 # Documentation
-/doc/source/* @PipKat
+/doc/source/* @PipKat @ansys/ansys-common-tools-maintainers
