@@ -132,6 +132,8 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venv-security-check/
+.venv-security-check-bandit/
 env/
 *venv/
 ENV/

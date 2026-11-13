@@ -15,3 +15,4 @@ s.P
 e.M
 terminate
 kill
+vulnerabilit
