@@ -27,6 +27,13 @@ This section explains key concepts for implementing the tools in Ansys Common To
 
         Learn how to use the example downloader.
 
+    .. grid-item-card:: Local vulnerability-check setup
+        :padding: 2 2 2 2
+        :link: vulnerability_check
+        :link-type: doc
+
+        Prepare files for local vulnerability checks.
+
     .. grid-item-card:: Ansys exceptions
         :padding: 2 2 2 2
         :link: ansys_exceptions
@@ -82,6 +89,7 @@ This section explains key concepts for implementing the tools in Ansys Common To
 
     ansys_tools_path
     ansys_downloader
+    vulnerability_check
     ansys_exceptions
     versioning
     report
