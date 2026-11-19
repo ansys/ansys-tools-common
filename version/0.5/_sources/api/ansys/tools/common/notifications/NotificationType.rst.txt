@@ -1,0 +1,99 @@
+
+
+
+
+
+
+:class:`NotificationType`
+=========================
+
+
+.. py:class:: ansys.tools.common.notifications.NotificationType
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   Notification type / type of the notification.
+
+   Controls the visual appearance of the notification (colour, icon, sound)
+   where the target channel supports it.
+
+   Using a ``str`` enum means the values map directly to ``apprise``
+   ``NotifyType`` constants.
+
+
+
+.. py:currentmodule:: NotificationType
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+
+
+   .. tab-item:: Attributes
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~INFO`
+            - Informational message (default). Neutral appearance.
+          * - :py:attr:`~SUCCESS`
+            - Positive outcome. Typically shown in green.
+          * - :py:attr:`~WARNING`
+            - Something requires attention. Typically shown in yellow/orange.
+          * - :py:attr:`~FAILURE`
+            - An error or critical problem. Typically shown in red.
+
+
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.notifications import NotificationType
+
+
+Attribute detail
+----------------
+
+.. py:attribute:: INFO
+   :value: 'info'
+
+
+   Informational message (default). Neutral appearance.
+
+
+.. py:attribute:: SUCCESS
+   :value: 'success'
+
+
+   Positive outcome. Typically shown in green.
+
+
+.. py:attribute:: WARNING
+   :value: 'warning'
+
+
+   Something requires attention. Typically shown in yellow/orange.
+
+
+.. py:attribute:: FAILURE
+   :value: 'failure'
+
+
+   An error or critical problem. Typically shown in red.
+
+
+
+
+
+

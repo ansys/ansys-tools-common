@@ -1,0 +1,203 @@
+
+
+
+
+
+
+:class:`ProductInstance`
+========================
+
+
+.. py:class:: ansys.tools.common.launcher.product_instance.ProductInstance(*, launcher: ansys.tools.common.launcher.interface.LauncherProtocol[ansys.tools.common.launcher.interface.LAUNCHER_CONFIG_T])
+
+   Provides a wrapper for interacting with the launched product instance.
+
+   This class allows stopping and starting of the product instance. It also
+   provides access to its server URLs and gRPC channels.
+
+   The :class:`ProductInstance` class can be used as a context manager, stopping
+   the instance when exiting the context.
+
+
+
+
+
+.. py:currentmodule:: ProductInstance
+
+Overview
+--------
+
+.. tab-set::
+
+
+
+   .. tab-item:: Methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~start`
+            - Start the product instance.
+          * - :py:attr:`~stop`
+            - Stop the product instance.
+          * - :py:attr:`~restart`
+            - Stop and then start the product instance.
+          * - :py:attr:`~check`
+            - Check if all servers are responding to requests.
+          * - :py:attr:`~wait`
+            - Wait for all servers to respond.
+
+
+   .. tab-item:: Properties
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~urls`
+            - Read-only mapping of server keys to their URLs.
+          * - :py:attr:`~stopped`
+            - Flag indicating if the product instance is currently stopped.
+          * - :py:attr:`~channels`
+            - Read-only mapping of server keys to gRPC channels.
+
+
+
+
+   .. tab-item:: Special methods
+
+      .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+          * - :py:attr:`~__enter__`
+            - Enter the context manager defined by the product instance.
+          * - :py:attr:`~__exit__`
+            - Stop the product instance when exiting a context manager.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.launcher.product_instance import ProductInstance
+
+Property detail
+---------------
+
+.. py:property:: urls
+   :type: Mapping[str, str]
+
+
+   Read-only mapping of server keys to their URLs.
+
+
+.. py:property:: stopped
+   :type: bool
+
+
+   Flag indicating if the product instance is currently stopped.
+
+
+.. py:property:: channels
+   :type: Mapping[str, grpc.Channel]
+
+
+   Read-only mapping of server keys to gRPC channels.
+
+
+
+
+
+Method detail
+-------------
+
+.. py:method:: __enter__() -> ProductInstance
+
+   Enter the context manager defined by the product instance.
+
+
+.. py:method:: __exit__(*exc: Any) -> None
+
+   Stop the product instance when exiting a context manager.
+
+
+.. py:method:: start() -> None
+
+   Start the product instance.
+
+   Raises
+   ------
+   ProductInstanceError
+       If the instance is already started or the URLs do not match
+       the launcher's SERVER_SPEC.
+
+
+.. py:method:: stop(*, timeout: float | None = None) -> None
+
+   Stop the product instance.
+
+   Parameters
+   ----------
+   timeout : float, default: None
+       Time in seconds after which the instance is forcefully stopped.
+       Not all launch methods implement this parameter.
+
+   Raises
+   ------
+   ProductInstanceError
+       If the instance is already stopped.
+
+
+.. py:method:: restart(stop_timeout: float | None = None) -> None
+
+   Stop and then start the product instance.
+
+   Parameters
+   ----------
+   stop_timeout : float, default: None
+       Time in seconds after which the instance is forcefully stopped.
+
+   Raises
+   ------
+   ProductInstanceError
+       If the instance is already stopped or URL keys mismatch.
+
+
+.. py:method:: check(timeout: float | None = None) -> bool
+
+   Check if all servers are responding to requests.
+
+   Parameters
+   ----------
+   timeout : float, default: None
+       Time in seconds to wait for the servers to respond. There
+       is no guarantee that the ``check()`` method returns within this time.
+       Instead, this parameter is used as a hint to the launcher implementation.
+
+
+.. py:method:: wait(timeout: float) -> None
+
+   Wait for all servers to respond.
+
+   This method repeatedly checks if the servers are running, returning as soon
+   as they are all ready.
+
+   Parameters
+   ----------
+   timeout : float, default: None
+       Wait time in seconds before raising an exception.
+
+   Raises
+   ------
+   ProductInstanceError
+       If the server still has not responded after `timeout` seconds.
+
+
+
+
+

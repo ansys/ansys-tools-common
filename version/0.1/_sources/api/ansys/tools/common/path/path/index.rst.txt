@@ -1,0 +1,765 @@
+
+
+
+
+
+
+The ``path.py`` module
+======================
+
+.. py:module:: ansys.tools.common.path.path
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+.. py:currentmodule:: path
+.. tab-set::
+
+
+
+
+
+
+
+    .. tab-item:: Functions
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~get_available_ansys_installations`
+            - Return a dictionary of available Ansys unified installation versions with their base paths.
+
+
+          * - :py:obj:`~find_mechanical`
+            - Search for the Mechanical path in the standard installation location.
+
+
+          * - :py:obj:`~find_mapdl`
+            - Search for Ansys MAPDL path within the standard install location.
+
+
+          * - :py:obj:`~find_dyna`
+            - Search for Ansys LS-Dyna path within the standard install location.
+
+
+          * - :py:obj:`~find_ansys`
+            - Obsolete method, use find_mapdl.
+
+
+          * - :py:obj:`~is_valid_executable_path`
+            - Check if the executable path is valid for the product.
+
+
+          * - :py:obj:`~change_default_mapdl_path`
+            - Change your default Ansys MAPDL path.
+
+
+          * - :py:obj:`~change_default_dyna_path`
+            - Change your default Ansys LS-Dyna path.
+
+
+          * - :py:obj:`~change_default_mechanical_path`
+            - Change your default Mechanical path.
+
+
+          * - :py:obj:`~change_default_ansys_path`
+            - Deprecated, use `change_default_mapdl_path` instead.
+
+
+          * - :py:obj:`~save_mechanical_path`
+            - Find the Mechanical path or query user.
+
+
+          * - :py:obj:`~save_dyna_path`
+            - Find Ansys LD-Dyna's path or query user.
+
+
+          * - :py:obj:`~save_mapdl_path`
+            - Find Ansys MAPDL's path or query user.
+
+
+          * - :py:obj:`~save_ansys_path`
+            - Deprecated, use `save_mapdl_path` instead.
+
+
+          * - :py:obj:`~clear_configuration`
+            - Clear the entry of the specified product in the configuration file.
+
+
+          * - :py:obj:`~get_saved_application_path`
+            - Get the saved path for a specific application from the configuration file.
+
+
+          * - :py:obj:`~get_mapdl_path`
+            - Acquires Ansys MAPDL Path.
+
+
+          * - :py:obj:`~get_dyna_path`
+            - Acquires Ansys LS-Dyna Path from a cached file or user input.
+
+
+          * - :py:obj:`~get_ansys_path`
+            - Deprecated, use `get_mapdl_path` instead.
+
+
+          * - :py:obj:`~get_mechanical_path`
+            - Acquires Ansys Mechanical Path.
+
+
+          * - :py:obj:`~version_from_path`
+            - Extract the product version from a path.
+
+
+          * - :py:obj:`~get_latest_ansys_installation`
+            - Return a tuple with the latest ansys installation version and its path.
+
+
+
+    .. tab-item:: Attributes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~linux_default_dirs`
+            - 
+
+
+
+    .. tab-item:: Constants
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~PLUGINS`
+            - 
+
+
+          * - :py:obj:`~LOG`
+            - 
+
+
+          * - :py:obj:`~PRODUCT_TYPE`
+            - 
+
+
+          * - :py:obj:`~SUPPORTED_VERSIONS_TYPE`
+            - 
+
+
+          * - :py:obj:`~LINUX_DEFAULT_DIRS`
+            - 
+
+
+          * - :py:obj:`~CONFIG_FILE_NAME`
+            - 
+
+
+          * - :py:obj:`~SUPPORTED_ANSYS_VERSIONS`
+            - 
+
+
+          * - :py:obj:`~PRODUCT_EXE_INFO`
+            - 
+
+
+          * - :py:obj:`~SETTINGS_DIR`
+            - 
+
+
+          * - :py:obj:`~CONFIG_FILE`
+            - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Module for installation path retrieval.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:function:: get_available_ansys_installations(supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS) -> Dict[int, str]
+
+   Return a dictionary of available Ansys unified installation versions with their base paths.
+
+   Returns
+   -------
+   dict[int: str]
+       Return all Ansys unified installations paths in Windows.
+
+   Notes
+   -----
+   On Windows, It uses the environment variable ``AWP_ROOTXXX``.
+
+   The student versions are returned at the end of the dict and
+   with negative value for the version.
+
+   Examples
+   --------
+   >>> from ansys.tools.common.path import get_available_ansys_installations
+   >>> get_available_ansys_installations()
+   {251: 'C:\\Program Files\\ANSYS Inc\\v251',
+    242: 'C:\\Program Files\\ANSYS Inc\\v242',
+    -242: 'C:\\Program Files\\ANSYS Inc\\ANSYS Student\\v242'}
+
+   Return all installed Ansys paths in Linux.
+
+   >>> get_available_ansys_installations()
+   {251: '/usr/ansys_inc/v251',
+    242: '/usr/ansys_inc/v242',
+    241: '/usr/ansys_inc/v241'}
+
+
+.. py:function:: find_mechanical(version: Optional[float] = None, supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS) -> Union[Tuple[str, float], Tuple[Literal[''], Literal['']]]
+
+   Search for the Mechanical path in the standard installation location.
+
+   Returns
+   -------
+   mechanical_path : str
+       Full path to the executable file for the latest Mechanical version.
+   version : float | str
+       Version in the float format. For example, ``25.1`` for 2025 R1.
+       If no version has be found, version is set to ""
+
+   Examples
+   --------
+   On Windows:
+
+   >>> from ansys.tools.common.path import find_mechanical
+   >>> find_mechanical()
+   ('C:/Program Files/ANSYS Inc/v251/aisol/bin/winx64/AnsysWBU.exe', 25.1)
+
+   On Linux:
+
+   >>> find_mechanical()
+   ('/usr/ansys_inc/v251/aisol/.workbench', 25.1)
+
+
+.. py:function:: find_mapdl(version: Optional[Union[int, float]] = None, supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS) -> Union[Tuple[str, float], Tuple[Literal[''], Literal['']]]
+
+   Search for Ansys MAPDL path within the standard install location.
+
+   Returns the path of the latest version.
+
+   Parameters
+   ----------
+   version : int, float, optional
+       Version of Ansys MAPDL to search for.
+       If using ``int``, it should follow the convention ``XXY``, where
+       ``XX`` is the major version,
+       and ``Y`` is the minor.
+       If using ``float``, it should follow the convention ``XX.Y``, where
+       ``XX`` is the major version,
+       and ``Y`` is the minor.
+       If ``None``, use latest available version on the machine.
+
+   Returns
+   -------
+   ansys_path : str
+       Full path to ANSYS executable.
+
+   version : float
+       Version float.  For example, 25.1 corresponds to 2025R1.
+
+   Examples
+   --------
+   Within Windows
+
+   >>> from ansys.tools.common.path import find_mapdl
+   >>> find_mapdl()
+   'C:/Program Files/ANSYS Inc/v251/ANSYS/bin/winx64/ansys251.exe', 25.1
+
+   Within Linux
+
+   >>> find_mapdl()
+   (/usr/ansys_inc/v251/ansys/bin/ansys251, 25.1)
+
+
+.. py:function:: find_dyna(version: Optional[Union[int, float]] = None, supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS) -> Union[Tuple[str, float], Tuple[Literal[''], Literal['']]]
+
+   Search for Ansys LS-Dyna path within the standard install location.
+
+   Returns the path of the latest version.
+
+   Parameters
+   ----------
+   version : int, float, optional
+       Version of Ansys LS-Dyna to search for.
+       If using ``int``, it should follow the convention ``XXY``, where
+       ``XX`` is the major version,
+       and ``Y`` is the minor.
+       If using ``float``, it should follow the convention ``XX.Y``, where
+       ``XX`` is the major version,
+       and ``Y`` is the minor.
+       If ``None``, use latest available version on the machine.
+
+   Returns
+   -------
+   ansys_path : str
+       Full path to Ansys LS-Dyna executable.
+
+   version : float
+       Version float.  For example, 25.1 corresponds to 2025R1.
+
+   Examples
+   --------
+   Within Windows
+
+   >>> from ansys.tools.common.path import find_dyna
+   >>> find_dyna()
+   'C:/Program Files/ANSYS Inc/v251/ANSYS/bin/winx64/LSDYNA251.exe', 25.1
+
+   Within Linux
+
+   >>> find_dyna()
+   (/usr/ansys_inc/v251/ansys/bin/lsdyna251, 25.1)
+
+
+.. py:function:: find_ansys(version: Optional[float] = None, supported_versions: SUPPORTED_VERSIONS_TYPE = SUPPORTED_ANSYS_VERSIONS) -> Union[Tuple[str, float], Tuple[Literal[''], Literal['']]]
+
+   Obsolete method, use find_mapdl.
+
+
+.. py:function:: is_valid_executable_path(product: PRODUCT_TYPE, exe_loc: str) -> bool
+
+   Check if the executable path is valid for the product.
+
+   Parameters
+   ----------
+   product : PRODUCT_TYPE
+       The product type, either "mapdl", "mechanical", or "dyna".
+   exe_loc : str
+       The executable path to check.
+
+   Returns
+   -------
+   bool
+       True if the executable path is valid for the product, False otherwise.
+
+
+.. py:function:: change_default_mapdl_path(exe_loc: str) -> None
+
+   Change your default Ansys MAPDL path.
+
+   Parameters
+   ----------
+   exe_loc : str
+       Ansys MAPDL executable path.  Must be a full path.
+
+   Examples
+   --------
+   Change default Ansys MAPDL location on Linux
+
+   >>> from ansys.tools.common.path import change_default_mapdl_path, get_mapdl_path
+   >>> change_default_mapdl_path("/ansys_inc/v251/ansys/bin/ansys251")
+   >>> get_mapdl_path()
+   '/ansys_inc/v251/ansys/bin/ansys251'
+
+   Change default Ansys location on Windows
+
+   >>> mapdl_path = "C:/Program Files/ANSYS Inc/v251/ansys/bin/winx64/ANSYS251.exe"
+   >>> change_default_mapdl_path(mapdl_path)
+
+
+
+.. py:function:: change_default_dyna_path(exe_loc: str) -> None
+
+   Change your default Ansys LS-Dyna path.
+
+   Parameters
+   ----------
+   exe_loc : str
+       path to LS-Dyna executable. Must be a full path. This need not contain the name of the executable,
+       because the name of the LS-Dyna executable depends on the precision.
+
+   Examples
+   --------
+   Change default Ansys LS-Dyna location on Linux
+
+   >>> from ansys.tools.common.path import change_default_dyna_path, get_dyna_path
+   >>> change_default_dyna_path("/ansys_inc/v251/ansys/bin/lsdyna251")
+   >>> get_dyna_path()
+   '/ansys_inc/v251/ansys/bin/lsdyna251'
+
+   Change default Ansys LS-Dyna location on Windows
+
+   >>> dyna_path = "C:/Program Files/ANSYS Inc/v251/ansys/bin/winx64/LSDYNA251.exe"
+   >>> change_default_dyna_path(dyna_path)
+
+
+
+.. py:function:: change_default_mechanical_path(exe_loc: str) -> None
+
+   Change your default Mechanical path.
+
+   Parameters
+   ----------
+   exe_loc : str
+       Full path for the Mechanical executable file to use.
+
+   Examples
+   --------
+   On Windows:
+
+   >>> from ansys.tools.common.path import change_default_mechanical_path, get_mechanical_path
+   >>> change_default_mechanical_path("C:/Program Files/ANSYS Inc/v251/aisol/bin/win64/AnsysWBU.exe")
+   >>> get_mechanical_path()
+   'C:/Program Files/ANSYS Inc/v251/aisol/bin/win64/AnsysWBU.exe'
+
+   On Linux:
+
+   >>> from ansys.tools.common.path import change_default_mechanical_path, get_mechanical_path
+   >>> change_default_mechanical_path("/ansys_inc/v251/aisol/.workbench")
+   >>> get_mechanical_path()
+   '/ansys_inc/v251/aisol/.workbench'
+
+
+
+.. py:function:: change_default_ansys_path(exe_loc: str) -> None
+
+   Deprecated, use `change_default_mapdl_path` instead.
+
+
+.. py:function:: save_mechanical_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> str
+
+   Find the Mechanical path or query user.
+
+   Parameters
+   ----------
+   exe_loc : string, optional
+       Path for the Mechanical executable file (``AnsysWBU.exe``).
+       The default is ``None``, in which case an attempt is made to
+       obtain the path from the following sources in this order:
+
+       - The default Mechanical paths (for example,
+         ``C:/Program Files/Ansys Inc/vXXX/aisol/bin/AnsysWBU.exe``)
+       - The configuration file
+       - User input
+
+       If a path is supplied, this method performs some checks. If the
+       checks are successful, it writes this path to the configuration
+       file.
+
+   Returns
+   -------
+   str
+       Path for the Mechanical executable file.
+
+   Notes
+   -----
+   The location of the configuration file ``config.txt`` can be found in
+   ``ansys.tools.common.path.SETTINGS_DIR``. For example:
+
+   .. code:: pycon
+
+       >>> from ansys.tools.common.path import SETTINGS_DIR
+       >>> import os
+       >>> print(os.path.join(SETTINGS_DIR, "config.txt"))
+       C:/Users/[username]]/AppData/Local/Ansys/ansys_tools_path/config.txt
+
+   You can change the default for the ``exe_loc`` parameter either by modifying the
+   ``config.txt`` file or by running this code:
+
+   .. code:: pycon
+
+      >>> from ansys.tools.common.path import save_mechanical_path
+      >>> save_mechanical_path("/new/path/to/executable")
+
+
+
+.. py:function:: save_dyna_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> str
+
+   Find Ansys LD-Dyna's path or query user.
+
+   If no ``exe_loc`` argument is supplied, this function attempt
+   to obtain the Ansys LS-Dyna executable from (and in order):
+
+   - The default ansys paths (i.e. ``'C:/Program Files/Ansys Inc/vXXX/ansys/bin/winx64/LSDYNAXXX'``)
+   - The configuration file
+   - User input
+
+   If ``exe_loc`` is supplied, this function does some checks.
+   If successful, it will write that ``exe_loc`` into the config file.
+
+   Parameters
+   ----------
+   exe_loc : str, optional
+       Path of the LS-Dyna executable ('lsdynaXXX'), by default ``None``.
+
+   Returns
+   -------
+   str
+       Path of the LS-Dyna executable.
+
+   Notes
+   -----
+   The location of the configuration file ``config.txt`` can be found in
+   ``ansys.tools.common.path.SETTINGS_DIR``. For example:
+
+   .. code:: pycon
+
+       >>> from ansys.tools.common.path import SETTINGS_DIR
+       >>> import os
+       >>> print(os.path.join(SETTINGS_DIR, "config.txt"))
+       C:/Users/[username]/AppData/Local/Ansys/ansys_tools_path/config.txt
+
+   Examples
+   --------
+   You can change the default ``exe_loc`` either by modifying the mentioned
+   ``config.txt`` file or by executing:
+
+   >>> from ansys.tools.common.path import save_dyna_path
+   >>> save_dyna_path("/new/path/to/executable")
+
+
+
+.. py:function:: save_mapdl_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> str
+
+   Find Ansys MAPDL's path or query user.
+
+   If no ``exe_loc`` argument is supplied, this function attempt
+   to obtain the Ansys MAPDL executable from (and in order):
+
+   - The default ansys paths (i.e. ``'C:/Program Files/Ansys Inc/vXXX/ansys/bin/winx64/ansysXXX'``)
+   - The configuration file
+   - User input
+
+   If ``exe_loc`` is supplied, this function does some checks.
+   If successful, it will write that ``exe_loc`` into the config file.
+
+   Parameters
+   ----------
+   exe_loc : str, optional
+       Path of the MAPDL executable ('ansysXXX'), by default ``None``.
+
+   Returns
+   -------
+   str
+       Path of the MAPDL executable.
+
+   Notes
+   -----
+   The location of the configuration file ``config.txt`` can be found in
+   ``ansys.tools.common.path.SETTINGS_DIR``. For example:
+
+   .. code:: pycon
+
+       >>> from ansys.tools.common.path import SETTINGS_DIR
+       >>> import os
+       >>> print(os.path.join(SETTINGS_DIR, "config.txt"))
+       C:/Users/[username]/AppData/Local/Ansys/ansys_tools_path/config.txt
+
+   Examples
+   --------
+   You can change the default ``exe_loc`` either by modifying the mentioned
+   ``config.txt`` file or by executing:
+
+   >>> from ansys.tools.common.path import save_mapdl_path
+   >>> save_mapdl_path("/new/path/to/executable")
+
+
+
+.. py:function:: save_ansys_path(exe_loc: Optional[str] = None, allow_prompt: bool = True) -> str
+
+   Deprecated, use `save_mapdl_path` instead.
+
+
+.. py:function:: clear_configuration(product: Union[PRODUCT_TYPE, Literal['all']]) -> None
+
+   Clear the entry of the specified product in the configuration file.
+
+
+.. py:function:: get_saved_application_path(application: str) -> Optional[str]
+
+   Get the saved path for a specific application from the configuration file.
+
+   Parameters
+   ----------
+   application : str
+       Name of the application to get the path for. For example, "mapdl", "dyna", or "mechanical".
+
+   Returns
+   -------
+   Optional[str]
+       The path to the executable if it exists in the configuration file, otherwise `None`.
+
+
+.. py:function:: get_mapdl_path(allow_input: bool = True, version: Optional[float] = None, find: bool = True) -> Optional[str]
+
+   Acquires Ansys MAPDL Path.
+
+   First, it looks in the configuration file, used by `save_mapdl_path`
+   Then, it tries to find it based on conventions for where it usually is.
+   Lastly, it takes user input
+
+   Parameters
+   ----------
+   allow_input : bool, optional
+       Allow user input to find Ansys MAPDL path.  The default is ``True``.
+
+   version : float, optional
+       Version of Ansys MAPDL to search for. For example ``version=25.1``.
+       If ``None``, use latest.
+
+   find: bool, optional
+       Allow ansys-tools-path to search for Ansys Mechanical in typical installation locations
+
+
+
+.. py:function:: get_dyna_path(allow_input: bool = True, version: Optional[float] = None, find: bool = True) -> Optional[str]
+
+   Acquires Ansys LS-Dyna Path from a cached file or user input.
+
+   First, it looks in the configuration file, used by `save_dyna_path`
+   Then, it tries to find it based on conventions for where it usually is.
+   Lastly, it takes user input
+
+   Parameters
+   ----------
+   allow_input : bool, optional
+       Allow user input to find Ansys LS-Dyna path.  The default is ``True``.
+
+   version : float, optional
+       Version of Ansys LS-Dyna to search for. For example ``version=25.1``.
+       If ``None``, use latest.
+
+   find: bool, optional
+       Allow ansys-tools-path to search for Ansys Mechanical in typical installation locations
+
+
+
+.. py:function:: get_ansys_path(allow_input: bool = True, version: Optional[float] = None) -> Optional[str]
+
+   Deprecated, use `get_mapdl_path` instead.
+
+
+.. py:function:: get_mechanical_path(allow_input: bool = True, version: Optional[float] = None, find: bool = True) -> Optional[str]
+
+   Acquires Ansys Mechanical Path.
+
+   First, it looks in the configuration file, used by `save_mechanical_path`
+   Then, it tries to find it based on conventions for where it usually is.
+   Lastly, it takes user input
+
+   Parameters
+   ----------
+   allow_input : bool, optional
+       Allow user input to find Ansys Mechanical path.  The default is ``True``.
+
+   version : float, optional
+       Version of Ansys Mechanical to search for. For example ``version=25.1``.
+       If ``None``, use latest.
+
+   find: bool, optional
+       Allow ansys-tools-path to search for Ansys Mechanical in typical installation locations
+
+
+
+.. py:function:: version_from_path(product: PRODUCT_TYPE, path: str) -> int
+
+   Extract the product version from a path.
+
+   Parameters
+   ----------
+   path : str
+       The path to the Ansys executable. For example:
+
+       Mechanical:
+       - Windows: ``C:/Program Files/ANSYS Inc/v251/aisol/bin/winx64/AnsysWBU.exe``
+       - Linux: ``/usr/ansys_inc/v251/aisol/.workbench``
+
+       MAPDL:
+       - Windows: ``C:/Program Files/ANSYS Inc/v251/ansys/bin/winx64/ANSYS251.exe``
+       - Linux: ``/usr/ansys_inc/v251/ansys/bin/mapdl``
+
+   product: PRODUCT_TYPE
+       The product. For example: mapdl, mechanical, or dyna.
+
+   Returns
+   -------
+   int
+       Integer version number (for example, 251).
+
+
+
+.. py:function:: get_latest_ansys_installation() -> Tuple[int, str]
+
+   Return a tuple with the latest ansys installation version and its path.
+
+   If there is a student version and a regular installation for the latest release, the regular one is returned
+
+   Returns
+   -------
+   Tuple[int, str]
+       Tuple with the latest version and path of the installation
+
+   Raises
+   ------
+   ValueError
+       No Ansys installation found
+
+
+.. py:data:: PLUGINS
+   :type:  Dict[str, ansys.tools.common.path.applications.ApplicationPlugin]
+
+.. py:data:: LOG
+
+.. py:data:: PRODUCT_TYPE
+
+.. py:data:: SUPPORTED_VERSIONS_TYPE
+
+.. py:data:: LINUX_DEFAULT_DIRS
+
+.. py:data:: CONFIG_FILE_NAME
+   :value: 'config.txt'
+
+
+.. py:data:: SUPPORTED_ANSYS_VERSIONS
+   :type:  SUPPORTED_VERSIONS_TYPE
+
+.. py:data:: PRODUCT_EXE_INFO
+
+.. py:data:: SETTINGS_DIR
+
+.. py:data:: CONFIG_FILE
+
+.. py:data:: linux_default_dirs
+   :value: [['/', 'usr', 'ansys_inc'], ['/', 'ansys_inc'], ['/', 'install', 'ansys_inc']]
+
+
+
+
