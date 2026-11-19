@@ -41,7 +41,7 @@ Notification channels
 ---------------------
 
 Use :class:`~ansys.tools.common.notifications.NotificationChannel` members to select
-well-known channels with IDE auto-complete support.  Channels whose URLs require
+well-known channels with IDE auto-complete support. Channels whose URLs require
 credentials or IDs (such as Slack or email) are provided as scheme prefixes that you
 concatenate with your specific tokens.
 
@@ -91,8 +91,8 @@ concatenate with your specific tokens.
     )
 
 A plain :class:`str` is always accepted, so existing code using raw URL strings continues
-to work unchanged.  For channels not listed above, pass a plain string with any URL
-supported by Apprise.  The full list of services is available at
+to work unchanged. For channels not listed above, pass a plain string with any URL
+supported by Apprise. The full list of services is available at
 `<https://appriseit.com/services/>`_.
 
 Global configuration
