@@ -1,0 +1,123 @@
+
+
+
+
+
+
+The ``grpc_transport.py`` module
+================================
+
+.. py:module:: ansys.tools.common.launcher.grpc_transport
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: grpc_transport
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.grpc_transport.TransportMode`
+            - Enumeration of supported gRPC transport modes.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.grpc_transport.UDSOptions`
+            - Options for UDS transport mode.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.grpc_transport.WNUAOptions`
+            - Options for WNUA transport mode.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.grpc_transport.MTLSOptions`
+            - Options for mTLS transport mode.
+
+
+          * - :py:obj:`~ansys.tools.common.launcher.grpc_transport.InsecureOptions`
+            - Options for insecure transport mode.
+
+
+
+
+
+
+    .. tab-item:: Attributes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~TransportOptionsType`
+            - 
+
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> TransportMode</api/ansys/tools/common/launcher/grpc_transport/TransportMode>
+    <span class="nf nf-cod-symbol_class"></span> UDSOptions</api/ansys/tools/common/launcher/grpc_transport/UDSOptions>
+    <span class="nf nf-cod-symbol_class"></span> WNUAOptions</api/ansys/tools/common/launcher/grpc_transport/WNUAOptions>
+    <span class="nf nf-cod-symbol_class"></span> MTLSOptions</api/ansys/tools/common/launcher/grpc_transport/MTLSOptions>
+    <span class="nf nf-cod-symbol_class"></span> InsecureOptions</api/ansys/tools/common/launcher/grpc_transport/InsecureOptions>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Defines options for connecting to a gRPC server.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:data:: TransportOptionsType
+
+
+

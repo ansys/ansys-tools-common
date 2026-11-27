@@ -1,0 +1,33 @@
+
+
+
+
+
+
+:class:`AnsysWarning`
+=====================
+
+
+.. py:exception:: ansys.tools.common.warnings.AnsysWarning(message: str)
+
+   Bases: :py:obj:`Warning`
+
+
+   Base class for all warnings raised by the Ansys API.
+
+   You can use this base class to catch all Ansys-related warnings.
+
+
+
+
+Import detail
+-------------
+
+.. code-block:: python
+
+    from ansys.tools.common.warnings import AnsysWarning
+
+
+
+
+

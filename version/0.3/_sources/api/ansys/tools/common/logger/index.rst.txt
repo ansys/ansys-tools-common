@@ -1,0 +1,108 @@
+
+
+
+
+
+
+The ``logger.py`` module
+========================
+
+.. py:module:: ansys.tools.common.logger
+
+
+Summary
+-------
+
+
+
+
+
+
+
+
+
+
+
+
+.. py:currentmodule:: logger
+.. tab-set::
+
+
+
+
+    .. tab-item:: Classes
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~ansys.tools.common.logger.SingletonType`
+            - Provides the singleton helper class for the logger.
+
+
+          * - :py:obj:`~ansys.tools.common.logger.Logger`
+            - Provides the singleton logger.
+
+
+
+
+
+
+
+    .. tab-item:: Constants
+
+        .. list-table::
+          :header-rows: 0
+          :widths: auto
+
+
+          * - :py:obj:`~LOGGER`
+            - Global logger instance.
+
+
+
+
+
+
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+   :hidden:
+
+    <span class="nf nf-cod-symbol_class"></span> SingletonType</api/ansys/tools/common/logger/SingletonType>
+    <span class="nf nf-cod-symbol_class"></span> Logger</api/ansys/tools/common/logger/Logger>
+
+
+
+
+
+
+
+
+
+Description
+-----------
+
+Provides the singleton helper class for the logger.
+
+
+
+
+
+
+
+Module detail
+-------------
+
+.. py:data:: LOGGER
+
+   Global logger instance.
+
+   This is a global instance of the ``Logger`` class that can be used throughout the application.
+   It is initialized with default settings and can be configured as needed.
+
+
+
+
